@@ -24,8 +24,8 @@
 | **Phase 1** | **Research, Architecture & Planning** | **COMPLETE** | 2.0 Weeks | None | None | **100%** | Full 29-doc planning suite, 7 diagrams, 12 trackers |
 | **Phase 2** | **Multi-Source Dataset Acquisition** | **COMPLETE** | 1.5 Weeks | Phase 1 | None | **100%** | Full Bronze Lake: 2.66M+ records across IMDb, TMDB (upcoming & Indian), Kaggle, and YouTube |
 | **Phase 3** | **Unified Dataset Engineering** | **COMPLETE** | 2.5 Weeks | Phase 2 | None | **100%** | `data/unified/unified_movies.parquet` (10,812 canonical films, 84.5% IMDb resolution, Pandera certified) |
-| **Phase 4** | **Exploratory Data Analysis** | **IN PROGRESS** | 1.0 Week | Phase 3 | None | 0% | `ml/eda/` automated distributions, correlation, and data audit |
-| **Phase 5** | **Feature Engineering & Store** | **Planned** | 2.0 Weeks | Phase 4 | Strict temporal leakage isolation | 0% | `data/snapshots/train_v1.parquet` (Gold Splits) |
+| **Phase 4** | **Exploratory Data Analysis** | **COMPLETE** | 1.0 Week | Phase 3 | None | **100%** | `ml/eda/EDA_REPORT.md` (Skewness 4.53 -> -0.62 log justify, Pareto 77.4% top 20%, cross-market audit) |
+| **Phase 5** | **Feature Engineering & Store** | **IN PROGRESS** | 2.0 Weeks | Phase 4 | Strict temporal leakage isolation | 0% | `data/snapshots/train_v1.parquet` (Gold Splits) |
 | **Phase 6** | **Baseline Machine Learning** | **Planned** | 1.0 Week | Phase 5 | None | 0% | `ml/training/train_baselines.py` (5-feature OLS benchmark) |
 | **Phase 7** | **Advanced Revenue Prediction** | **Planned** | 2.0 Weeks | Phase 6 | Model SMAPE $\le 40.0\%$ | 0% | `ml/models/production/catboost_revenue_v1.cbm` |
 | **Phase 8** | **Success Classification** | **Planned** | 1.5 Weeks | Phase 7 | Class balance (Blockbuster recall) | 0% | `ml/models/production/catboost_classifier_v1.cbm` |
