@@ -1,0 +1,19 @@
+stateDiagram-v2
+    [*] --> Stage0 : Movie Announced
+
+    Stage0 : No Prediction\n(Insufficient Data\nReadiness Score < 40)
+    Stage1 : Stage 1 — Early Forecast\n(6+ months before release)\nFeatures: Cast, Director, Genre, Budget\nAccuracy: Low (±50-80%)\nConfidence: Very Low
+    Stage2 : Stage 2 — Preliminary Forecast\n(3 months before release)\nAdditional: TMDB Popularity, Google Trends\nAccuracy: Moderate Improvement
+    Stage3 : Stage 3 — Pre-Release Forecast\n(1 month before release)\nAdditional: Trailer Views, Sentiment\nAccuracy: Best Pre-Release (±30-40%)
+    Stage4 : Stage 4 — Opening Forecast\n(Release Day)\nAdditional: Advance Booking Signals\nAccuracy: Improved Weekend Estimate
+    Stage5 : Stage 5 — Lifetime Forecast\n(Post Opening Weekend)\nAdditional: Actual Opening Data\nAccuracy: Good Lifetime Estimate (±20-25%)
+    Released : Movie Released\n(Actuals Collected)
+    Historical : Historical Record\n(Training Data for\nFuture Models)
+
+    Stage0 --> Stage1 : Readiness Score >= 40\n(Cast + Director announced)
+    Stage1 --> Stage2 : Trailer announced\nOR 3-month horizon crossed
+    Stage2 --> Stage3 : 1-month horizon crossed
+    Stage3 --> Stage4 : Release date reached
+    Stage4 --> Stage5 : Opening weekend complete
+    Stage5 --> Released : Lifetime collection verified
+    Released --> Historical : Stored as labeled training example

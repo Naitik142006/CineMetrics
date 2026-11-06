@@ -1,0 +1,253 @@
+# =============================================================================
+# CineMetrics — .gitignore
+# Python ML Backend + React TypeScript Frontend
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Environment & Secrets (NEVER commit these)
+# -----------------------------------------------------------------------------
+.env
+.env.local
+.env.production
+.env.staging
+.env.development
+*.env
+secrets/
+*.key
+*.pem
+credentials.json
+kaggle.json
+service_account.json
+gcloud_key.json
+.netrc
+
+# -----------------------------------------------------------------------------
+# Python
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+.conda/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# -----------------------------------------------------------------------------
+# Data Files (NEVER commit raw or processed datasets)
+# -----------------------------------------------------------------------------
+data/
+*.parquet
+*.csv
+*.tsv
+*.tsv.gz
+*.json.gz
+*.feather
+*.arrow
+*.h5
+*.hdf5
+*.db
+*.sqlite
+*.sqlite3
+!data/.gitkeep
+
+# -----------------------------------------------------------------------------
+# ML Models & Experiment Tracking (large binary files)
+# -----------------------------------------------------------------------------
+ml/models/
+*.cbm
+*.pkl
+*.joblib
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.bin
+mlruns/
+wandb/
+.neptune/
+lightning_logs/
+checkpoints/
+outputs/
+
+# -----------------------------------------------------------------------------
+# Jupyter Notebooks
+# -----------------------------------------------------------------------------
+.ipynb_checkpoints/
+*.ipynb
+# If you DO want to track notebooks, comment the above line and use:
+# profile_default/
+# ipython_config.py
+
+# -----------------------------------------------------------------------------
+# Node.js / Frontend
+# -----------------------------------------------------------------------------
+node_modules/
+frontend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.npm/
+
+# Build outputs
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/out/
+.next/
+
+# TypeScript
+*.tsbuildinfo
+
+# -----------------------------------------------------------------------------
+# Testing & Coverage
+# -----------------------------------------------------------------------------
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+test-results/
+junit.xml
+
+# -----------------------------------------------------------------------------
+# IDE & Editor
+# -----------------------------------------------------------------------------
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+# Keep .vscode/tasks.json and recommended extensions if desired:
+# !.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-workspace
+
+# -----------------------------------------------------------------------------
+# Operating System
+# -----------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# -----------------------------------------------------------------------------
+# Logs
+# -----------------------------------------------------------------------------
+*.log
+logs/
+log/
+*.log.*
+*.out
+
+# -----------------------------------------------------------------------------
+# DVC (Data Version Control)
+# -----------------------------------------------------------------------------
+.dvc/cache/
+.dvc/tmp/
+.dvc/plots/
+# DO commit: .dvc/config, *.dvc files, .dvcignore
+
+# -----------------------------------------------------------------------------
+# Docker
+# -----------------------------------------------------------------------------
+.docker/
+docker-compose.override.yml
+
+# -----------------------------------------------------------------------------
+# Alembic / Database Migrations
+# -----------------------------------------------------------------------------
+# DO commit migration scripts in backend/migrations/versions/
+# Only ignore auto-generated junk:
+*.pyc
+
+# -----------------------------------------------------------------------------
+# API Documentation Build Artifacts
+# -----------------------------------------------------------------------------
+docs/_build/
+docs/site/
+site/
+
+# -----------------------------------------------------------------------------
+# Celery
+# -----------------------------------------------------------------------------
+celerybeat-schedule
+celerybeat.pid
+
+# -----------------------------------------------------------------------------
+# Redis dump
+# -----------------------------------------------------------------------------
+dump.rdb
+
+# -----------------------------------------------------------------------------
+# Temporary / Scratch
+# -----------------------------------------------------------------------------
+tmp/
+temp/
+scratch/
+.scratch/
+*.tmp
+*.bak
+*.backup
+*.orig
+
+# -----------------------------------------------------------------------------
+# Private Interview Materials (Strictly Off-Repo Defense)
+# -----------------------------------------------------------------------------
+*interview*
+*INTERVIEW*
+*interview_prep*
+*Interview_Prep*
+

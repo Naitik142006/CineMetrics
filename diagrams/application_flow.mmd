@@ -1,0 +1,50 @@
+flowchart TD
+    subgraph MODE1["🔍 Mode 1: Movie Explorer"]
+        U1["User Arrives at\nMovie Explorer"]
+        U2["Enters Search Query"]
+        U3["API Returns\nMatching Movies"]
+        U4["User Selects Movie"]
+        U5["System Loads\nMovie Details"]
+        U6["System Retrieves or\nGenerates Prediction"]
+        U7["Display: Overview +\nRevenue Prediction +\nSuccess Classification"]
+        U8["Display: SHAP\nExplanation"]
+        U9{"User Opens\nWhat-If Simulator?"}
+        U10["What-If Simulator\n(Adjust Budget, Cast,\nRelease Date)"]
+        U11{"User Views\nComparison?"}
+        U12["Side-by-Side\nMovie Comparison"]
+    end
+
+    subgraph MODE2["📅 Mode 2: Upcoming Releases Dashboard"]
+        B1["Background Job\nDiscovers New Movies\n(Automated — No User Action)"]
+        B2["System Enriches\nMovie Data"]
+        B3["System Generates\nPrediction When Ready"]
+        B4["Dashboard Auto-Populates\nwith Upcoming Movies"]
+        B5["User Browses Dashboard"]
+        B6["User Applies Filters\n(Industry, Genre,\nDate Range, Success Tier)"]
+        B7["User Opens Movie Card"]
+    end
+
+    subgraph SHARED["⚙️ Shared Services"]
+        PS["Prediction Service\n(CatBoost / LightGBM / XGBoost\n+ SHAP + Uncertainty)"]
+        DB[("PostgreSQL Database\n(Movies, Predictions,\nSnapshots, History)")]
+        ML["ML Model Registry\n(MLflow — Active Models)"]
+    end
+
+    U1 --> U2 --> U3 --> U4 --> U5 --> U6
+    U6 --> U7 --> U8
+    U8 --> U9
+    U9 -- "Yes" --> U10
+    U9 -- "No" --> U11
+    U10 --> U11
+    U11 -- "Yes" --> U12
+    U11 -- "No" --> U8
+
+    B1 --> B2 --> B3 --> B4 --> B5 --> B6 --> B7
+    B7 --> U4
+
+    U6 --> PS
+    B3 --> PS
+    PS --> DB
+    PS --> ML
+    DB --> U5
+    DB --> B4

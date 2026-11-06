@@ -1,0 +1,221 @@
+erDiagram
+    MOVIES {
+        int movie_id PK
+        string tmdb_id
+        string imdb_id
+        string title
+        string original_title
+        string original_language
+        string status
+        date release_date
+        int runtime_minutes
+        string industry
+        string overview
+        string tagline
+        float readiness_score
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PERSONS {
+        int person_id PK
+        string tmdb_person_id
+        string imdb_person_id
+        string name
+        float cast_power_index
+        float director_success_rate
+        int career_hit_count
+        timestamp updated_at
+    }
+
+    MOVIE_CAST {
+        int cast_id PK
+        int movie_id FK
+        int person_id FK
+        string role
+        string character_name
+        int billing_order
+        boolean is_lead
+    }
+
+    GENRES {
+        int genre_id PK
+        string tmdb_genre_id
+        string name
+    }
+
+    MOVIE_GENRES {
+        int movie_id FK
+        int genre_id FK
+    }
+
+    PRODUCTION_COMPANIES {
+        int company_id PK
+        string tmdb_company_id
+        string name
+        string origin_country
+        float avg_revenue_usd
+        int total_productions
+    }
+
+    MOVIE_PRODUCTION_COMPANIES {
+        int movie_id FK
+        int company_id FK
+        boolean is_primary
+    }
+
+    MOVIE_FINANCIALS {
+        int financial_id PK
+        int movie_id FK
+        float budget_usd_nominal
+        float budget_usd_2024
+        float worldwide_gross_usd_nominal
+        float worldwide_gross_usd_2024
+        float domestic_gross_usd
+        float international_gross_usd
+        float india_gross_inr
+        string budget_source
+        string gross_source
+        boolean is_estimated
+    }
+
+    MOVIE_RATINGS {
+        int rating_id PK
+        int movie_id FK
+        string source
+        float rating_value
+        int vote_count
+        timestamp snapshot_at
+    }
+
+    MOVIE_TRAILERS {
+        int trailer_id PK
+        int movie_id FK
+        string youtube_video_id
+        string title
+        string trailer_type
+        date published_at
+        bigint view_count
+        bigint like_count
+        bigint comment_count
+        timestamp fetched_at
+    }
+
+    POPULARITY_SNAPSHOTS {
+        int snapshot_id PK
+        int movie_id FK
+        float tmdb_popularity
+        float google_trends_score
+        int days_before_release
+        timestamp snapshot_at
+    }
+
+    SENTIMENT_OBSERVATIONS {
+        int obs_id PK
+        int movie_id FK
+        string source
+        float compound_score
+        float positive_ratio
+        float negative_ratio
+        int sample_size
+        int days_before_release
+        timestamp observed_at
+    }
+
+    FEATURE_SNAPSHOTS {
+        int snapshot_id PK
+        int movie_id FK
+        int prediction_stage
+        json feature_vector
+        int days_before_release
+        timestamp created_at
+    }
+
+    PREDICTIONS {
+        int prediction_id PK
+        int movie_id FK
+        int model_version_id FK
+        int prediction_stage
+        float predicted_revenue_log
+        float predicted_revenue_usd
+        float lower_bound_p10_usd
+        float upper_bound_p90_usd
+        string success_tier
+        float success_probability
+        json shap_values
+        float readiness_score_at_prediction
+        timestamp predicted_at
+    }
+
+    PREDICTION_HISTORY {
+        int history_id PK
+        int prediction_id FK
+        int prediction_stage
+        float predicted_revenue_usd
+        float lower_bound_p10_usd
+        float upper_bound_p90_usd
+        string success_tier
+        timestamp recorded_at
+        string change_trigger
+    }
+
+    MODEL_VERSIONS {
+        int model_version_id PK
+        string model_name
+        string model_type
+        string target_market
+        string mlflow_run_id
+        string artifact_uri
+        float val_mae
+        float val_rmse
+        float val_r2
+        boolean is_active
+        timestamp trained_at
+    }
+
+    INGESTION_JOBS {
+        int job_id PK
+        string job_type
+        string status
+        int movies_discovered
+        int movies_updated
+        string error_message
+        timestamp started_at
+        timestamp finished_at
+    }
+
+    DATA_SOURCES {
+        int source_id PK
+        string source_name
+        string base_url
+        int priority_rank
+        timestamp last_fetched_at
+    }
+
+    MOVIE_HISTORY {
+        int history_id PK
+        int movie_id FK
+        int job_id FK
+        string field_name
+        string old_value
+        string new_value
+        timestamp changed_at
+    }
+
+    MOVIES ||--o{ MOVIE_CAST : "has"
+    MOVIES ||--o| MOVIE_FINANCIALS : "has"
+    MOVIES ||--o{ MOVIE_GENRES : "tagged with"
+    MOVIES ||--o{ MOVIE_PRODUCTION_COMPANIES : "produced by"
+    MOVIES ||--o{ MOVIE_RATINGS : "rated by"
+    MOVIES ||--o{ MOVIE_TRAILERS : "has"
+    MOVIES ||--o{ POPULARITY_SNAPSHOTS : "tracked via"
+    MOVIES ||--o{ SENTIMENT_OBSERVATIONS : "measured via"
+    MOVIES ||--o{ FEATURE_SNAPSHOTS : "has"
+    MOVIES ||--o{ PREDICTIONS : "predicted by"
+    MOVIES ||--o{ MOVIE_HISTORY : "changed in"
+    PERSONS ||--o{ MOVIE_CAST : "appears in"
+    GENRES ||--o{ MOVIE_GENRES : "applied to"
+    PRODUCTION_COMPANIES ||--o{ MOVIE_PRODUCTION_COMPANIES : "produces"
+    PREDICTIONS ||--o{ PREDICTION_HISTORY : "tracked in"
+    MODEL_VERSIONS ||--o{ PREDICTIONS : "generates"
+    INGESTION_JOBS ||--o{ MOVIE_HISTORY : "triggers"

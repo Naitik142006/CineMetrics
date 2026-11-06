@@ -1,0 +1,33 @@
+flowchart TD
+    INPUT["unified_movies.parquet\n(Versioned + Hashed)"]
+
+    INPUT --> EDA["EDA and Feature Analysis\n(Distributions, Correlations,\nMissing Value Patterns)"]
+
+    EDA --> FE["Feature Engineering\n(Cast Power Index, Director Success Rate,\nRelease Timing Features, Popularity Signals,\nBudget Buckets, Genre Embeddings)"]
+
+    FE --> MATRIX["Feature Matrix X\n+ Target y\n(log1p of worldwide revenue)"]
+
+    MATRIX --> SPLIT["Temporal Train / Val / Test Split\nTrain: release_year < 2020\nVal: 2020 to 2022\nTest: 2023 to 2024"]
+
+    SPLIT --> BASE["Baseline Models\n(Mean Revenue, Median Revenue,\nLinear Regression, Random Forest)"]
+    SPLIT --> ADV["Advanced Models\n(CatBoost, LightGBM, XGBoost)"]
+
+    BASE --> OPT
+    ADV --> OPT["Optuna Hyperparameter Optimization\n(100 trials per model,\nTPE sampler, pruning enabled)"]
+
+    OPT --> EVAL["Model Evaluation\n(MAE, RMSE, R2, SMAPE\nper model per market segment:\nBollywood / Hollywood / South Indian)"]
+
+    EVAL --> COMP["Model Comparison Matrix\n(Rank by weighted composite score\nacross markets and metrics)"]
+
+    COMP --> SEL["Model Selection\n(Best model on weighted score\nper market segment)"]
+
+    SEL --> SHAP["SHAP Analysis\n(TreeExplainer — TreeSHAP\nGlobal Feature Importance\nLocal Explanation per Prediction)"]
+
+    SEL --> UNCERT["Uncertainty Calibration\n(Quantile Regression — P10 / P50 / P90\n+ Conformal Prediction Intervals)"]
+
+    SHAP --> SER["Model Serialization\n(.cbm for CatBoost / .json for LightGBM+XGBoost\n+ feature list + scaler artifacts)"]
+    UNCERT --> SER
+
+    SER --> MLFLOW["MLflow Logging\n(Params, Metrics, Artifacts,\nModel Registry with Stage Tags)"]
+
+    MLFLOW --> DEPLOY["Deployment\n(Load into FastAPI Backend\nvia MLflow Model Registry URI)"]

@@ -1,0 +1,55 @@
+flowchart LR
+    SCHED["APScheduler\nDaily at 2am IST"]
+
+    subgraph DISCOVERY["Movie Discovery"]
+        Q1["Query TMDB\n/movie/upcoming\n(all regions)"]
+        Q2["Query TMDB\n/discover/movie\n(future release dates)"]
+        Q3["Query TMDB\nIndian Language Filters\n(hi, te, ta, ml, kn)"]
+    end
+
+    subgraph ROUTING["Per-Movie Routing"]
+        EXISTS{"Movie\nexists in DB?"}
+        NEW["Insert Movie\nstatus = newly_discovered"]
+        EQ["Check for\nMetadata Changes"]
+        CHANGED{"Metadata\nChanged?"}
+        UPD["Update Record\n+ Preserve History"]
+        SKIP["No Action\nRequired"]
+    end
+
+    subgraph ENRICHMENT["Enrichment Pipeline"]
+        E1["TMDB Full Metadata"]
+        E2["Credits Fetch"]
+        E3["Trailers Fetch"]
+        E4["External IDs Fetch"]
+        E5["IMDb Match"]
+        E6["Historical Performance\nLookup"]
+        E7["Feature Snapshot\nGeneration"]
+        READY{"Readiness\nScore >= 40?"}
+        PRED["Generate Prediction\n(ML Model)"]
+        STORE["Store Prediction\nin PostgreSQL"]
+        NOPRED["Mark: Insufficient Data\nRetry on Next Cycle"]
+    end
+
+    DASH["Dashboard Update\nTrigger"]
+
+    SCHED --> Q1
+    SCHED --> Q2
+    SCHED --> Q3
+
+    Q1 --> EXISTS
+    Q2 --> EXISTS
+    Q3 --> EXISTS
+
+    EXISTS -- "New Movie" --> NEW
+    EXISTS -- "Existing Movie" --> EQ
+
+    NEW --> E1
+    EQ --> CHANGED
+    CHANGED -- "Yes" --> UPD
+    CHANGED -- "No" --> SKIP
+    UPD --> E1
+
+    E1 --> E2 --> E3 --> E4 --> E5 --> E6 --> E7
+    E7 --> READY
+    READY -- "Yes" --> PRED --> STORE --> DASH
+    READY -- "No" --> NOPRED

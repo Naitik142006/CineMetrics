@@ -1,0 +1,52 @@
+flowchart TD
+    subgraph USER["👤 User Layer"]
+        UI["React Frontend\n(TypeScript + Vite + Tailwind)"]
+    end
+
+    subgraph BACKEND["⚙️ FastAPI Backend"]
+        API["REST API Layer\n(/api/v1/...)"]
+        SVC["Service Layer\n(MovieService, PredictionService,\nEnrichmentService, SentimentService)"]
+        JOB["Background Jobs\n(APScheduler)"]
+    end
+
+    subgraph ML["🤖 ML Layer"]
+        REG["Revenue Regressor\n(CatBoost / LightGBM / XGBoost)"]
+        CLF["Success Classifier\n(CatBoost Classifier)"]
+        NLP["Sentiment Model\n(MuRIL / DistilBERT)"]
+        SHAP["SHAP Explainer\n(TreeSHAP)"]
+        UNC["Uncertainty Estimator\n(Quantile / Conformal)"]
+    end
+
+    subgraph DATA["💾 Data Layer"]
+        PG[("PostgreSQL\n(Movies, Predictions,\nSnapshots, History)")]
+        PAR["Parquet Files\n(Raw + Processed Data)"]
+        MLF["MLflow\n(Experiment Tracking\n+ Model Registry)"]
+    end
+
+    subgraph EXTERNAL["🌐 External APIs"]
+        TMDB["TMDB API\n(Movie Discovery\n+ Metadata)"]
+        IMDB["IMDb Datasets\n(Ratings + Credits)"]
+        YT["YouTube Data API\n(Trailer Engagement)"]
+        GT["Google Trends\n(Search Interest)"]
+        RED["Reddit API\n(Community Sentiment)"]
+    end
+
+    UI --> API
+    API --> SVC
+    SVC --> PG
+    SVC --> REG
+    SVC --> CLF
+    SVC --> NLP
+    SVC --> SHAP
+    SVC --> UNC
+    JOB --> TMDB
+    JOB --> YT
+    JOB --> GT
+    JOB --> RED
+    JOB --> PG
+    JOB --> PAR
+    REG --> MLF
+    CLF --> MLF
+    NLP --> MLF
+    IMDB --> PAR
+    PAR --> SVC

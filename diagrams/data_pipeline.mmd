@@ -1,0 +1,19 @@
+flowchart TD
+    A["1. Raw Data Acquisition\n(TMDB API, IMDb TSV,\nKaggle, YouTube)"] --> B["2. Raw Storage\n(Parquet files, partitioned\nby source + date)"]
+    B --> C["3. Provenance Logging\n(source, URL, retrieval_timestamp,\nschema_version per row)"]
+    C --> D["4. Column Standardisation\n(rename to canonical names,\ntype casting)"]
+    D --> E["5. Title Normalisation\n(lowercase, strip special chars,\nhandle Indian title variants)"]
+    E --> F["6. Movie ID Resolution\n(TMDB to IMDb ID mapping\nvia external_ids endpoint)"]
+    F --> G["7. Record Matching\n(cross-source join by resolved IDs\n+ fuzzy title+year fallback)"]
+    G --> H["8. Duplicate Detection\n(exact + near-duplicate removal,\nconfidence scores)"]
+    H --> I["9. Financial Conflict Resolution\n(priority: The Numbers > TMDB > Kaggle,\nkeep all with source tags)"]
+    I --> J["10. Currency Standardisation\n(convert all to USD using\nhistorical exchange rates)"]
+    J --> K["11. Inflation Adjustment\n(CPI-based to 2024 USD baseline,\npreserve nominal values)"]
+    K --> L["12. Missing Value Analysis\n(count + % per column,\nflag columns >50% missing)"]
+    L --> M["13. Pydantic Validation\n(range checks, type validation,\nerror reports)"]
+    M --> N["14. Feature Engineering\n(cast power, director metrics,\nrelease features, popularity)"]
+    N --> O["15. Unified Dataset\n(unified_movies.parquet,\nversioned + hashed)"]
+    O --> P["16. Training Dataset\n(temporal split: train/val/test\nby release year cutoffs)"]
+
+    style A fill:#1a1a2e,color:#f0f0f8
+    style P fill:#064e3b,color:#f0f0f8
