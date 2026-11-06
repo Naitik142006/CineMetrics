@@ -9,10 +9,12 @@ DATA_DIR = BASE_DIR / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
 UNIFIED_DATA_DIR = DATA_DIR / "unified"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
+SNAPSHOTS_DATA_DIR = DATA_DIR / "snapshots"
 
 # Ensure directories exist
 UNIFIED_DATA_DIR.mkdir(parents=True, exist_ok=True)
 PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
+SNAPSHOTS_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 # Raw source file paths
 IMDB_BASICS_PATH = RAW_DATA_DIR / "imdb" / "title_basics_movies.parquet"

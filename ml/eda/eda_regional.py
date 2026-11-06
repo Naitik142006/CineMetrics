@@ -67,3 +67,4 @@ if __name__ == "__main__":
     res = analyze_regional_economics(df)
     for r in res:
         print(f"Industry: {r['industry']} | Sample: {r['financial_sample']} | Med Budget: ${r['median_budget_usd']:,.0f} | Med ROI: {r['median_roi']}x | Hit Rate: {r['hit_rate_pct']}%")
+

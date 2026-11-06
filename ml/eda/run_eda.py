@@ -196,3 +196,4 @@ def generate_eda_report() -> Path:
 
 if __name__ == "__main__":
     generate_eda_report()
+

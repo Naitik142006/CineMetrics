@@ -25,8 +25,8 @@
 | **Phase 2** | **Multi-Source Dataset Acquisition** | **COMPLETE** | 1.5 Weeks | Phase 1 | None | **100%** | Full Bronze Lake: 2.66M+ records across IMDb, TMDB (upcoming & Indian), Kaggle, and YouTube |
 | **Phase 3** | **Unified Dataset Engineering** | **COMPLETE** | 2.5 Weeks | Phase 2 | None | **100%** | `data/unified/unified_movies.parquet` (10,812 canonical films, 84.5% IMDb resolution, Pandera certified) |
 | **Phase 4** | **Exploratory Data Analysis** | **COMPLETE** | 1.0 Week | Phase 3 | None | **100%** | `ml/eda/EDA_REPORT.md` (Skewness 4.53 -> -0.62 log justify, Pareto 77.4% top 20%, cross-market audit) |
-| **Phase 5** | **Feature Engineering & Store** | **IN PROGRESS** | 2.0 Weeks | Phase 4 | Strict temporal leakage isolation | 0% | `data/snapshots/train_v1.parquet` (Gold Splits) |
-| **Phase 6** | **Baseline Machine Learning** | **Planned** | 1.0 Week | Phase 5 | None | 0% | `ml/training/train_baselines.py` (5-feature OLS benchmark) |
+| **Phase 5** | **Feature Engineering & Store** | **COMPLETE** | 2.0 Weeks | Phase 4 | None | **100%** | `data/snapshots/train_v1.parquet` (7,782 train, 651 val, 605 test, 1,774 unreleased, zero leakage) |
+| **Phase 6** | **Baseline Machine Learning** | **IN PROGRESS** | 1.0 Week | Phase 5 | None | 0% | `ml/training/train_baselines.py` (OLS, Ridge, Random Forest benchmarks) |
 | **Phase 7** | **Advanced Revenue Prediction** | **Planned** | 2.0 Weeks | Phase 6 | Model SMAPE $\le 40.0\%$ | 0% | `ml/models/production/catboost_revenue_v1.cbm` |
 | **Phase 8** | **Success Classification** | **Planned** | 1.5 Weeks | Phase 7 | Class balance (Blockbuster recall) | 0% | `ml/models/production/catboost_classifier_v1.cbm` |
 | **Phase 9** | **Multilingual NLP Sentiment** | **Planned** | 2.0 Weeks | Phase 5 | MuRIL CPU inference latency $<1.5\text{s}$ | 0% | `backend/app/services/sentiment_service.py` |
