@@ -187,35 +187,35 @@ Phase 16: Integration & Deployment ──► Phase 17: Verification & Acceptance
 
 ---
 
-### Phase 9: Multilingual NLP & Sentiment Analysis Engine
-- **Objective**: Implement the pre-release audience anticipation and multilingual sentiment analysis pipeline.
+### Phase 9: Multilingual NLP & Trailer Buzz Intelligence Engine
+- **Objective**: Implement the pre-release audience anticipation engine fusing quantitative trailer scale metrics with multilingual comment sentiment.
 - **Tasks**:
-  1. Build YouTube trailer comment harvesting script via YouTube Data API v3.
-  2. Implement text preprocessing and language routing (Latin script vs. Indic script).
-  3. Integrate Google MuRIL (`google/muril-base-cased`) via HuggingFace Transformers.
-  4. Quantize model weights to 8-bit dynamic INT8 for lightweight CPU inference.
-  5. Aggregate comment sentiment into 5 continuous movie-level features.
-  6. Materialize sentiment features into `sentiment_observations` table.
-- **Dependencies**: Phase 5.
-- **Technologies**: PyTorch, HuggingFace Transformers, MuRIL, LangDetect.
-- **Deliverables**: `ml/nlp/sentiment_engine.py`, `backend/app/services/sentiment_service.py`.
-- **Acceptance Criteria**: CPU inference latency $<1.5\text{s}$ per 100 comments; handles Hinglish commentary.
-- **Estimated Effort**: 2 Weeks.
+  1. Build YouTube trailer intelligence harvester extracting quantitative engagement metrics: `view_count`, `like_count`, `comment_count`, `like_to_view_ratio`, `comment_to_view_ratio`, and `daily_view_velocity`.
+  2. Implement YouTube comment harvester fetching top-level audience commentary with language routing (Latin script, Devanagari, Telugu, Tamil, Malayalam).
+  3. Integrate Google MuRIL (`google/muril-base-cased`) and optimized lexicon fallbacks to analyze sentiment across English, Hindi, regional Indian languages, and mixed Hinglish.
+  4. Aggregate engagement and sentiment into a composite **Digital Buzz & Audience Anticipation Index (0–100)**.
+  5. Compute movie-level trailer features (`log_trailer_views`, `trailer_like_ratio`, `comment_sentiment_net_polarity`, `buzz_anticipation_score`).
+  6. Materialize metrics to `data/processed/trailer_buzz_features.parquet` and the backend `sentiment_observations` store.
+- **Dependencies**: Phase 5, Phase 8.
+- **Technologies**: YouTube Data API v3, PyTorch, HuggingFace Transformers, MuRIL, LangDetect, Pandas.
+- **Deliverables**: `ml/nlp/sentiment_engine.py`, `ml/nlp/trailer_buzz_harvester.py`, `backend/app/services/sentiment_service.py`.
+- **Acceptance Criteria**: CPU inference latency $<1.5\text{s}$ per 100 comments; handles Hinglish and regional commentary; generates verified quantitative buzz ratios.
+- **Estimated Effort**: 1.5 Weeks.
 
 ---
 
-### Phase 10: Explainability, Conformal Uncertainty & Risk Engine
-- **Objective**: Integrate TreeSHAP explainability and MAPIE conformal prediction intervals.
+### Phase 10: Explainability, Conformal Uncertainty & Financial Risk Engine
+- **Objective**: Integrate TreeSHAP local/global feature attribution and packaged conformal prediction intervals into production scoring.
 - **Tasks**:
-  1. Initialize in-memory `shap.TreeExplainer` on production CatBoost regressor.
-  2. Implement local explanation generator extracting top positive and negative drivers.
-  3. Fit MAPIE conformal regressor to generate 80% and 95% prediction intervals.
-  4. Implement financial risk calculator (budget recovery probabilities, break-even gap).
-  5. Unit test SHAP mathematical additivity property ($f(x) = \phi_0 + \sum \phi_i$).
-- **Dependencies**: Phase 7, Phase 8.
-- **Technologies**: SHAP, MAPIE, NumPy.
-- **Deliverables**: `backend/app/ml/explainer.py`, `backend/app/ml/uncertainty.py`.
-- **Acceptance Criteria**: SHAP explanation generated in $<120\text{ms}$; 80% conformal coverage verified.
+  1. Initialize high-performance `shap.TreeExplainer` on production CatBoost regressor and classifier artifacts.
+  2. Implement local explanation generator extracting top positive and negative financial drivers per movie (e.g. *"Director equity: +$45M; January low season: -$14M"*).
+  3. Package conformal uncertainty calibrator (`conformal_calibrator_v1.joblib`) to generate instantaneous 80% (Pessimistic / Optimistic) and 95% revenue prediction intervals.
+  4. Implement executive Financial Risk Calculator: budget recovery probability $P(\text{Gross} \ge \text{Budget})$ and commercial profitability probability $P(\text{Gross} \ge 2.5\times \text{Budget})$.
+  5. Unit test SHAP mathematical additivity property ($f(x) = \phi_0 + \sum \phi_i$) and verify $<100\text{ms}$ CPU inference latency.
+- **Dependencies**: Phase 7, Phase 8, Phase 9.
+- **Technologies**: SHAP, Split Conformal Calibrator, NumPy, Pandas.
+- **Deliverables**: `ml/explainability/explainer.py`, `backend/app/ml/risk_engine.py`.
+- **Acceptance Criteria**: Local SHAP explanation generated in $<100\text{ms}$; financial risk probabilities mathematically bounded in $[0, 1]$.
 - **Estimated Effort**: 1.5 Weeks.
 
 ---
