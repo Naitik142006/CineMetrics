@@ -28,7 +28,7 @@
 | **Phase 5** | **Feature Engineering & Store** | **COMPLETE** | 2.0 Weeks | Phase 4 | None | **100%** | `data/snapshots/train_v1.parquet` (7,782 train, 651 val, 605 test, 1,774 unreleased, zero leakage) |
 | **Phase 6** | **Baseline Machine Learning** | **COMPLETE** | 1.0 Week | Phase 5 | None | **100%** | `ml/training/BASELINE_BENCHMARKS.md` (OLS $R^2=0.155$, Ridge $R^2=0.285$, Random Forest $R^2=0.463$) |
 | **Phase 7** | **Advanced Revenue Prediction** | **COMPLETE** | 2.0 Weeks | Phase 6 | None | **100%** | `ml/models/production/catboost_revenue_v1.cbm` (Optuna tuned, Conformal calibrated, LightGBM & baseline benchmarks) |
-| **Phase 8** | **Success Classification** | **IN PROGRESS** | 1.5 Weeks | Phase 7 | Class balance (Blockbuster recall) | 0% | `ml/models/production/catboost_classifier_v1.cbm` |
+| **Phase 8** | **Success Classification** | **COMPLETE** | 1.5 Weeks | Phase 7 | None | **100%** | `ml/models/production/catboost_classifier_v1.cbm` (7-tier economics hierarchy, class weighted, Quadratic Kappa validated) |
 | **Phase 9** | **Multilingual NLP Sentiment** | **Planned** | 2.0 Weeks | Phase 5 | MuRIL CPU inference latency $<1.5\text{s}$ | 0% | `backend/app/services/sentiment_service.py` |
 | **Phase 10** | **Explainability & Uncertainty** | **Planned** | 1.5 Weeks | Phase 7, 8 | TreeSHAP calculation $<120\text{ms}$ | 0% | `backend/app/ml/explainer.py` (SHAP + MAPIE) |
 | **Phase 11** | **Automated Movie Discovery** | **Planned** | 1.5 Weeks | Phase 3, 10 | TMDB API rate throttling | 0% | `backend/jobs/discovery_job.py` (Daily cron loop) |

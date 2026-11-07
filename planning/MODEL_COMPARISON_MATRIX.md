@@ -31,14 +31,14 @@
 
 ## 2. Commercial Success Classification Benchmark Matrix (7-Tier Categories)
 
-| Classifier Candidate | Framework | Class Weighting Strategy | Expected Macro $F_1$ | Expected PR-AUC (Macro) | Expected Quadratic Kappa ($\kappa_w$) | Brier Calibration Score | Architectural Role | Status |
+| Classifier Candidate | Framework | Class Weighting Strategy | Empirical Macro $F_1$ | Empirical Weighted $F_1$ | Empirical Quadratic Kappa ($\kappa_w$) | Multi-Class Brier Score | Architectural Role | Status |
 |---|---|---|:---:|:---:|:---:|:---:|---|:---:|
-| **Stratified Dummy Classifier**| Scikit-Learn | Empirical Prior | $0.14$ | $0.14$ | $0.00$ | $0.38$ | Lower Bound Baseline | Planned |
-| **Multinomial Logistic Reg** | Scikit-Learn | `class_weight='balanced'` | $0.48$ | $0.42$ | $0.45$ | $0.26$ | Linear Baseline | Planned |
-| **Random Forest Classifier** | Scikit-Learn | `class_weight='balanced'` | $0.59$ | $0.54$ | $0.58$ | $0.22$ | Bagging Baseline | Planned |
-| **XGBoost Classifier** | DMLC XGBoost | Sample Weights via Inv-Freq | $0.62$ | $0.58$ | $0.62$ | $0.19$ | Benchmark Candidate | Planned |
-| **LightGBM Classifier** | Microsoft | `class_weight='balanced'` | $0.64$ | $0.61$ | $0.64$ | $0.18$ | Secondary Candidate | Planned |
-| **CatBoost Classifier** | Yandex | **`auto_class_weights='Balanced'`** | **$0.68$** | **$0.66$** | **$0.69$** | **$0.16$** | **PRIMARY SELECTION** | Planned |
+| **Stratified Dummy Classifier**| Scikit-Learn | Empirical Prior | `0.1397` | `0.1646` | `-0.0080` | `1.6784` | Lower Bound Baseline | Evaluated |
+| **Regression-Derived Threshold**| CatBoost + ROI | Rule-Based Gates | `0.1060` | `0.1060` | `0.1053` | `1.6591` | Cross-Check Baseline | Evaluated |
+| **Balanced Random Forest** | Scikit-Learn | `class_weight='balanced'` | `0.1393` | `0.2069` | `0.0924` | `0.8850` | Bagging Baseline | Evaluated |
+| **Multinomial Logistic Reg** | Scikit-Learn | `class_weight='balanced'` | `0.1694` | `0.2258` | `0.1358` | `0.8743` | Linear Baseline | Evaluated |
+| **LightGBM Classifier** | Microsoft | `class_weight='balanced'` | `0.1362` | `0.1896` | `0.1550` | `0.9768` | Secondary Candidate | Evaluated |
+| **CatBoost Classifier** | Yandex | **`auto_class_weights='Balanced'`** | **`0.1759`** | **`0.2582`** | **`0.1695`** | **`0.8521`** | **PRIMARY SELECTION** | 🌟 **VALIDATED CHAMPION** |
 
 ---
 
