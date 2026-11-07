@@ -1,6 +1,6 @@
 # CineMetrics — Machine Learning Baseline Benchmark Report
 
-**Generated:** 2026-11-06 17:52:00 UTC  
+**Generated:** 2026-11-07 17:07:58 UTC  
 **Execution Phase:** Phase 6 (Baseline Machine Learning Models)  
 **Splits Evaluated:** Train: 7,782 | Val: 651 | Test: 605  
 

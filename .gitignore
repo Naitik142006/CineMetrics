@@ -97,6 +97,7 @@ ml/models/
 *.bin
 mlruns/
 wandb/
+catboost_info/
 .neptune/
 lightning_logs/
 checkpoints/

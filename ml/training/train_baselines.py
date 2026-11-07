@@ -290,3 +290,4 @@ if __name__ == "__main__":
     for r in res:
         print(f"Model: {r['model_name']:<25} | Test RMSE: {r['test_rmse']:.4f} | Test R²: {r['test_r2']:.4f} | Test SMAPE: {r['test_smape']:.2f}%")
     print("=" * 70 + "\n")
+
