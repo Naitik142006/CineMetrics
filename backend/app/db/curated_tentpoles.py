@@ -1,4 +1,8 @@
 """
+
+null = None
+true = True
+false = False
 CineMetrics — Curated Theatrical Catalog
 Contains:
 1. CURATED_UPCOMING_TENTPOLES (Future releases >= Nov 2026 through 2028)

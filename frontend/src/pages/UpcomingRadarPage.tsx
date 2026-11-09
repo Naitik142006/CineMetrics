@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Filter, SlidersHorizontal, ArrowUpDown, Calendar, Sparkles, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  Filter,
+  SlidersHorizontal,
+  ArrowUpDown,
+  Calendar,
+  Sparkles,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  RefreshCw,
+  Clock,
+  CheckCircle2,
+} from 'lucide-react';
 import { apiService } from '../services/api';
 import { UpcomingMovieItem } from '../types';
 import { MovieCard } from '../components/MovieCard';
@@ -11,6 +23,8 @@ export const UpcomingRadarPage: React.FC = () => {
   const [movies, setMovies] = useState<UpcomingMovieItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showGuide, setShowGuide] = useState(true);
+  const [syncStatus, setSyncStatus] = useState<any>(null);
+  const [syncing, setSyncing] = useState<boolean>(false);
 
   const initialSegment = searchParams.get('market_segment') || 'All';
   const initialSort = searchParams.get('sort_by') || 'forecast';
@@ -39,6 +53,37 @@ export const UpcomingRadarPage: React.FC = () => {
     }
     fetchUpcoming();
   }, [segment, sortBy]);
+
+  useEffect(() => {
+    async function loadSync() {
+      try {
+        const s = await apiService.getSyncStatus();
+        setSyncStatus(s);
+      } catch (e) {
+        console.warn('Sync status unavailable:', e);
+      }
+    }
+    loadSync();
+  }, []);
+
+  const handleManualSync = async () => {
+    try {
+      setSyncing(true);
+      await apiService.triggerSync(true, 30);
+      const s = await apiService.getSyncStatus();
+      setSyncStatus(s);
+      const updatedMovies = await apiService.getUpcomingMovies({
+        market_segment: segment === 'All' ? undefined : segment,
+        sort_by: sortBy,
+        limit: 150,
+      });
+      setMovies(updatedMovies);
+    } catch (e) {
+      console.error('Sync failed:', e);
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   // Client-side filter for Year and Search query
   const filteredMovies = movies.filter((m) => {
@@ -129,6 +174,30 @@ export const UpcomingRadarPage: React.FC = () => {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Live Synchronization Status Bar */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#111118] border border-[#2A2A3A] rounded-xl px-4 py-3 text-xs">
+        <div className="flex items-center gap-2.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="font-bold text-white">Live Data Pipeline:</span>
+          <span className="text-[#9090AA]">
+            Auto-Sync Active (Every 7 Days via OMDb & YouTube Buzz)
+          </span>
+          {syncStatus?.last_sync_timestamp && (
+            <span className="hidden md:inline text-[#5A5A72] border-l border-[#2A2A3A] pl-2.5">
+              Last synced: {new Date(syncStatus.last_sync_timestamp).toLocaleDateString()}
+            </span>
+          )}
+        </div>
+        <button
+          onClick={handleManualSync}
+          disabled={syncing}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#6C63FF]/20 hover:bg-[#6C63FF]/30 border border-[#6C63FF]/40 text-[#E8B74A] font-bold text-xs transition-all cursor-pointer disabled:opacity-50"
+        >
+          <RefreshCw className={`w-3.5 h-3.5 ${syncing ? 'animate-spin' : ''}`} />
+          <span>{syncing ? 'Syncing OMDb...' : 'Sync Now'}</span>
+        </button>
       </div>
 
       {/* Filter & Control Bar */}

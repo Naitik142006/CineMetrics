@@ -33,6 +33,10 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
 
+    # External APIs
+    OMDB_API_KEY: Optional[str] = "4f4653ff"
+    TMDB_API_KEY: Optional[str] = "3400885bc6d520404e3f7a386fefa0c8"
+
     # Currency Exchange Reference
     DEFAULT_INR_USD_RATE: float = 83.50
 

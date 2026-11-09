@@ -6,6 +6,7 @@ and database hydration lifecycle hooks.
 
 import time
 import logging
+import asyncio
 from contextlib import asynccontextmanager
 from typing import Dict, Any
 
@@ -18,9 +19,11 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from backend.app.core.config import settings
+from backend.app.db.session import SessionLocal
 from backend.app.db.init_db import init_db
 from backend.app.api.v1.api import api_router
 from backend.app.ml.explainer_service import explainer_service
+from backend.app.services.weekly_sync_service import weekly_sync_service
 
 logging.basicConfig(
     level=logging.INFO,
@@ -31,6 +34,26 @@ logger = logging.getLogger("CineMetricsAPI")
 
 # Rate Limiter Configuration
 limiter = Limiter(key_func=get_remote_address, default_limits=[settings.RATE_LIMIT_DEFAULT])
+
+
+async def periodic_weekly_sync_worker():
+    """Background task checking periodically if a 7-day synchronization cycle is due."""
+    logger.info("Weekly synchronization background daemon started.")
+    while True:
+        try:
+            # Check cadence every hour (3600s)
+            await asyncio.sleep(3600)
+            db = SessionLocal()
+            try:
+                # force=False ensures sync runs only if 7 days elapsed
+                weekly_sync_service.run_sync(db, force=False)
+            finally:
+                db.close()
+        except asyncio.CancelledError:
+            logger.info("Weekly synchronization daemon received cancel signal.")
+            break
+        except Exception as e:
+            logger.warning(f"Error in weekly sync background worker: {e}")
 
 
 @asynccontextmanager
@@ -52,9 +75,17 @@ async def lifespan(app: FastAPI):
     _ = explainer_service
     logger.info(f"CineMetrics API successfully initialized in {(time.perf_counter() - t0):.2f}s.")
 
+    # 3. Start Weekly Sync Daemon
+    sync_daemon_task = asyncio.create_task(periodic_weekly_sync_worker())
+
     yield
 
     logger.info("Shutting down CineMetrics API server...")
+    sync_daemon_task.cancel()
+    try:
+        await sync_daemon_task
+    except asyncio.CancelledError:
+        pass
 
 
 app = FastAPI(

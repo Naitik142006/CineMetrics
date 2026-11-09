@@ -116,5 +116,29 @@ export const apiService = {
     const res = await apiClient.get<MarketTrendResponse>('/analytics/market');
     return res.data;
   },
+
+  // Weekly Sync & Data Pipeline
+  async getSyncStatus() {
+    const res = await apiClient.get('/sync/status');
+    return res.data;
+  },
+
+  async triggerSync(force = true, maxTitles = 30) {
+    const res = await apiClient.post(`/sync/trigger?force=${force}&max_titles=${maxTitles}`);
+    return res.data;
+  },
+
+  // Stage 4 Advance Booking Bayesian Recalibration
+  async updateAdvanceBooking(movieId: string, payload: {
+    advance_tickets_sold: number;
+    average_ticket_price_usd?: number;
+    hours_to_release?: number;
+    screen_count?: number;
+    early_rotten_tomatoes_pct?: number;
+    persist_update?: boolean;
+  }) {
+    const res = await apiClient.post(`/movies/${movieId}/advance-booking-update`, payload);
+    return res.data;
+  },
 };
 

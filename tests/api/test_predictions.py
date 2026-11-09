@@ -42,3 +42,25 @@ def test_get_prediction_history(client):
     assert hist_resp.status_code == 200
     assert isinstance(hist_resp.json(), list)
 
+
+def test_stage4_advance_booking_update(client):
+    up_resp = client.get("/api/v1/upcoming?limit=1")
+    movie_id = up_resp.json()[0]["id"]
+
+    payload = {
+        "advance_tickets_sold": 450000,
+        "average_ticket_price_usd": 15.0,
+        "hours_to_release": 24,
+        "screen_count": 4200,
+        "early_rotten_tomatoes_pct": 85.0,
+        "persist_update": True,
+    }
+    resp = client.post(f"/api/v1/movies/{movie_id}/advance-booking-update", json=payload)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["prediction_stage"] == "Stage 4: Advance Booking Velocity (Release Eve)"
+    assert data["readiness_score"] == 98
+    assert "bayesian_posterior" in data
+    assert data["bayesian_posterior"]["uncertainty_reduction_pct"] > 50.0
+    assert data["accuracy_benchmarks"]["expected_model_r2"] >= 0.90
+
