@@ -280,11 +280,20 @@ class PredictionLifecycleService:
         primary_genre = movie.get("primary_genre") or (genres_list[0] if genres_list else "Action")
         genre_count = float(movie.get("genre_count") or len(genres_list) or 2.0)
 
-        # Franchise / Sequel auto-detection
+        # Franchise / Sequel auto-detection & IP multiplier
         is_sequel = float(movie.get("is_sequel_or_franchise", 0.0) or 0.0)
         if is_sequel == 0.0:
             tl = title.lower()
-            if any(term in tl for term in [" 2", " 3", " 4", " 5", "ii", "iii", "iv", "part", "chapter", " vs ", "sequel", "avengers", "avatar", "batman", "spider-man", "dune", "superman", "star wars", "toy story", "shrek", "frozen", "fast ", "kalki", "salaar", "pushpa", "war 2", "animal park", "krrish", "brahmāstra", "stree 3", "coolie", "rolex", "jailer 2", "kaithi 2", "spirit", "ssmb29"]):
+            franchise_keywords = [
+                " 2", " 3", " 4", " 5", "ii", "iii", "iv", "part", "chapter", " vs ", "sequel",
+                "avengers", "avatar", "batman", "spider-man", "beyond the spider-verse", "dune",
+                "superman", "star wars", "toy story", "shrek", "frozen", "fast ", "kalki", "salaar",
+                "pushpa", "war 2", "animal park", "krrish", "brahmāstra", "stree 3", "coolie", "rolex",
+                "jailer 2", "kaithi 2", "spirit", "ssmb29", "doomsday", "secret wars", "toxic",
+                "tiger vs pathaan", "ramayana", "mission: impossible", "jurassic", "conjuring",
+                "bad boys", "gladiator", "deadpool", "moana", "lion king", "tron", "blade", "fantastic four"
+            ]
+            if any(term in tl for term in franchise_keywords):
                 is_sequel = 1.0
 
         # Talent Lookups with name splitting fallback
@@ -320,7 +329,7 @@ class PredictionLifecycleService:
             "lead_actor_prior_avg_real_gross": a_stats["avg_gross"],
             "lead_actor_prior_avg_roi": a_stats["avg_roi"],
             "lead_actor_prior_hit_rate": a_stats["hit_rate"],
-            "studio_prior_movies": 15.0,
+            "studio_prior_movies": 25.0 if is_sequel == 1.0 else 15.0,
             "budget_tier": budget_tier,
             "primary_genre": primary_genre,
             "industry": str(movie.get("industry", "Global")),

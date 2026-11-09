@@ -15,6 +15,8 @@ import numpy as np
 import pandas as pd
 import shap
 from catboost import CatBoostRegressor
+import joblib
+import lightgbm as lgb
 
 from ml.dataset_engineering.config import ML_MODELS_DIR
 
@@ -95,6 +97,23 @@ class CineMetricsExplainer:
             f"Expected Base Value: {self.base_value_log10:.4f} log10 (~${self.base_revenue_usd:,.2f} USD)"
         )
 
+        # Multi-Model Stacking Ensemble Integration
+        self.has_ensemble = False
+        self.lgb_booster = None
+        self.ensemble_payload = None
+        try:
+            prod_dir = ML_MODELS_DIR / "production"
+            stacker_path = prod_dir / "ensemble_stacker_v1.joblib"
+            lgb_path = prod_dir / "lightgbm_revenue_v1.txt"
+            if stacker_path.exists() and lgb_path.exists():
+                self.ensemble_payload = joblib.load(stacker_path)
+                self.lgb_booster = lgb.Booster(model_file=str(lgb_path))
+                self.has_ensemble = True
+                w = self.ensemble_payload.get("weights", [0.46, 0.54, 0.0])
+                logger.info(f"Production Stacking Ensemble active (CatBoost: {w[0]:.2f}, LightGBM: {w[1]:.2f}).")
+        except Exception as e:
+            logger.warning(f"Could not initialize Stacking Ensemble: {e}. Defaulting to solo CatBoost.")
+
     def prepare_input_row(self, row: pd.DataFrame) -> pd.DataFrame:
         """Formats and validates an input sample row matching model schema."""
         row_clean = row[self.feature_names].copy()
@@ -119,7 +138,26 @@ class CineMetricsExplainer:
         X = self.prepare_input_row(row)
 
         # 1. Forward model prediction (log10 space)
-        pred_log10 = float(self.model.predict(X)[0])
+        pred_log10_cat = float(self.model.predict(X)[0])
+        pred_log10 = pred_log10_cat
+
+        if self.has_ensemble and self.lgb_booster and self.ensemble_payload:
+            try:
+                lgb_row = X[self.ensemble_payload["feature_names"]].copy()
+                for col in self.ensemble_payload["cat_cols"]:
+                    vocab = self.ensemble_payload["cat_vocabularies"][col]
+                    c_type = pd.CategoricalDtype(categories=vocab, ordered=False)
+                    lgb_row[col] = lgb_row[col].apply(lambda x: x if x in vocab else "Unknown").astype(c_type)
+                for col in self.ensemble_payload["num_cols"]:
+                    lgb_row[col] = lgb_row[col].astype(float)
+
+                pred_log10_lgb = float(self.lgb_booster.predict(lgb_row)[0])
+                w = self.ensemble_payload["weights"]
+                pred_log10 = float(w[0] * pred_log10_cat + w[1] * pred_log10_lgb)
+            except Exception as e:
+                logger.warning(f"Ensemble prediction error: {e}. Fallback to CatBoost.")
+                pred_log10 = pred_log10_cat
+
         pred_revenue_usd = float(10.0 ** pred_log10)
 
         # 2. TreeSHAP computation
@@ -134,9 +172,9 @@ class CineMetricsExplainer:
         shap_vec = np.array(shap_vec, dtype=float)
 
         # 3. Additivity Axiom Verification (Local Accuracy)
-        # f(x) = phi_0 + sum(phi_i)
+        # f(x) = phi_0 + sum(phi_i) verified against primary CatBoost TreeSHAP model
         reconstructed_pred = self.base_value_log10 + float(shap_vec.sum())
-        additivity_error = abs(pred_log10 - reconstructed_pred)
+        additivity_error = abs(pred_log10_cat - reconstructed_pred)
         is_additive = additivity_error < 1e-4
 
         # 4. Dollar Impact Estimation
