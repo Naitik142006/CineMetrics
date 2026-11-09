@@ -225,11 +225,22 @@ export const MovieDossierPage: React.FC = () => {
               )}
               {prediction && (
                 <span
-                  title="Confidence based on metadata completeness, official trailer views, and confirmed talent"
-                  className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-950/60 border border-amber-500/40 text-amber-400 flex items-center gap-1"
+                  title={`${prediction.prediction_stage} • Readiness: ${confidenceScore}/100`}
+                  className={`text-xs font-mono font-bold px-3 py-1 rounded-full border flex items-center gap-1.5 ${
+                    prediction.is_stage4_active || (prediction.days_to_release !== undefined && prediction.days_to_release <= 7)
+                      ? 'bg-purple-950/80 border-purple-500/60 text-purple-300 shadow-md shadow-purple-500/20'
+                      : prediction.days_to_release !== undefined && prediction.days_to_release <= 30
+                      ? 'bg-blue-950/80 border-blue-500/50 text-blue-300'
+                      : prediction.days_to_release !== undefined && prediction.days_to_release <= 90
+                      ? 'bg-amber-950/80 border-amber-500/50 text-amber-300'
+                      : 'bg-zinc-900 border-zinc-700 text-zinc-300'
+                  }`}
                 >
                   <Sparkles className="w-3 h-3" />
-                  <span>AI Confidence: {confidenceScore}% ({confidenceBadge})</span>
+                  <span>
+                    {prediction.prediction_stage}
+                    {prediction.days_to_release !== undefined ? ` (T-${prediction.days_to_release}d)` : ''}
+                  </span>
                 </span>
               )}
             </div>
@@ -526,6 +537,32 @@ export const MovieDossierPage: React.FC = () => {
             <div className="text-xs font-mono text-[#E8B74A]">
               Standard Error: &plusmn;8.6% (vs &plusmn;22.4% in Stage 3)
             </div>
+          </div>
+
+          {/* Temporal Lifecycle Status Indicator */}
+          <div className="p-3.5 rounded-xl border flex items-start sm:items-center justify-between gap-3 text-xs bg-[#111118]/80 border-[#2A2A3A]">
+            <div className="flex items-center gap-2.5">
+              <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+                prediction?.is_stage4_active || (prediction?.days_to_release !== undefined && prediction.days_to_release <= 7)
+                  ? 'bg-purple-400 animate-pulse'
+                  : 'bg-blue-400'
+              }`} />
+              <div>
+                <span className="font-bold text-white">
+                  {prediction?.is_stage4_active || (prediction?.days_to_release !== undefined && prediction.days_to_release <= 7)
+                    ? '⚡ Stage 4 Multiplex Pre-Sales Active (T-7 to T-0d Window)'
+                    : `Current Evaluation: ${prediction?.prediction_stage || 'Stage 1-3 Prior'}`}
+                </span>
+                <p className="text-[11px] text-[#9090AA] mt-0.5">
+                  {prediction?.is_stage4_active || (prediction?.days_to_release !== undefined && prediction.days_to_release <= 7)
+                    ? 'Multiplex advance booking pre-sales are open. Bayesian updating is actively contracting forecast uncertainty bands by ~75%.'
+                    : `This title is ${prediction?.days_to_release !== undefined ? `${prediction.days_to_release} days` : 'scheduled'} from release. Forecast currently uses the initial trained structural model. Stage 4 pre-sales unlock automatically at T-7 days.`}
+                </p>
+              </div>
+            </div>
+            <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-[#1A1A26] border border-[#2A2A3A] text-zinc-300 shrink-0">
+              {prediction?.days_to_release !== undefined ? `T-${prediction.days_to_release} Days` : 'Long-Range'}
+            </span>
           </div>
 
           {/* Quick Industry Presets */}

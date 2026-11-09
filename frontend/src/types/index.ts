@@ -48,6 +48,8 @@ export interface UpcomingMovieItem {
   youtube_trailer_id?: string;
   poster_path?: string;
   backdrop_path?: string;
+  days_to_release?: number;
+  is_stage4_active?: boolean;
 }
 
 export interface DashboardSection {
@@ -115,6 +117,9 @@ export interface ActivePredictionResponse {
   top_positive_driver?: string;
   top_negative_driver?: string;
   narrative_summary?: string;
+  days_to_release?: number;
+  is_stage4_active?: boolean;
+  stage4_details?: any;
 }
 
 export interface SHAPFactor {

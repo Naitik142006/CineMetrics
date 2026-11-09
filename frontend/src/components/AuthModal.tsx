@@ -17,17 +17,17 @@ export const AuthModal: React.FC = () => {
   const { showAuthModal, closeAuthModal, login } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('executive@cinemetrics.ai');
+  const [email, setEmail] = useState('user@cinemetrics.ai');
   const [password, setPassword] = useState('••••••••••••');
   const [activeTab, setActiveTab] = useState<'demo' | 'credentials'>('demo');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!showAuthModal) return null;
 
-  const handleSignIn = (demoRole?: string) => {
+  const handleSignIn = () => {
     setIsSubmitting(true);
     setTimeout(() => {
-      login(email, demoRole || 'Studio Executive');
+      login(email, 'CineMetrics User');
       setIsSubmitting(false);
       navigate('/');
     }, 400);
@@ -95,51 +95,44 @@ export const AuthModal: React.FC = () => {
           </button>
         </div>
 
-        {/* Tab 1: Instant Demo Access */}
+        {/* Tab 1: Instant Fast Access (Single User) */}
         {activeTab === 'demo' ? (
           <div className="space-y-4">
             <p className="text-xs text-[#9090AA] leading-relaxed">
-              Select a pre-configured role to enter the CineMetrics intelligence suite with pre-loaded portfolio credentials:
+              Enter the CineMetrics intelligence terminal as an authorized user with full platform access:
             </p>
 
-            <div className="space-y-2.5">
-              <button
-                onClick={() => handleSignIn('Studio Chief / Distribution Lead')}
-                disabled={isSubmitting}
-                className="w-full p-3 rounded-xl bg-[#1A1A26] border border-[#2A2A3A] hover:border-[#E8B74A]/70 text-left transition-all hover:bg-[#202030] group cursor-pointer"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-2 h-2 rounded-full bg-[#E8B74A]" />
-                    <span className="text-sm font-semibold text-white group-hover:text-[#E8B74A] transition-colors">
-                      Studio Distribution Chief
-                    </span>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-[#9090AA] group-hover:text-white group-hover:translate-x-1 transition-all" />
+            <div className="p-4 rounded-xl bg-[#1A1A26] border border-[#2A2A3A] space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#6C63FF]/20 border border-[#6C63FF]/40 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-[#E8B74A]" />
                 </div>
-                <p className="text-[11px] text-[#9090AA] mt-1 ml-4.5">
-                  Full portfolio clearance • TreeSHAP access • Stage 4 pre-sales override
-                </p>
-              </button>
+                <div>
+                  <h4 className="text-sm font-bold text-white">CineMetrics User</h4>
+                  <p className="text-[11px] text-[#9090AA]">
+                    Full platform clearance • Stage 1–4 lifecycle forecasts • What-If simulator
+                  </p>
+                </div>
+              </div>
 
               <button
-                onClick={() => handleSignIn('Senior Quantitative Film Analyst')}
+                onClick={() => handleSignIn()}
                 disabled={isSubmitting}
-                className="w-full p-3 rounded-xl bg-[#1A1A26] border border-[#2A2A3A] hover:border-[#6C63FF]/70 text-left transition-all hover:bg-[#202030] group cursor-pointer"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#6C63FF] to-[#E8B74A]/80 hover:from-[#7B73FF] hover:to-[#E8B74A] text-white font-semibold text-sm transition-all shadow-lg shadow-[#6C63FF]/25 flex items-center justify-center gap-2 cursor-pointer group"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-2 h-2 rounded-full bg-[#6C63FF]" />
-                    <span className="text-sm font-semibold text-white group-hover:text-[#6C63FF] transition-colors">
-                      Quantitative Film Analyst
-                    </span>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-[#9090AA] group-hover:text-white group-hover:translate-x-1 transition-all" />
-                </div>
-                <p className="text-[11px] text-[#9090AA] mt-1 ml-4.5">
-                  Conformal risk engine • What-If simulator • Model benchmarking
-                </p>
+                {isSubmitting ? (
+                  <span>Accessing Terminal...</span>
+                ) : (
+                  <>
+                    <span>Enter CineMetrics Terminal</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
               </button>
+            </div>
+
+            <div className="text-[11px] text-[#5A5A72] text-center">
+              Instant access • No signup required • Temporal model enabled
             </div>
           </div>
         ) : (
@@ -153,7 +146,7 @@ export const AuthModal: React.FC = () => {
           >
             <div>
               <label className="block text-xs font-medium text-[#9090AA] mb-1.5">
-                Studio Email Address
+                User Email Address
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5A5A72]" />
@@ -162,7 +155,7 @@ export const AuthModal: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  placeholder="executive@studio.com"
+                  placeholder="user@cinemetrics.ai"
                   className="w-full bg-[#15151E] border border-[#2A2A3A] rounded-xl pl-9 pr-3 py-2 text-sm text-white placeholder-[#5A5A72] focus:outline-none focus:border-[#6C63FF]"
                 />
               </div>

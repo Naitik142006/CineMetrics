@@ -33,6 +33,7 @@ export const UpcomingRadarPage: React.FC = () => {
   const [segment, setSegment] = useState<string>(initialSegment);
   const [sortBy, setSortBy] = useState<string>(initialSort);
   const [yearFilter, setYearFilter] = useState<string>(initialYear);
+  const [stageFilter, setStageFilter] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
@@ -85,13 +86,28 @@ export const UpcomingRadarPage: React.FC = () => {
     }
   };
 
-  // Client-side filter for Year and Search query
+  // Client-side filter for Year, Stage, and Search query
   const filteredMovies = movies.filter((m) => {
     // Year filter
     if (yearFilter !== 'All') {
       const targetYear = parseInt(yearFilter, 10);
       if (m.release_year !== targetYear) {
         return false;
+      }
+    }
+
+    // Lifecycle Stage filter
+    if (stageFilter !== 'All') {
+      const days = m.days_to_release;
+      const isStage4 = m.is_stage4_active || (days !== undefined && days !== null && days > 0 && days <= 7);
+      if (stageFilter === 'Stage 4') {
+        if (!isStage4) return false;
+      } else if (stageFilter === 'Stage 3') {
+        if (days === undefined || days === null || days <= 7 || days > 30) return false;
+      } else if (stageFilter === 'Stage 2') {
+        if (days === undefined || days === null || days <= 30 || days > 90) return false;
+      } else if (stageFilter === 'Stage 1') {
+        if (days !== undefined && days !== null && days <= 90) return false;
       }
     }
 
@@ -244,7 +260,33 @@ export const UpcomingRadarPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Row 2: Year Pills & Quick Title Search */}
+        {/* Row 2: Lifecycle Stage Filter Pills */}
+        <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-[#2A2A3A]/60">
+          <span className="text-xs text-[#9090AA] mr-1 font-mono">Stage:</span>
+          {[
+            { id: 'All', label: 'All Stages' },
+            { id: 'Stage 4', label: '⚡ Stage 4 Pre-Sales (T ≤ 7d)' },
+            { id: 'Stage 3', label: 'Stage 3 Blitz (T ≤ 30d)' },
+            { id: 'Stage 2', label: 'Stage 2 Teaser (T ≤ 90d)' },
+            { id: 'Stage 1', label: 'Stage 1 Prior (T > 90d)' },
+          ].map((st) => (
+            <button
+              key={st.id}
+              onClick={() => setStageFilter(st.id)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                stageFilter === st.id
+                  ? st.id === 'Stage 4'
+                    ? 'bg-purple-600 text-white font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)]'
+                    : 'bg-[#6C63FF] text-white font-bold shadow-[0_0_15px_rgba(108,99,255,0.3)]'
+                  : 'bg-[#15151E] hover:bg-[#1A1A26] text-[#9090AA] hover:text-white border border-[#2A2A3A]'
+              }`}
+            >
+              {st.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Row 3: Year Pills & Quick Title Search */}
         <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-[#2A2A3A]/60">
           {/* Year Buttons */}
           <div className="flex items-center gap-2">

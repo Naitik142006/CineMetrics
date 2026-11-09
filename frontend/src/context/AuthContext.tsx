@@ -35,10 +35,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = (email?: string, name?: string) => {
     const userProfile: UserProfile = {
-      name: name || 'Studio Executive',
-      email: email || 'executive@cinemetrics.ai',
-      role: 'Head of Theatrical Distribution',
-      avatarInitials: 'EX',
+      name: name || 'CineMetrics User',
+      email: email || 'user@cinemetrics.ai',
+      role: 'User',
+      avatarInitials: 'CU',
     };
     setUser(userProfile);
     try {

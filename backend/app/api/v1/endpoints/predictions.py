@@ -80,17 +80,17 @@ def get_movie_prediction(movie_id: str, db: Session = Depends(get_db)):
 
         exp_usd = float(res.get("expected_gross_usd", 40_000_000.0))
         exp_inr = round(exp_usd * 83.50 / 10_000_000.0, 2)
-        pess_usd = round(exp_usd * 0.70, 2)
-        opt_usd = round(exp_usd * 1.45, 2)
+        pess_usd = round(float(res.get("pessimistic_bound_80", exp_usd * 0.70) if isinstance(res.get("pessimistic_bound_80"), (int, float)) else exp_usd * 0.70), 2)
+        opt_usd = round(float(res.get("optimistic_bound_80", exp_usd * 1.45) if isinstance(res.get("optimistic_bound_80"), (int, float)) else exp_usd * 1.45), 2)
 
         return ActivePredictionResponse(
             movie_id=movie.id,
             canonical_id=movie.canonical_id,
             title=movie.primary_title,
-            prediction_stage=res.get("lifecycle_stage", "Stage 1 Announcement"),
+            prediction_stage=res.get("lifecycle_stage", "Stage 1: Announcement Prior"),
             readiness_score=res.get("readiness_score", 65),
             status_badge=res.get("status_badge", "Active Forecast"),
-            model_version="catboost_revenue_v1",
+            model_version=res.get("model_version", "catboost_revenue_v1"),
             last_updated=res.get("prediction_timestamp", datetime.now(timezone.utc).isoformat()),
             currency_display="USD/INR",
             forecast=ConformalForecast(
@@ -128,9 +128,49 @@ def get_movie_prediction(movie_id: str, db: Session = Depends(get_db)):
             top_positive_driver=res.get("top_positive_driver"),
             top_negative_driver=res.get("top_negative_driver"),
             narrative_summary=res.get("narrative_summary"),
+            days_to_release=res.get("days_to_release"),
+            is_stage4_active=res.get("is_stage4_active", False),
+            stage4_details=res.get("stage4_details"),
         )
 
-    # From DB record
+    # From DB record: calculate temporal lifecycle progression
+    days_to_release = None
+    if movie.release_date and str(movie.release_date).strip() not in ("None", "TBD", ""):
+        try:
+            rdt = datetime.fromisoformat(str(movie.release_date).split("T")[0]).date()
+            now_date = datetime.now(timezone.utc).date()
+            days_to_release = (rdt - now_date).days
+        except Exception:
+            pass
+
+    # Temporal stage check
+    stage = prediction.prediction_stage
+    status_badge = prediction.status_badge
+    readiness_score = prediction.readiness_score
+    is_stage4 = False
+
+    if movie.is_released or (days_to_release is not None and days_to_release <= 0):
+        stage = "Concluded Run / Audited Actuals"
+        status_badge = "Audited Actuals"
+        readiness_score = 100
+    elif days_to_release is not None and 0 < days_to_release <= 7:
+        stage = "Stage 4: Advance Pre-Sales Active"
+        status_badge = "Stage 4 (R² ≥ 0.925)"
+        readiness_score = max(readiness_score, 96)
+        is_stage4 = True
+    elif days_to_release is not None and 7 < days_to_release <= 30:
+        stage = "Stage 3: Pre-Release Marketing Blitz"
+        status_badge = "Stage 3 Multi-Modal"
+        readiness_score = min(max(readiness_score, 82), 89)
+    elif days_to_release is not None and 30 < days_to_release <= 90:
+        stage = "Stage 2: Teaser & Trailer Campaign"
+        status_badge = "Stage 2 Preliminary"
+        readiness_score = min(max(readiness_score, 68), 79)
+    else:
+        stage = "Stage 1: Announcement Prior"
+        status_badge = "Stage 1 Prior"
+        readiness_score = min(max(readiness_score, 50), 65)
+
     success_probs = {}
     if prediction.success_probabilities:
         try:
@@ -145,9 +185,9 @@ def get_movie_prediction(movie_id: str, db: Session = Depends(get_db)):
         movie_id=movie.id,
         canonical_id=movie.canonical_id,
         title=movie.primary_title,
-        prediction_stage=prediction.prediction_stage,
-        readiness_score=prediction.readiness_score,
-        status_badge=prediction.status_badge,
+        prediction_stage=stage,
+        readiness_score=readiness_score,
+        status_badge=status_badge,
         model_version=prediction.model_version,
         last_updated=prediction.evaluated_at.isoformat() if prediction.evaluated_at else datetime.now(timezone.utc).isoformat(),
         currency_display="USD/INR",
@@ -186,6 +226,8 @@ def get_movie_prediction(movie_id: str, db: Session = Depends(get_db)):
         top_positive_driver=prediction.top_positive_factor,
         top_negative_driver=prediction.top_negative_factor,
         narrative_summary=prediction.narrative_summary,
+        days_to_release=days_to_release,
+        is_stage4_active=is_stage4,
     )
 
 

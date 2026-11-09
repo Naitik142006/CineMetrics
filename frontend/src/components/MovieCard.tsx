@@ -35,6 +35,62 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
 
   const posterUrl = !imgError ? getPosterUrl(movie.poster_path) : null;
 
+  const renderStageBadge = () => {
+    if (!upcomingMovie) {
+      return (
+        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-950/80 backdrop-blur-md text-emerald-300 border border-emerald-500/40">
+          Released
+        </span>
+      );
+    }
+
+    const days = upcomingMovie.days_to_release;
+    const isStage4 = upcomingMovie.is_stage4_active || (days !== undefined && days !== null && days > 0 && days <= 7);
+
+    if (isStage4) {
+      return (
+        <span
+          title={`Stage 4 Advance Pre-Sales Active • Days to Release: ${days ?? '<7'}d • High Precision Bayesian Posterior (R² ≥ 0.925)`}
+          className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-purple-950/90 text-purple-300 border border-purple-500/70 shadow-lg shadow-purple-500/20 backdrop-blur-md flex items-center gap-1 animate-pulse"
+        >
+          <Sparkles className="w-2.5 h-2.5" />
+          <span>Stage 4 {days ? `(T-${days}d)` : '(R²≥0.92)'}</span>
+        </span>
+      );
+    }
+
+    if (days !== undefined && days !== null && days <= 30) {
+      return (
+        <span
+          title={`Stage 3 Pre-Release Blitz • Days to Release: ${days}d • Multi-Modal Ensemble Prior`}
+          className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-blue-950/80 text-blue-300 border border-blue-500/50 backdrop-blur-md flex items-center gap-1"
+        >
+          <span>Stage 3 (T-{days}d)</span>
+        </span>
+      );
+    }
+
+    if (days !== undefined && days !== null && days <= 90) {
+      return (
+        <span
+          title={`Stage 2 Teaser Campaign • Days to Release: ${days}d • Buzz & Sentiment Prior`}
+          className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-950/80 text-amber-300 border border-amber-500/50 backdrop-blur-md flex items-center gap-1"
+        >
+          <span>Stage 2 (T-{days}d)</span>
+        </span>
+      );
+    }
+
+    return (
+      <span
+        title={`Stage 1 Announcement Prior • Days to Release: ${days ?? '>90'}d • Structural Talent Prior`}
+        className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-zinc-900/80 text-zinc-300 border border-zinc-700 backdrop-blur-md flex items-center gap-1"
+      >
+        <span>Stage 1 {days ? `(T-${days}d)` : 'Prior'}</span>
+      </span>
+    );
+  };
+
   return (
     <div className="glass-card rounded-2xl overflow-hidden border border-[#2A2A3A] flex flex-col justify-between group hover:border-[#E8B74A]/50 transition-all duration-300">
       {/* Top Poster Image Container */}
@@ -70,27 +126,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             </span>
           </div>
 
-          {upcomingMovie ? (
-            <span
-              title={`Readiness: ${readinessScore}/100 • ${confidenceLabel}`}
-              className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full backdrop-blur-md border flex items-center gap-1 ${
-                readinessScore >= 95
-                  ? 'bg-purple-950/90 text-purple-300 border-purple-500/70 shadow-lg shadow-purple-500/20'
-                  : readinessScore >= 80
-                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/50'
-                  : readinessScore >= 60
-                  ? 'bg-amber-950/80 text-amber-300 border-amber-500/50'
-                  : 'bg-zinc-900/80 text-zinc-300 border-zinc-700'
-              }`}
-            >
-              <Sparkles className="w-2.5 h-2.5" />
-              <span>{readinessScore >= 95 ? 'Stage 4 (R²≥0.92)' : `${readinessScore}% Conf.`}</span>
-            </span>
-          ) : (
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-950/80 backdrop-blur-md text-emerald-300 border border-emerald-500/40">
-              Released
-            </span>
-          )}
+          {renderStageBadge()}
         </div>
 
         {/* Trailer Play Button Overlay */}

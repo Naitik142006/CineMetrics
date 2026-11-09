@@ -33,6 +33,8 @@ class UpcomingMovieItem(BaseModel):
     youtube_trailer_id: Optional[str] = None
     poster_path: Optional[str] = None
     backdrop_path: Optional[str] = None
+    days_to_release: Optional[int] = None
+    is_stage4_active: bool = False
 
 
 class DashboardSection(BaseModel):

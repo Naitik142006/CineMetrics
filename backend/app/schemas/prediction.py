@@ -57,6 +57,9 @@ class ActivePredictionResponse(BaseModel):
     top_positive_driver: Optional[str] = None
     top_negative_driver: Optional[str] = None
     narrative_summary: Optional[str] = None
+    days_to_release: Optional[int] = None
+    is_stage4_active: bool = False
+    stage4_details: Optional[Dict[str, Any]] = None
 
 
 class PredictionHistoryItem(BaseModel):
