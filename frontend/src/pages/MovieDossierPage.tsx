@@ -402,3 +402,4 @@ export const MovieDossierPage: React.FC = () => {
     </div>
   );
 };
+

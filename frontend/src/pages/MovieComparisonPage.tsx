@@ -260,3 +260,4 @@ export const MovieComparisonPage: React.FC = () => {
     </div>
   );
 };
+

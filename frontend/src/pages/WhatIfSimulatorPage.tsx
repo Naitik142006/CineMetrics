@@ -388,3 +388,4 @@ export const WhatIfSimulatorPage: React.FC = () => {
     </div>
   );
 };
+

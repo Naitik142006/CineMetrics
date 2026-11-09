@@ -78,3 +78,4 @@ export function getSuccessCategoryBadge(cat: string): { bg: string; text: string
       return { bg: 'bg-zinc-800', text: 'text-zinc-300', border: 'border-zinc-700' };
   }
 }
+

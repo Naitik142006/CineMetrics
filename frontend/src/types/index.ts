@@ -237,3 +237,4 @@ export interface MovieDetail extends MovieSummary {
   active_prediction?: any;
   buzz_metrics?: any;
 }
+

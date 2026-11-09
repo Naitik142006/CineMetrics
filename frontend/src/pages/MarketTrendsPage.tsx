@@ -105,3 +105,4 @@ export const MarketTrendsPage: React.FC = () => {
     </div>
   );
 };
+
