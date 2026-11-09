@@ -204,3 +204,4 @@ export const Cinema3DCanvas: React.FC<Cinema3DCanvasProps> = ({
 
   return <div ref={mountRef} className={`absolute inset-0 pointer-events-none ${className}`} />;
 };
+
