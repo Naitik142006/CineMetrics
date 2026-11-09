@@ -11,15 +11,25 @@ import {
   Activity,
   X,
   Columns3,
+  LogOut,
+  UserCheck,
+  Compass,
 } from 'lucide-react';
 import { useCurrency } from '../context/CurrencyContext';
+import { useAuth } from '../context/AuthContext';
 import { apiService } from '../services/api';
 import { MovieSummary } from '../types';
 
 export const Navbar: React.FC = () => {
   const { currency, toggleCurrency } = useCurrency();
+  const { isAuthenticated, user, logout, openAuthModal } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Hide the application navbar on the standalone 3D landing page
+  if (location.pathname === '/landing') {
+    return null;
+  }
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<MovieSummary[]>([]);
@@ -182,11 +192,46 @@ export const Navbar: React.FC = () => {
             <span className={currency === 'INR' ? 'text-[#E8B74A]' : 'text-[#9090AA]'}>INR</span>
           </button>
 
-          {/* Engine Health Status Indicator */}
-          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#111118] border border-[#2A2A3A] text-[11px] text-[#9090AA]">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-mono text-xs text-white">CatBoost</span>
-          </div>
+          {/* 3D Showcase Link */}
+          <Link
+            to="/landing"
+            title="View 3D Animated Landing Showcase"
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#1A1A26] border border-[#2A2A3A] hover:border-[#6C63FF]/60 text-xs font-mono text-[#9090AA] hover:text-white transition-all ml-1"
+          >
+            <Compass className="w-3.5 h-3.5 text-[#6C63FF]" />
+            <span className="hidden lg:inline">[Showcase]</span>
+          </Link>
+
+          {/* User Session / Sign Out Pill */}
+          {isAuthenticated ? (
+            <div className="flex items-center gap-2 ml-1">
+              <div
+                title={`Signed in as ${user?.name} (${user?.role})`}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#181824] border border-[#6C63FF]/40 text-xs font-mono text-zinc-200"
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                <span className="hidden sm:inline font-semibold">{user?.avatarInitials || 'EX'}</span>
+              </div>
+              <button
+                onClick={() => {
+                  logout();
+                  navigate('/landing');
+                }}
+                title="Sign Out"
+                className="p-1.5 rounded-xl bg-[#1A1A26] border border-[#2A2A3A] hover:border-red-500/50 hover:text-red-400 text-[#9090AA] transition-all cursor-pointer"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={openAuthModal}
+              className="px-3 py-1.5 rounded-xl bg-[#6C63FF] hover:bg-[#574FCC] text-white text-xs font-semibold transition-all ml-1 cursor-pointer flex items-center gap-1"
+            >
+              <UserCheck className="w-3.5 h-3.5" />
+              <span>Sign In</span>
+            </button>
+          )}
         </nav>
       </div>
     </header>
