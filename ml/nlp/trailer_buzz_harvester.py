@@ -258,3 +258,4 @@ class TrailerBuzzHarvester:
             # Unified Index
             "composite_buzz_score": composite_buzz,
         }
+

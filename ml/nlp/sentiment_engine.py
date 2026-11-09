@@ -348,3 +348,4 @@ def calculate_composite_buzz_score(
     # Weighted composite
     composite = (0.50 * final_volume) + (0.35 * polarity_score) + (0.15 * passion_score)
     return round(float(min(max(composite, 0.0), 100.0)), 2)
+

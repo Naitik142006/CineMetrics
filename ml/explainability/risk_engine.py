@@ -184,3 +184,4 @@ class FinancialRiskCalculator:
             "risk_assessment_tier": risk_tier,
             "risk_badge": risk_badge,
         }
+

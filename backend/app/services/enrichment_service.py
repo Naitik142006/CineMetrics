@@ -199,3 +199,4 @@ class EnrichmentService:
             "popularity": float(details.get("popularity", 0.0)),
             "overview": details.get("overview", ""),
         }
+

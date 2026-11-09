@@ -32,7 +32,7 @@
 | **Phase 9** | **Multilingual NLP & Trailer Buzz** | **COMPLETE** | 1.5 Weeks | Phase 5, 8 | None | **100%** | `ml/nlp/sentiment_engine.py`, `trailer_buzz_harvester.py`, `backend/app/services/sentiment_service.py` |
 | **Phase 10** | **Explainability & Risk Engine** | **COMPLETE** | 1.5 Weeks | Phase 7, 8, 9 | None | **100%** | `ml/explainability/explainer.py`, `risk_engine.py`, `backend/app/ml/explainer_service.py` (TreeSHAP 16ms, Additivity 100%, Risk probabilities) |
 | **Phase 11** | **Automated Movie Discovery** | **COMPLETE** | 1.5 Weeks | Phase 3, 10 | None | **100%** | `backend/jobs/discovery_job.py`, `backend/app/services/enrichment_service.py` (Autonomous radar, DoH bypass, zero duplicate inserts) |
-| **Phase 12** | **Continuous Data Updates** | **Planned** | 1.5 Weeks | Phase 11 | Readiness score state triggers | 0% | `backend/jobs/buzz_update_job.py` & `prediction_history` |
+| **Phase 12** | **Continuous Data Updates** | **COMPLETE** | 1.5 Weeks | Phase 11 | None | **100%** | `backend/jobs/buzz_update_job.py`, `backend/app/services/prediction_service.py`, `backend/jobs/PREDICTION_LIFECYCLE_REPORT.md` (Readiness score 0-100, lifecycle stage gating, buzz poller, delta tracking audit log) |
 | **Phase 13** | **FastAPI Application Core** | **Planned** | 2.5 Weeks | Phase 10, 12 | Query response p95 $<60\text{ms}$ | 0% | Complete `backend/app/` API package (23 endpoints) |
 | **Phase 14** | **React Frontend Development** | **Planned** | 3.5 Weeks | Phase 13 | Lighthouse score $\ge 85$, WCAG AA | 0% | Complete `frontend/src/` dark cinematic web app |
 | **Phase 15** | **Advanced Product Features** | **Planned** | 2.0 Weeks | Phase 14 | What-If simulation round-trip $<250\text{ms}$ | 0% | What-If Simulator & Movie Comparison workspaces |
