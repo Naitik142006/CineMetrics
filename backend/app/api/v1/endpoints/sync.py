@@ -65,3 +65,4 @@ def trigger_sync(
     # Synchronous execution
     result = weekly_sync_service.run_sync(db=db, force=force, max_titles=max_titles)
     return result
+

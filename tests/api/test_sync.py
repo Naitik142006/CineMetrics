@@ -23,3 +23,4 @@ def test_sync_trigger(client):
     if data["status"] == "SUCCESS":
         assert "summary" in data
         assert data["summary"]["movies_scanned"] >= 1
+

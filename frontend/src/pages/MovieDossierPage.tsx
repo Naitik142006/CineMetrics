@@ -528,6 +528,44 @@ export const MovieDossierPage: React.FC = () => {
             </div>
           </div>
 
+          {/* Quick Industry Presets */}
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="text-[#9090AA] font-semibold text-[11px] uppercase tracking-wider">Quick Presets:</span>
+            <button
+              onClick={() => {
+                setAdvanceTickets(600000);
+                setTicketPrice(16.50);
+                setHoursToRelease(24);
+                setEarlyRtScore(88);
+              }}
+              className="px-2.5 py-1 rounded-lg bg-[#2A2A3A]/70 hover:bg-[#6C63FF]/30 border border-[#2A2A3A] text-zinc-300 hover:text-white transition-all cursor-pointer text-[11px]"
+            >
+              🌟 Mega-Blockbuster (600k Pre-Sales)
+            </button>
+            <button
+              onClick={() => {
+                setAdvanceTickets(300000);
+                setTicketPrice(14.50);
+                setHoursToRelease(24);
+                setEarlyRtScore(82);
+              }}
+              className="px-2.5 py-1 rounded-lg bg-[#2A2A3A]/70 hover:bg-[#6C63FF]/30 border border-[#2A2A3A] text-zinc-300 hover:text-white transition-all cursor-pointer text-[11px]"
+            >
+              🔥 Strong Tentpole (300k Pre-Sales)
+            </button>
+            <button
+              onClick={() => {
+                setAdvanceTickets(100000);
+                setTicketPrice(13.00);
+                setHoursToRelease(48);
+                setEarlyRtScore(74);
+              }}
+              className="px-2.5 py-1 rounded-lg bg-[#2A2A3A]/70 hover:bg-[#6C63FF]/30 border border-[#2A2A3A] text-zinc-300 hover:text-white transition-all cursor-pointer text-[11px]"
+            >
+              🎯 Mid-Scale Release (100k Pre-Sales)
+            </button>
+          </div>
+
           {/* Interactive Parameters Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
             <div className="bg-[#111118] p-3 rounded-xl border border-[#2A2A3A] space-y-1.5">

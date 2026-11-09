@@ -74,7 +74,9 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             <span
               title={`Readiness: ${readinessScore}/100 • ${confidenceLabel}`}
               className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full backdrop-blur-md border flex items-center gap-1 ${
-                readinessScore >= 80
+                readinessScore >= 95
+                  ? 'bg-purple-950/90 text-purple-300 border-purple-500/70 shadow-lg shadow-purple-500/20'
+                  : readinessScore >= 80
                   ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/50'
                   : readinessScore >= 60
                   ? 'bg-amber-950/80 text-amber-300 border-amber-500/50'
@@ -82,7 +84,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
               }`}
             >
               <Sparkles className="w-2.5 h-2.5" />
-              <span>{readinessScore}% Conf.</span>
+              <span>{readinessScore >= 95 ? 'Stage 4 (R²≥0.92)' : `${readinessScore}% Conf.`}</span>
             </span>
           ) : (
             <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-950/80 backdrop-blur-md text-emerald-300 border border-emerald-500/40">
