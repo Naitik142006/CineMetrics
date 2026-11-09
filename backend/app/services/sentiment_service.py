@@ -56,3 +56,4 @@ class SentimentService:
 
 # Singleton instance for backend FastAPI dependency injection
 sentiment_service = SentimentService()
+
