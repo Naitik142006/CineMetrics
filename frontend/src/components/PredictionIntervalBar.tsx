@@ -1,7 +1,7 @@
 import React from 'react';
 import { useCurrency } from '../context/CurrencyContext';
 import { formatCurrency } from '../utils/format';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, Info } from 'lucide-react';
 
 interface PredictionIntervalBarProps {
   expectedUsd: number;
@@ -32,21 +32,30 @@ export const PredictionIntervalBar: React.FC<PredictionIntervalBarProps> = ({
 
   if (compact) {
     return (
-      <div className="w-full space-y-1">
-        <div className="flex justify-between text-[11px] text-[#9090AA] font-mono">
-          <span>{formatCurrency(pessimisticUsd, currency)}</span>
-          <span className="text-[#E8B74A] font-bold">{formatCurrency(expectedUsd, currency)}</span>
-          <span>{formatCurrency(optimisticUsd, currency)}</span>
+      <div className="w-full space-y-1.5">
+        <div className="flex justify-between items-center text-[11px] font-mono">
+          <span className="text-rose-400/90 font-medium" title="Worst-Case Floor">
+            <span className="text-[9px] uppercase tracking-wider text-[#9090AA] block">Floor</span>
+            {formatCurrency(pessimisticUsd, currency)}
+          </span>
+          <span className="text-[#E8B74A] font-extrabold text-xs text-center" title="Most Likely Target">
+            <span className="text-[9px] uppercase tracking-wider text-[#E8B74A]/80 block">Most Likely</span>
+            {formatCurrency(expectedUsd, currency)}
+          </span>
+          <span className="text-emerald-400/90 font-medium text-right" title="Best-Case Ceiling">
+            <span className="text-[9px] uppercase tracking-wider text-[#9090AA] block">Ceiling</span>
+            {formatCurrency(optimisticUsd, currency)}
+          </span>
         </div>
         <div className="relative h-2 w-full bg-[#15151E] rounded-full overflow-hidden border border-[#2A2A3A]">
           {/* Conformal 80% Span */}
           <div
-            className="absolute top-0 bottom-0 bg-gradient-to-r from-blue-500/40 via-[#6C63FF]/50 to-emerald-500/40 rounded-full"
+            className="absolute top-0 bottom-0 bg-gradient-to-r from-rose-500/30 via-[#E8B74A]/40 to-emerald-500/40 rounded-full"
             style={{ left: `${pessPct}%`, width: `${spanWidth}%` }}
           />
           {/* Expected Pin */}
           <div
-            className="absolute top-0 bottom-0 w-1 bg-[#E8B74A] -ml-0.5 rounded-full shadow-[0_0_8px_#E8B74A]"
+            className="absolute top-0 bottom-0 w-1.5 bg-[#E8B74A] -ml-[3px] rounded-full shadow-[0_0_8px_#E8B74A]"
             style={{ left: `${expPct}%` }}
           />
         </div>
@@ -55,74 +64,87 @@ export const PredictionIntervalBar: React.FC<PredictionIntervalBarProps> = ({
   }
 
   return (
-    <div className="glass-card rounded-2xl p-5 border border-[#2A2A3A]">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-[#6C63FF]" />
-          <h4 className="text-sm font-semibold text-white tracking-wide">
-            Conformal Prediction Uncertainty Interval
-          </h4>
+    <div className="glass-card rounded-2xl p-6 border border-[#2A2A3A] space-y-5">
+      {/* Header with Plain-English Explanation */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#2A2A3A]/60">
+        <div className="flex items-center gap-2.5">
+          <ShieldCheck className="w-5 h-5 text-[#E8B74A]" />
+          <div>
+            <h4 className="text-base font-bold text-white tracking-wide">
+              Predicted Box Office Range (Best vs Worst Case)
+            </h4>
+            <p className="text-xs text-[#9090AA] mt-0.5">
+              8 out of 10 times, the film's final gross will land inside this predicted corridor.
+            </p>
+          </div>
         </div>
-        <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#6C63FF]/15 text-[#6C63FF] border border-[#6C63FF]/30 font-mono font-medium">
-          {Math.round(confidenceLevel * 100)}% Coverage Guarantee
+        <span className="text-xs px-3 py-1 rounded-full bg-emerald-950/60 text-emerald-400 border border-emerald-500/40 font-semibold font-mono">
+          {Math.round(confidenceLevel * 100)}% Statistical Likelihood
         </span>
       </div>
 
-      {/* Numerical Pillars */}
-      <div className="grid grid-cols-3 gap-3 mb-6 text-center">
-        <div className="bg-[#15151E] rounded-xl p-3 border border-[#2A2A3A]/60">
-          <p className="text-[11px] text-[#9090AA] mb-0.5 uppercase tracking-wider">
-            Pessimistic Bound (80%)
-          </p>
-          <p className="text-base sm:text-lg font-bold font-mono text-zinc-300">
+      {/* 3 Pillars: Conservative Floor, Most Likely Target, Breakout Potential */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-center">
+        {/* Conservative Floor */}
+        <div className="bg-[#15151E] rounded-xl p-3.5 border border-rose-500/30 relative">
+          <div className="flex items-center justify-center gap-1 text-[11px] text-rose-400 mb-1 font-semibold uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-rose-400" />
+            <span>Worst-Case Floor</span>
+          </div>
+          <p className="text-lg sm:text-xl font-bold font-mono text-zinc-200">
             {formatCurrency(pessimisticUsd, currency)}
           </p>
+          <p className="text-[10px] text-[#9090AA] mt-1">If reviews or word-of-mouth are cold</p>
         </div>
 
-        <div className="bg-[#1A1A26] rounded-xl p-3 border border-[#E8B74A]/40 relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#E8B74A] to-transparent" />
-          <p className="text-[11px] text-[#E8B74A] mb-0.5 uppercase tracking-wider font-semibold">
-            Expected Revenue
-          </p>
-          <p className="text-lg sm:text-xl font-extrabold font-mono text-[#E8B74A]">
+        {/* Most Likely Target */}
+        <div className="bg-[#1A1A26] rounded-xl p-3.5 border border-[#E8B74A]/50 relative overflow-hidden shadow-[0_0_15px_rgba(232,183,74,0.1)]">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#E8B74A] to-transparent" />
+          <div className="flex items-center justify-center gap-1 text-[11px] text-[#E8B74A] mb-1 font-bold uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-[#E8B74A] animate-pulse" />
+            <span>Most Likely Gross</span>
+          </div>
+          <p className="text-xl sm:text-2xl font-extrabold font-mono text-[#E8B74A]">
             {formatCurrency(expectedUsd, currency)}
           </p>
+          <p className="text-[10px] text-[#E8B74A]/80 mt-1 font-medium">Central AI forecast based on all signals</p>
         </div>
 
-        <div className="bg-[#15151E] rounded-xl p-3 border border-[#2A2A3A]/60">
-          <p className="text-[11px] text-[#9090AA] mb-0.5 uppercase tracking-wider">
-            Optimistic Bound (80%)
-          </p>
-          <p className="text-base sm:text-lg font-bold font-mono text-emerald-400">
+        {/* Breakout Ceiling */}
+        <div className="bg-[#15151E] rounded-xl p-3.5 border border-emerald-500/30 relative">
+          <div className="flex items-center justify-center gap-1 text-[11px] text-emerald-400 mb-1 font-semibold uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            <span>Best-Case Potential</span>
+          </div>
+          <p className="text-lg sm:text-xl font-bold font-mono text-emerald-400">
             {formatCurrency(optimisticUsd, currency)}
           </p>
+          <p className="text-[10px] text-[#9090AA] mt-1">If viral audience hype explodes</p>
         </div>
       </div>
 
       {/* Visual Interval Bar */}
-      <div className="relative pt-6 pb-2">
-        {/* Track */}
-        <div className="h-3 w-full bg-[#15151E] rounded-full overflow-hidden border border-[#2A2A3A]">
+      <div className="pt-2">
+        <div className="relative h-3.5 w-full bg-[#15151E] rounded-full overflow-hidden border border-[#2A2A3A]">
           {/* Conformal Span */}
           <div
-            className="absolute top-6 bottom-2 bg-gradient-to-r from-blue-500/40 via-[#6C63FF]/60 to-emerald-500/50 rounded-full border-t border-b border-[#6C63FF]/50"
+            className="absolute top-0 bottom-0 bg-gradient-to-r from-rose-500/40 via-[#E8B74A]/50 to-emerald-500/50 rounded-full"
             style={{ left: `${pessPct}%`, width: `${spanWidth}%` }}
           />
           {/* Expected Pin */}
           <div
-            className="absolute top-5 bottom-1 w-1.5 bg-[#E8B74A] -ml-[3px] rounded-full shadow-[0_0_12px_#E8B74A]"
+            className="absolute top-0 bottom-0 w-2 bg-[#E8B74A] -ml-1 rounded-full shadow-[0_0_10px_#E8B74A]"
             style={{ left: `${expPct}%` }}
           />
         </div>
 
         {/* Labels below */}
-        <div className="flex justify-between items-center text-[10px] text-[#5A5A72] mt-2 font-mono">
-          <span>Worst-Case Floor</span>
-          <span>Point Forecast (CatBoost)</span>
-          <span>Bull-Case Ceiling</span>
+        <div className="flex justify-between items-center text-[11px] text-[#9090AA] mt-2 font-mono">
+          <span className="text-rose-400">🔴 Floor: {formatCurrency(pessimisticUsd, currency)}</span>
+          <span className="text-[#E8B74A] font-bold">🟡 Target: {formatCurrency(expectedUsd, currency)}</span>
+          <span className="text-emerald-400">🟢 Ceiling: {formatCurrency(optimisticUsd, currency)}</span>
         </div>
       </div>
     </div>
   );
 };
-

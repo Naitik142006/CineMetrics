@@ -28,7 +28,7 @@ def _build_upcoming_item(m: Movie, p: Optional[Prediction], b: Optional[DigitalB
         genres = [str(m.genres)] if m.genres else []
 
     exp_usd = p.expected_gross_usd if p else 30_000_000.0
-    exp_inr = p.expected_gross_inr_crores if p else round(exp_usd * 83.5 / 100_000_000.0, 2)
+    exp_inr = p.expected_gross_inr_crores if p else round(exp_usd * 83.50 / 10_000_000.0, 2)
     pess_usd = p.pessimistic_bound_80_usd if p else exp_usd * 0.70
     opt_usd = p.optimistic_bound_80_usd if p else exp_usd * 1.45
 
@@ -65,7 +65,7 @@ def get_upcoming_movies(
     market_segment: Optional[str] = Query(None, description="Filter by industry (Bollywood, Tollywood, Hollywood, etc.)"),
     min_readiness: Optional[int] = Query(0, ge=0, le=100, description="Minimum Prediction Readiness Score"),
     sort_by: str = Query("date", pattern="^(date|forecast|buzz|readiness)$"),
-    limit: int = Query(50, ge=1, le=100),
+    limit: int = Query(120, ge=1, le=300),
     db: Session = Depends(get_db),
 ):
     """

@@ -8,3 +8,4 @@ Write-Host "Both services launched in separate windows!" -ForegroundColor Green
 Write-Host "- Frontend Web App: http://localhost:5173" -ForegroundColor White
 Write-Host "- Backend API Docs: http://127.0.0.1:8000/docs" -ForegroundColor White
 Write-Host "========================================================" -ForegroundColor Cyan
+

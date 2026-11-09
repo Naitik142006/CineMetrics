@@ -260,7 +260,7 @@ def get_similar_movies(movie_id: str, limit: int = Query(6, ge=1, le=20), db: Se
     output = []
     for score, cand, c_genres in top_matches:
         gross = cand.box_office_gross_usd or 0.0
-        inr_cr = round(gross * 83.50 / 100_000_000.0, 2)
+        inr_cr = round(gross * 83.50 / 10_000_000.0, 2)
         output.append(
             SimilarMovie(
                 id=cand.id,

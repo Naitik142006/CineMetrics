@@ -10,6 +10,8 @@ import {
   Cpu,
   Layers,
   Zap,
+  Film,
+  Award,
 } from 'lucide-react';
 import { apiService } from '../services/api';
 import { UpcomingDashboardResponse } from '../types';
@@ -74,16 +76,15 @@ export const DashboardPage: React.FC = () => {
         <div className="relative z-10 max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8B74A]/15 border border-[#E8B74A]/30 text-xs font-mono font-bold text-[#E8B74A]">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Autonomous Intelligence Radar Active</span>
+            <span>2026–2027 Upcoming Theatrical Intelligence</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-            AI-Powered Movie Revenue Forecasting & Downside Risk Engine
+            Predicting Box Office Hits & Blockbusters Before Release
           </h1>
 
           <p className="text-sm sm:text-base text-[#9090AA] leading-relaxed max-w-2xl">
-            Strict scientific integrity. CatBoost regression with native ordered target statistics,
-            split conformal uncertainty guarantees, and exact additive TreeSHAP explainability.
+            CineMetrics uses machine learning to forecast worldwide box office earnings for upcoming 2026–2027 movies. Discover projected revenues, best-case vs worst-case outcomes, and what drives success for every film—from Hollywood tentpoles to Pan-Indian spectacles.
           </p>
 
           <div className="flex flex-wrap gap-3 pt-2">
@@ -91,7 +92,7 @@ export const DashboardPage: React.FC = () => {
               to="/upcoming"
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#E8B74A] to-[#C49A32] text-black font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_0_20px_rgba(232,183,74,0.3)]"
             >
-              <span>Explore Upcoming Radar</span>
+              <span>Explore 2026–2027 Radar</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
 
@@ -99,7 +100,7 @@ export const DashboardPage: React.FC = () => {
               to="/simulate"
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1A1A26] hover:bg-[#2A2A3A] border border-[#2A2A3A] text-white font-semibold text-sm transition-all"
             >
-              <span>Launch What-If Simulator</span>
+              <span>Launch Studio Simulator</span>
             </Link>
           </div>
         </div>
@@ -109,24 +110,24 @@ export const DashboardPage: React.FC = () => {
           <div className="flex items-center gap-3">
             <Database className="w-5 h-5 text-[#6C63FF]" />
             <div>
-              <p className="text-[11px] text-[#9090AA] uppercase font-mono">Catalog Records</p>
-              <p className="text-lg font-bold text-white font-mono">10,812 Movies</p>
+              <p className="text-[11px] text-[#9090AA] uppercase font-mono">Training Benchmark</p>
+              <p className="text-lg font-bold text-white font-mono">10,800+ Past Films</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <Cpu className="w-5 h-5 text-[#E8B74A]" />
+            <Film className="w-5 h-5 text-[#E8B74A]" />
             <div>
-              <p className="text-[11px] text-[#9090AA] uppercase font-mono">Model Engine</p>
-              <p className="text-lg font-bold text-[#E8B74A] font-mono">CatBoost + SHAP</p>
+              <p className="text-[11px] text-[#9090AA] uppercase font-mono">Upcoming Tracked</p>
+              <p className="text-lg font-bold text-[#E8B74A] font-mono">100+ 2026–2027 Titles</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <Layers className="w-5 h-5 text-emerald-400" />
             <div>
-              <p className="text-[11px] text-[#9090AA] uppercase font-mono">Coverage Guarantee</p>
-              <p className="text-lg font-bold text-emerald-400 font-mono">80% & 95% Conformal</p>
+              <p className="text-[11px] text-[#9090AA] uppercase font-mono">Uncertainty Coverage</p>
+              <p className="text-lg font-bold text-emerald-400 font-mono">80% Range Guarantee</p>
             </div>
           </div>
 
@@ -140,6 +141,47 @@ export const DashboardPage: React.FC = () => {
         </div>
       </section>
 
+      {/* 3 Simple Steps Explainer Cards for General Users */}
+      <section className="glass-card rounded-2xl p-6 border border-[#2A2A3A] space-y-4">
+        <div className="flex items-center gap-2">
+          <Award className="w-5 h-5 text-[#E8B74A]" />
+          <h2 className="text-base font-bold text-white tracking-wide">
+            How CineMetrics Predicts Box Office in 3 Simple Steps
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-[#15151E] rounded-xl p-4 border border-[#2A2A3A]/60 space-y-2">
+            <div className="w-8 h-8 rounded-lg bg-[#E8B74A]/20 text-[#E8B74A] flex items-center justify-center font-bold text-sm">
+              1
+            </div>
+            <h3 className="text-sm font-bold text-white">Multi-Signal Intelligence</h3>
+            <p className="text-xs text-[#9090AA] leading-relaxed">
+              We ingest confirmed production budgets, lead actor draw, director career hit rates, and real-time YouTube trailer views, likes, and comment sentiment.
+            </p>
+          </div>
+
+          <div className="bg-[#15151E] rounded-xl p-4 border border-[#2A2A3A]/60 space-y-2">
+            <div className="w-8 h-8 rounded-lg bg-[#6C63FF]/20 text-[#6C63FF] flex items-center justify-center font-bold text-sm">
+              2
+            </div>
+            <h3 className="text-sm font-bold text-white">Realistic Box Office Range</h3>
+            <p className="text-xs text-[#9090AA] leading-relaxed">
+              Instead of a single misleading guess, the AI calculates a <strong className="text-zinc-200">Worst-Case Floor</strong>, <strong className="text-[#E8B74A]">Most Likely Gross</strong>, and <strong className="text-emerald-400">Best-Case Breakout</strong>.
+            </p>
+          </div>
+
+          <div className="bg-[#15151E] rounded-xl p-4 border border-[#2A2A3A]/60 space-y-2">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+              3
+            </div>
+            <h3 className="text-sm font-bold text-white">Explainable Drivers</h3>
+            <p className="text-xs text-[#9090AA] leading-relaxed">
+              We show exactly what drives the prediction: which stars add value (+), how trailer buzz impacts opening momentum, and whether high production costs pose a risk (-).
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Section 1: Projected Global Champions */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
@@ -147,10 +189,10 @@ export const DashboardPage: React.FC = () => {
             <TrendingUp className="w-5 h-5 text-[#E8B74A]" />
             <div>
               <h2 className="text-xl font-bold text-white tracking-wide">
-                Projected Box-Office Champions
+                Projected 2026–2027 Box-Office Champions
               </h2>
               <p className="text-xs text-[#9090AA]">
-                Upcoming releases modeled with the highest expected worldwide theatrical revenues
+                Upcoming marquee releases projected to command the highest worldwide theatrical revenues
               </p>
             </div>
           </div>
@@ -178,10 +220,10 @@ export const DashboardPage: React.FC = () => {
               <Flame className="w-5 h-5 text-amber-500" />
               <div>
                 <h2 className="text-xl font-bold text-white tracking-wide">
-                  Digital Viral Velocity Leaders
+                  Most Hyped Releases (Highest Trailer Buzz)
                 </h2>
                 <p className="text-xs text-[#9090AA]">
-                  Titles demonstrating maximum trailer velocity, like ratios, and multilingual comment polarity
+                  Titles demonstrating maximum trailer velocity, like ratios, and positive audience buzz
                 </p>
               </div>
             </div>
@@ -202,7 +244,71 @@ export const DashboardPage: React.FC = () => {
         </section>
       )}
 
-      {/* Section 3: High-Risk Capital Expenditure Watch */}
+      {/* Section 3: South Indian Powerhouses */}
+      {southTitans.length > 0 && (
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="w-5 h-5 text-[#E8B74A]" />
+              <div>
+                <h2 className="text-xl font-bold text-white tracking-wide">
+                  South Indian Pan-India Titans
+                </h2>
+                <p className="text-xs text-[#9090AA]">
+                  High-voltage releases from Tollywood (Telugu), Kollywood (Tamil), Sandalwood (Kannada), and Mollywood (Malayalam)
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/upcoming?market_segment=Tollywood"
+              className="text-xs text-[#6C63FF] hover:text-[#8B84FF] font-semibold flex items-center gap-1"
+            >
+              <span>Explore South Radar</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {southTitans.slice(0, 6).map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Section 4: Bollywood Spotlight */}
+      {bollywood.length > 0 && (
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <Film className="w-5 h-5 text-emerald-400" />
+              <div>
+                <h2 className="text-xl font-bold text-white tracking-wide">
+                  Hindi Cinema Spotlight (Bollywood 2026–2027)
+                </h2>
+                <p className="text-xs text-[#9090AA]">
+                  Upcoming marquee tentpoles and major franchise entries from Mumbai
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/upcoming?market_segment=Bollywood"
+              className="text-xs text-[#6C63FF] hover:text-[#8B84FF] font-semibold flex items-center gap-1"
+            >
+              <span>Explore Bollywood Radar</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {bollywood.slice(0, 6).map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Section 5: High Risk Downside Watch */}
       {highRisk.length > 0 && (
         <section className="space-y-4">
           <div className="flex items-center justify-between">
@@ -210,60 +316,22 @@ export const DashboardPage: React.FC = () => {
               <ShieldAlert className="w-5 h-5 text-rose-500" />
               <div>
                 <h2 className="text-xl font-bold text-white tracking-wide">
-                  High Capital Downside Watch
+                  High-Budget Downside Watch
                 </h2>
                 <p className="text-xs text-[#9090AA]">
-                  Tentpole budgets requiring high break-even multiples to avoid catastrophic studio loss
+                  Mega-budget investments requiring substantial box office multiples to recover production costs
                 </p>
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {highRisk.slice(0, 3).map((movie) => (
+            {highRisk.slice(0, 6).map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
         </section>
       )}
-
-      {/* Section 4: Indian Cinema Highlights (South Titans & Bollywood) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* South Indian Powerhouses */}
-        {southTitans.length > 0 && (
-          <section className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-white">South Indian Theatrical Titans</h2>
-              <Link to="/upcoming?market_segment=Tollywood" className="text-xs text-[#6C63FF] hover:underline">
-                Explore South
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {southTitans.slice(0, 4).map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Bollywood Spotlight */}
-        {bollywood.length > 0 && (
-          <section className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-white">Bollywood Horizon</h2>
-              <Link to="/upcoming?market_segment=Bollywood" className="text-xs text-[#6C63FF] hover:underline">
-                Explore Hindi
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {bollywood.slice(0, 4).map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
     </div>
   );
 };
-

@@ -8,11 +8,11 @@ export function formatCurrency(amountUsd: number, mode: CurrencyMode = 'USD'): s
   }
 
   if (mode === 'INR') {
-    const inrCrores = (amountUsd * DEFAULT_INR_RATE) / 100_000_000.0;
-    if (inrCrores >= 1000) {
-      return `₹${(inrCrores / 1000).toFixed(2)}K Cr`;
+    const inrCrores = (amountUsd * DEFAULT_INR_RATE) / 10_000_000.0;
+    if (inrCrores >= 10_000) {
+      return `₹${(inrCrores / 1000).toFixed(1)}K Cr`;
     }
-    return `₹${inrCrores.toLocaleString('en-IN', { maximumFractionDigits: 1 })} Cr`;
+    return `₹${Math.round(inrCrores).toLocaleString('en-IN')} Cr`;
   }
 
   // USD Formatting

@@ -13,6 +13,8 @@ import {
   HelpCircle,
   History,
   Sparkles,
+  ShieldCheck,
+  Award,
 } from 'lucide-react';
 import { apiService } from '../services/api';
 import {
@@ -118,8 +120,16 @@ export const MovieDossierPage: React.FC = () => {
     prediction?.financial_risk.risk_assessment_tier || 'Moderate Risk'
   );
 
+  const confidenceScore = prediction?.readiness_score || 75;
+  const confidenceBadge =
+    confidenceScore >= 80
+      ? 'High Confidence (80%+)'
+      : confidenceScore >= 60
+      ? 'Moderate Confidence'
+      : 'Early Estimate';
+
   return (
-    <div className="space-y-10 pb-20">
+    <div className="space-y-8 pb-20">
       {/* Back button */}
       <Link
         to="/upcoming"
@@ -139,6 +149,9 @@ export const MovieDossierPage: React.FC = () => {
               <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#1A1A26] border border-[#2A2A3A] text-zinc-300">
                 {movie.industry}
               </span>
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#E8B74A]/15 text-[#E8B74A] border border-[#E8B74A]/30">
+                {movie.release_year || '2026'} Release
+              </span>
               {movie.is_released ? (
                 <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-400">
                   Released Film
@@ -149,8 +162,12 @@ export const MovieDossierPage: React.FC = () => {
                 </span>
               )}
               {prediction && (
-                <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-950/60 border border-amber-500/40 text-amber-400">
-                  PRS {prediction.readiness_score}/100 • {prediction.prediction_stage}
+                <span
+                  title="Confidence based on metadata completeness, official trailer views, and confirmed talent"
+                  className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-950/60 border border-amber-500/40 text-amber-400 flex items-center gap-1"
+                >
+                  <Sparkles className="w-3 h-3" />
+                  <span>AI Confidence: {confidenceScore}% ({confidenceBadge})</span>
                 </span>
               )}
             </div>
@@ -207,14 +224,65 @@ export const MovieDossierPage: React.FC = () => {
                 className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-red-600/20 hover:bg-red-600/30 border border-red-500/40 text-red-400 text-xs font-semibold transition-colors"
               >
                 <Play className="w-4 h-4 fill-current" />
-                <span>Official Trailer</span>
+                <span>Watch Trailer</span>
               </a>
             )}
           </div>
         </div>
       </div>
 
-      {/* Conformal Prediction & Risk Pillars */}
+      {/* Prominent Executive AI Summary Box */}
+      {prediction && (
+        <div className="glass-card rounded-2xl p-5 sm:p-6 border border-[#E8B74A]/40 bg-gradient-to-r from-[#1A1A26] to-[#15151E] space-y-3">
+          <div className="flex items-center gap-2 text-sm font-bold text-[#E8B74A]">
+            <Award className="w-4 h-4 text-[#E8B74A]" />
+            <span>AI Executive Verdict Summary</span>
+          </div>
+          <p className="text-sm text-zinc-200 leading-relaxed">
+            {prediction.forecast.expected_gross_usd > movie.budget_usd * 2.5 ? (
+              <>
+                <strong className="text-white">{movie.primary_title}</strong> is projected to be a{' '}
+                <span className="text-[#E8B74A] font-bold">highly profitable commercial winner</span>,
+                with an estimated worldwide box office of{' '}
+                <strong className="text-white">
+                  {formatCurrency(prediction.forecast.expected_gross_usd, currency)}
+                </strong>
+                . Against an estimated budget of {formatCurrency(movie.budget_usd, currency)}, it is
+                positioned to comfortably generate healthy theatrical profits.
+              </>
+            ) : (
+              <>
+                <strong className="text-white">{movie.primary_title}</strong> is projected to reach{' '}
+                <strong className="text-white">
+                  {formatCurrency(prediction.forecast.expected_gross_usd, currency)}
+                </strong>{' '}
+                worldwide against a budget of {formatCurrency(movie.budget_usd, currency)}. Meeting its
+                break-even hurdle will depend heavily on opening weekend critical reviews and positive
+                social sentiment.
+              </>
+            )}
+          </p>
+          <div className="flex flex-wrap items-center gap-4 text-xs text-[#9090AA] pt-1">
+            <span>
+              🎯 <strong className="text-zinc-300">Target Break-Even:</strong> {formatCurrency(movie.budget_usd * 2.2, currency)}
+            </span>
+            <span>
+              📈 <strong className="text-zinc-300">Break-Even Probability:</strong>{' '}
+              <span className="text-emerald-400 font-bold">
+                {(prediction.financial_risk.prob_break_even * 100).toFixed(0)}%
+              </span>
+            </span>
+            <span>
+              🌟 <strong className="text-zinc-300">Predicted Verdict:</strong>{' '}
+              <span className="text-[#E8B74A] font-bold">
+                {prediction.success_classification.predicted_category}
+              </span>
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Conformal Prediction Range & Financial Risk Pillars */}
       {prediction && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Conformal Forecast (2 columns) */}
@@ -226,14 +294,19 @@ export const MovieDossierPage: React.FC = () => {
               confidenceLevel={0.8}
             />
 
-            {/* Success Tier Probabilities */}
+            {/* Likely Box Office Verdict Probabilities */}
             <div className="glass-card rounded-2xl p-5 border border-[#2A2A3A]">
               <div className="flex items-center justify-between mb-4">
-                <h4 className="text-sm font-semibold text-white tracking-wide">
-                  7-Tier Commercial Success Probabilities
-                </h4>
+                <div>
+                  <h4 className="text-sm font-semibold text-white tracking-wide">
+                    Likely Box Office Verdict (Outcome Probabilities)
+                  </h4>
+                  <p className="text-[11px] text-[#9090AA] mt-0.5">
+                    How likely this film will achieve each commercial classification tier.
+                  </p>
+                </div>
                 <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#E8B74A]/15 text-[#E8B74A] border border-[#E8B74A]/30 font-semibold">
-                  Predicted: {prediction.success_classification.predicted_category}
+                  Most Likely: {prediction.success_classification.predicted_category}
                 </span>
               </div>
 
@@ -258,17 +331,17 @@ export const MovieDossierPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Financial Downside Risk Profile (1 column) */}
+          {/* Financial Safety & Profitability Odds (1 column) */}
           <div className="glass-card rounded-2xl p-6 border border-[#2A2A3A] space-y-5">
             <div className="flex items-center gap-2">
               <ShieldAlert className="w-5 h-5 text-amber-400" />
               <h3 className="text-sm font-bold text-white tracking-wide">
-                Financial Downside Risk
+                Financial Safety & Profit Odds
               </h3>
             </div>
 
             <div className={`rounded-xl p-4 border ${riskClass.bg} ${riskClass.border} space-y-1`}>
-              <p className="text-[11px] text-[#9090AA] uppercase font-mono">Risk Rating</p>
+              <p className="text-[11px] text-[#9090AA] uppercase font-mono">Investment Safety Rating</p>
               <p className={`text-base font-bold ${riskClass.text}`}>
                 {prediction.financial_risk.risk_assessment_tier}
               </p>
@@ -279,21 +352,21 @@ export const MovieDossierPage: React.FC = () => {
 
             <div className="space-y-3 pt-2">
               <div className="flex justify-between items-center text-xs">
-                <span className="text-[#9090AA]">P(Break-Even Recovery):</span>
+                <span className="text-[#9090AA]">Chance to Break Even:</span>
                 <span className="font-mono font-bold text-emerald-400">
                   {(prediction.financial_risk.prob_break_even * 100).toFixed(0)}%
                 </span>
               </div>
 
               <div className="flex justify-between items-center text-xs">
-                <span className="text-[#9090AA]">P(Commercial Profit &gt;2.5x):</span>
+                <span className="text-[#9090AA]">Chance to Double Budget (&gt;2.5x):</span>
                 <span className="font-mono font-bold text-[#E8B74A]">
                   {(prediction.financial_risk.prob_commercial_profit * 100).toFixed(0)}%
                 </span>
               </div>
 
               <div className="flex justify-between items-center text-xs">
-                <span className="text-[#9090AA]">P(Catastrophic Disaster):</span>
+                <span className="text-[#9090AA]">Risk of Severe Box Office Loss:</span>
                 <span className="font-mono font-bold text-rose-400">
                   {(prediction.financial_risk.prob_catastrophic_disaster * 100).toFixed(0)}%
                 </span>
@@ -305,7 +378,7 @@ export const MovieDossierPage: React.FC = () => {
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#6C63FF]/20 hover:bg-[#6C63FF]/30 border border-[#6C63FF]/40 text-xs font-bold text-white transition-all cursor-pointer block text-center"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#E8B74A]" />
-              <span>Simulate Counterfactuals</span>
+              <span>🧪 Run What-If Budget & Cast Simulator</span>
             </Link>
           </div>
         </div>
@@ -324,13 +397,13 @@ export const MovieDossierPage: React.FC = () => {
         />
       )}
 
-      {/* Structurally Similar Movies */}
+      {/* Trade Comparables: Similar Historical Films */}
       {similarMovies.length > 0 && (
-        <section className="space-y-4">
+        <div className="space-y-4">
           <div className="flex items-center gap-2">
             <Film className="w-5 h-5 text-[#E8B74A]" />
-            <h3 className="text-lg font-bold text-white">
-              Structurally Comparable Historical Releases
+            <h3 className="text-base font-bold text-white tracking-wide">
+              Similar Historical Movies (Box Office Benchmarks)
             </h3>
           </div>
 
@@ -338,68 +411,73 @@ export const MovieDossierPage: React.FC = () => {
             {similarMovies.map((sim) => (
               <div
                 key={sim.id}
-                className="bg-[#15151E] rounded-xl p-4 border border-[#2A2A3A] hover:border-[#6C63FF]/50 transition-all flex flex-col justify-between"
+                className="bg-[#15151E] rounded-xl p-4 border border-[#2A2A3A] space-y-2 hover:border-[#6C63FF]/50 transition-colors"
               >
-                <div>
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-[#1A1A26] text-[#9090AA]">
-                      {sim.release_year} • {sim.industry}
-                    </span>
-                    <span className="text-[10px] text-[#6C63FF] font-mono font-bold">
-                      {Math.round(sim.similarity_score * 100)}% Match
-                    </span>
-                  </div>
-                  <h4 className="font-bold text-sm text-white line-clamp-1">{sim.primary_title}</h4>
-                  <p className="text-xs text-[#9090AA] mt-0.5 truncate">{sim.director}</p>
+                <div className="flex items-center justify-between text-xs text-[#9090AA]">
+                  <span>{sim.release_year}</span>
+                  <span className="font-mono text-emerald-400">
+                    {(sim.similarity_score * 100).toFixed(0)}% match
+                  </span>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-[#2A2A3A]/60 flex justify-between items-baseline">
-                  <span className="text-[10px] text-[#5A5A72] uppercase font-mono">Gross</span>
-                  <span className="text-sm font-bold font-mono text-[#E8B74A]">
+                <Link
+                  to={`/movies/${sim.id}`}
+                  className="font-bold text-sm text-white hover:text-[#E8B74A] line-clamp-1 block"
+                >
+                  {sim.primary_title}
+                </Link>
+
+                <p className="text-xs text-[#9090AA] truncate">{sim.director || 'Unknown'}</p>
+
+                <div className="pt-2 border-t border-[#2A2A3A]/60 flex justify-between items-baseline">
+                  <span className="text-[10px] text-[#9090AA] uppercase font-mono">Grossed</span>
+                  <span className="font-mono font-bold text-white text-xs">
                     {formatCurrency(sim.gross_usd, currency)}
                   </span>
                 </div>
               </div>
             ))}
           </div>
-        </section>
+        </div>
       )}
 
-      {/* Prediction Revision History Audit Trail */}
+      {/* Forecast Revisions Timeline */}
       {history.length > 0 && (
-        <section className="glass-card rounded-2xl p-6 border border-[#2A2A3A] space-y-4">
-          <div className="flex items-center gap-2">
-            <History className="w-5 h-5 text-[#6C63FF]" />
-            <h3 className="text-base font-bold text-white">
-              Prediction Lifecycle Evolution & Revision Audit
-            </h3>
+        <div className="glass-card rounded-2xl p-6 border border-[#2A2A3A] space-y-4">
+          <div className="flex items-center gap-2 text-white font-bold text-sm">
+            <History className="w-4 h-4 text-[#E8B74A]" />
+            <span>Forecast Evolution & Revision History</span>
           </div>
 
-          <div className="divide-y divide-[#2A2A3A]/60">
+          <div className="space-y-2.5">
             {history.map((h, idx) => (
-              <div key={idx} className="py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
-                <div>
-                  <span className="font-semibold text-white mr-2">{h.prediction_stage}</span>
-                  <span className="text-[#9090AA]">{h.change_attribution}</span>
+              <div
+                key={idx}
+                className="flex items-center justify-between p-3 rounded-xl bg-[#15151E] border border-[#2A2A3A]/60 text-xs"
+              >
+                <div className="space-y-0.5">
+                  <span className="font-semibold text-white block">{h.lifecycle_stage}</span>
+                  <span className="text-[11px] text-[#9090AA]">
+                    {h.change_attribution || 'Routine calibration'}
+                  </span>
                 </div>
-                <div className="flex items-center gap-4 font-mono">
-                  <span className="text-white">{formatCurrency(h.expected_gross_usd, currency)}</span>
+                <div className="text-right font-mono">
+                  <span className="text-white font-bold block">{formatCurrency(h.expected_gross_usd, currency)}</span>
                   {h.delta_pct !== 0 && (
                     <span
-                      className={
-                        h.delta_pct > 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'
-                      }
+                      className={`text-[10px] ${
+                        h.delta_pct > 0 ? 'text-emerald-400' : 'text-rose-400'
+                      }`}
                     >
-                      {h.delta_pct > 0 ? `+${h.delta_pct.toFixed(1)}%` : `${h.delta_pct.toFixed(1)}%`}
+                      {h.delta_pct > 0 ? `+${h.delta_pct}%` : `${h.delta_pct}%`}
                     </span>
                   )}
                 </div>
               </div>
             ))}
           </div>
-        </section>
+        </div>
       )}
     </div>
   );
 };
-

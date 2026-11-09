@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Play, TrendingUp, Calendar, Film } from 'lucide-react';
+import { Play, Calendar, Sparkles } from 'lucide-react';
 import { UpcomingMovieItem, MovieSummary } from '../types';
 import { useCurrency } from '../context/CurrencyContext';
 import { formatCurrency, getRiskBadgeClass } from '../utils/format';
@@ -24,27 +24,42 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
 
   const riskClass = getRiskBadgeClass(upcomingMovie ? upcomingMovie.risk_assessment_tier : 'Safe');
 
+  const readinessScore = upcomingMovie ? upcomingMovie.readiness_score : 100;
+  const confidenceLabel =
+    readinessScore >= 80
+      ? 'High Confidence'
+      : readinessScore >= 60
+      ? 'Good Confidence'
+      : 'Early Estimate';
+
   return (
-    <div className="glass-card rounded-2xl overflow-hidden border border-[#2A2A3A] flex flex-col justify-between group hover:border-[#6C63FF]/50 transition-all duration-300">
+    <div className="glass-card rounded-2xl overflow-hidden border border-[#2A2A3A] flex flex-col justify-between group hover:border-[#E8B74A]/50 transition-all duration-300">
       {/* Top Header & Poster Placeholder / Banner */}
       <div className="relative p-5 pb-3">
-        {/* Industry & Readiness Pills */}
+        {/* Industry, Year & Confidence Badges */}
         <div className="flex items-center justify-between gap-2 mb-3">
-          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-[#1A1A26] border border-[#2A2A3A] text-zinc-300">
-            {movie.industry || 'Global'}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-[#1A1A26] border border-[#2A2A3A] text-zinc-300">
+              {movie.industry || 'Global'}
+            </span>
+            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#E8B74A]/15 text-[#E8B74A] border border-[#E8B74A]/30">
+              {movie.release_year || '2026'}
+            </span>
+          </div>
 
           {upcomingMovie && (
             <span
-              className={`text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full border ${
-                upcomingMovie.readiness_score >= 80
+              title={`Readiness: ${readinessScore}/100 • ${confidenceLabel}`}
+              className={`text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full border flex items-center gap-1 ${
+                readinessScore >= 80
                   ? 'bg-emerald-950/60 text-emerald-400 border-emerald-500/40'
-                  : upcomingMovie.readiness_score >= 60
+                  : readinessScore >= 60
                   ? 'bg-amber-950/60 text-amber-400 border-amber-500/40'
                   : 'bg-zinc-800 text-zinc-400 border-zinc-700'
               }`}
             >
-              PRS {upcomingMovie.readiness_score}
+              <Sparkles className="w-2.5 h-2.5" />
+              <span>{readinessScore}% Confidence</span>
             </span>
           )}
         </div>
@@ -78,12 +93,12 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
       </div>
 
       {/* Middle Financial Forecast Section */}
-      <div className="px-5 py-3 bg-[#111118]/60 border-t border-b border-[#2A2A3A]/40 space-y-2.5">
+      <div className="px-5 py-3.5 bg-[#111118]/60 border-t border-b border-[#2A2A3A]/40 space-y-2.5">
         <div className="flex items-baseline justify-between">
-          <span className="text-[11px] text-[#9090AA] uppercase font-mono">
-            {isUpcoming ? 'Projected Worldwide' : 'Box-Office Gross'}
+          <span className="text-[11px] text-[#9090AA] uppercase font-mono font-medium">
+            {isUpcoming ? 'Most Likely Box Office' : 'Theatrical Gross'}
           </span>
-          <span className="text-lg font-extrabold font-mono text-[#E8B74A]">
+          <span className="text-xl font-extrabold font-mono text-[#E8B74A]">
             {formatCurrency(expectedUsd, currency)}
           </span>
         </div>
@@ -109,7 +124,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
           </span>
         ) : (
           <span className="text-[11px] px-2.5 py-1 rounded-lg bg-[#1A1A26] text-zinc-300 border border-[#2A2A3A]">
-            Historical Release
+            Released Film
           </span>
         )}
 

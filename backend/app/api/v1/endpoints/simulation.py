@@ -122,7 +122,7 @@ def simulate_what_if(req: WhatIfSimulationRequest, db: Session = Depends(get_db)
     pert_gross = expl_pert["predicted_revenue_usd"]
     delta_usd = pert_gross - base_gross
     pct_change = round((delta_usd / max(base_gross, 1.0)) * 100.0, 2)
-    delta_inr = round(delta_usd * 83.50 / 100_000_000.0, 2)
+    delta_inr = round(delta_usd * 83.50 / 10_000_000.0, 2)
 
     # Strategic Verdict formulation
     if pct_change >= 20.0:
@@ -145,7 +145,7 @@ def simulate_what_if(req: WhatIfSimulationRequest, db: Session = Depends(get_db)
         baseline_scenario=ScenarioMetrics(
             expected_gross_usd=base_gross,
             expected_gross_formatted_usd=f"${base_gross/1e6:.1f}M",
-            expected_gross_formatted_inr=f"₹{round(base_gross * 83.50 / 100_000_000.0, 2):,.1f} Cr",
+            expected_gross_formatted_inr=f"₹{round(base_gross * 83.50 / 10_000_000.0, 2):,.1f} Cr",
             pessimistic_bound_80_usd=round(base_gross * 0.70, 2),
             optimistic_bound_80_usd=round(base_gross * 1.45, 2),
             prob_break_even=risk_base["risk_probabilities"]["break_even_probability"],
@@ -156,7 +156,7 @@ def simulate_what_if(req: WhatIfSimulationRequest, db: Session = Depends(get_db)
         simulated_scenario=ScenarioMetrics(
             expected_gross_usd=pert_gross,
             expected_gross_formatted_usd=f"${pert_gross/1e6:.1f}M",
-            expected_gross_formatted_inr=f"₹{round(pert_gross * 83.50 / 100_000_000.0, 2):,.1f} Cr",
+            expected_gross_formatted_inr=f"₹{round(pert_gross * 83.50 / 10_000_000.0, 2):,.1f} Cr",
             pessimistic_bound_80_usd=round(pert_gross * 0.70, 2),
             optimistic_bound_80_usd=round(pert_gross * 1.45, 2),
             prob_break_even=risk_pert["risk_probabilities"]["break_even_probability"],

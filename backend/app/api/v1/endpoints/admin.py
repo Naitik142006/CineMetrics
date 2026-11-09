@@ -62,7 +62,7 @@ def update_movie_record(movie_id: str, payload: MovieUpdateRequest, db: Session 
 
     if payload.budget_usd is not None:
         movie.budget_usd = payload.budget_usd
-        movie.budget_inr_crores = round(payload.budget_usd * 83.50 / 100_000_000.0, 2)
+        movie.budget_inr_crores = round(payload.budget_usd * 83.50 / 10_000_000.0, 2)
     if payload.release_date is not None:
         movie.release_date = payload.release_date
     if payload.director is not None:

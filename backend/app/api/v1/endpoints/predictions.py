@@ -68,7 +68,7 @@ def get_movie_prediction(movie_id: str, db: Session = Depends(get_db)):
             )
 
         exp_usd = float(res.get("expected_gross_usd", 40_000_000.0))
-        exp_inr = round(exp_usd * 83.50 / 100_000_000.0, 2)
+        exp_inr = round(exp_usd * 83.50 / 10_000_000.0, 2)
         pess_usd = round(exp_usd * 0.70, 2)
         opt_usd = round(exp_usd * 1.45, 2)
 
@@ -88,13 +88,13 @@ def get_movie_prediction(movie_id: str, db: Session = Depends(get_db)):
                 expected_usd_formatted=res.get("expected_gross_formatted_usd", f"${exp_usd/1e6:.1f}M"),
                 expected_inr_formatted=res.get("expected_gross_formatted_inr", f"₹{exp_inr:,.1f} Cr"),
                 pessimistic_bound_80_usd=pess_usd,
-                pessimistic_bound_80_inr=round(pess_usd * 83.50 / 100_000_000.0, 2),
+                pessimistic_bound_80_inr=round(pess_usd * 83.50 / 10_000_000.0, 2),
                 pessimistic_formatted_usd=f"${pess_usd/1e6:.1f}M",
-                pessimistic_formatted_inr=f"₹{round(pess_usd * 83.50 / 100_000_000.0, 2):,.1f} Cr",
+                pessimistic_formatted_inr=f"₹{round(pess_usd * 83.50 / 10_000_000.0, 2):,.1f} Cr",
                 optimistic_bound_80_usd=opt_usd,
-                optimistic_bound_80_inr=round(opt_usd * 83.50 / 100_000_000.0, 2),
+                optimistic_bound_80_inr=round(opt_usd * 83.50 / 10_000_000.0, 2),
                 optimistic_formatted_usd=f"${opt_usd/1e6:.1f}M",
-                optimistic_formatted_inr=f"₹{round(opt_usd * 83.50 / 100_000_000.0, 2):,.1f} Cr",
+                optimistic_formatted_inr=f"₹{round(opt_usd * 83.50 / 10_000_000.0, 2):,.1f} Cr",
                 extreme_downside_95_usd=round(exp_usd * 0.45, 2),
                 extreme_upside_95_usd=round(exp_usd * 2.10, 2),
                 conformal_confidence=0.80,
@@ -222,7 +222,7 @@ def get_movie_explanation(movie_id: str, db: Session = Depends(get_db)):
             feature_label=str(f.get("display_name", "")),
             shap_value_log10=float(f.get("shap_value_log10", 0.0)),
             shap_impact_usd=usd,
-            shap_impact_inr_crores=round(usd * 83.50 / 100_000_000.0, 2),
+            shap_impact_inr_crores=round(usd * 83.50 / 10_000_000.0, 2),
             direction=str(f.get("direction", "neutral")),
         )
 
@@ -238,10 +238,10 @@ def get_movie_explanation(movie_id: str, db: Session = Depends(get_db)):
         movie_title=movie.primary_title,
         base_value_log10=explanation["base_value_log10"],
         base_value_usd=base_usd,
-        base_value_inr_crores=round(base_usd * 83.50 / 100_000_000.0, 2),
+        base_value_inr_crores=round(base_usd * 83.50 / 10_000_000.0, 2),
         final_predicted_log10=explanation["predicted_value_log10"],
         final_predicted_revenue_usd=pred_usd,
-        final_predicted_revenue_inr_crores=round(pred_usd * 83.50 / 100_000_000.0, 2),
+        final_predicted_revenue_inr_crores=round(pred_usd * 83.50 / 10_000_000.0, 2),
         additivity_axiom_verified=explanation["additivity_axiom_verified"],
         additivity_error=explanation["additivity_error"],
         top_positive_factors=pos_factors,

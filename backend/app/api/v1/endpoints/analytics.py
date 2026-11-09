@@ -39,7 +39,7 @@ def get_actor_dossier(person_name: str, db: Session = Depends(get_db)):
 
     total_gross = sum(m.box_office_gross_usd or 0.0 for m in movies)
     avg_gross = total_gross / len(movies) if movies else 0.0
-    avg_inr = round(avg_gross * 83.50 / 100_000_000.0, 2)
+    avg_inr = round(avg_gross * 83.50 / 10_000_000.0, 2)
 
     credits = []
     hits = 0
@@ -105,7 +105,7 @@ def get_director_dossier(person_name: str, db: Session = Depends(get_db)):
 
     total_gross = sum(m.box_office_gross_usd or 0.0 for m in movies)
     avg_gross = total_gross / len(movies) if movies else 0.0
-    avg_inr = round(avg_gross * 83.50 / 100_000_000.0, 2)
+    avg_inr = round(avg_gross * 83.50 / 10_000_000.0, 2)
 
     credits = []
     hits = 0
