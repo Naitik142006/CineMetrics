@@ -47,3 +47,4 @@ class WhatIfSimulationResponse(BaseModel):
     baseline_scenario: ScenarioMetrics
     simulated_scenario: ScenarioMetrics
     delta_analysis: CounterfactualDelta
+

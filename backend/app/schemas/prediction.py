@@ -68,3 +68,4 @@ class PredictionHistoryItem(BaseModel):
     delta_pct: float
     change_attribution: str
     evaluated_at: str
+

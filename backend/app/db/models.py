@@ -133,3 +133,4 @@ class PredictionHistoryRecord(Base):
     evaluated_at = Column(DateTime, default=utc_now)
 
     movie = relationship("Movie", back_populates="history_records")
+

@@ -28,3 +28,4 @@ def test_model_performance_benchmarks(client):
     assert data["test_r2_score"] > 0.40
     assert data["conformal_coverage_80_empirical"] > 0.70
     assert data["shap_additivity_pass_rate"] == 1.0
+

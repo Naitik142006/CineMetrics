@@ -53,3 +53,4 @@ def get_model_performance():
         inference_p95_latency_ms=21.68,
         shap_additivity_pass_rate=1.0,
     )
+

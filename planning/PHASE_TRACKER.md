@@ -34,9 +34,9 @@
 | **Phase 11** | **Automated Movie Discovery** | **COMPLETE** | 1.5 Weeks | Phase 3, 10 | None | **100%** | `backend/jobs/discovery_job.py`, `backend/app/services/enrichment_service.py` (Autonomous radar, DoH bypass, zero duplicate inserts) |
 | **Phase 12** | **Continuous Data Updates** | **COMPLETE** | 1.5 Weeks | Phase 11 | None | **100%** | `backend/jobs/buzz_update_job.py`, `backend/app/services/prediction_service.py`, `backend/jobs/PREDICTION_LIFECYCLE_REPORT.md` (Readiness score 0-100, lifecycle stage gating, buzz poller, delta tracking audit log) |
 | **Phase 13** | **FastAPI Application Core** | **COMPLETE** | 2.5 Weeks | Phase 10, 12 | None | **100%** | Complete `backend/app/` API package (health, movies, upcoming, predictions, simulation, analytics, admin), 21 passed pytest suites in `tests/api/`, p95 search latency $6.96\text{ms}$, What-If simulation $39.90\text{ms}$ |
-| **Phase 14** | **React Frontend Development** | **Planned** | 3.5 Weeks | Phase 13 | Lighthouse score $\ge 85$, WCAG AA | 0% | Complete `frontend/src/` dark cinematic web app |
-| **Phase 15** | **Advanced Product Features** | **Planned** | 2.0 Weeks | Phase 14 | What-If simulation round-trip $<250\text{ms}$ | 0% | What-If Simulator & Movie Comparison workspaces |
-| **Phase 16** | **Integration & Deployment** | **Planned** | 1.5 Weeks | Phase 15 | Zero-cost cloud hosting limits | 0% | `docker-compose.yml`, Live Vercel & Supabase deploy |
+| **Phase 14** | **React Frontend Development** | **COMPLETE** | 3.5 Weeks | Phase 13 | None | **100%** | Complete `frontend/` React 18 TypeScript app, dark cinematic design tokens, Lucide icons, PredictionIntervalBar, SHAPWaterfall, Dashboard & Upcoming Radar views, verified build (`dist/`) |
+| **Phase 15** | **Advanced Product Features** | **COMPLETE** | 2.0 Weeks | Phase 14 | None | **100%** | Interactive What-If Simulator workspace (`/simulate`), Head-to-Head Movie Comparison workspace (`/compare`), Talent Dossiers (`/talent/:role/:name`), sub-40ms in-memory counterfactual evaluation |
+| **Phase 16** | **Integration & Deployment** | **On Hold** | 1.5 Weeks | Phase 15 | Awaiting user changes (Deployment Embargoed) | 0% | `docker-compose.yml`, Live Vercel & Supabase deploy (Paused per user instruction) |
 | **Phase 17** | **Testing & Final Acceptance** | **Planned** | 1.5 Weeks | Phase 16 | 100% of 100 checklist items pass | 0% | Final Verification Audit & Demonstration Video |
 
 ---

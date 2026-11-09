@@ -31,3 +31,4 @@ def test_simulation_invalid_movie(client):
     }
     sim_resp = client.post("/api/v1/simulate/what-if", json=payload)
     assert sim_resp.status_code == 404
+

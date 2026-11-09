@@ -36,3 +36,4 @@ def test_market_trends(client):
     for seg in data["segments"]:
         assert seg["film_count"] >= 0
         assert 0.0 <= seg["market_share_pct"] <= 100.0
+

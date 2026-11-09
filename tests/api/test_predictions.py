@@ -41,3 +41,4 @@ def test_get_prediction_history(client):
     hist_resp = client.get(f"/api/v1/movies/{movie_id}/prediction/history")
     assert hist_resp.status_code == 200
     assert isinstance(hist_resp.json(), list)
+

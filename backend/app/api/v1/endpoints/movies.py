@@ -280,3 +280,4 @@ def get_similar_movies(movie_id: str, limit: int = Query(6, ge=1, le=20), db: Se
         )
 
     return output
+

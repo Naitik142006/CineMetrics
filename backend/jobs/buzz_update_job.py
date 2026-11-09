@@ -245,3 +245,4 @@ if __name__ == "__main__":
     print(f"Active Forecasts:      {res.get('active_forecasts_generated')}")
     print(f"Significant Revisions: {res.get('significant_revisions_logged')}")
     print("=" * 60)
+

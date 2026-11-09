@@ -84,3 +84,4 @@ def update_movie_record(movie_id: str, payload: MovieUpdateRequest, db: Session 
         "budget_inr_crores": movie.budget_inr_crores,
         "release_date": movie.release_date,
     }
+

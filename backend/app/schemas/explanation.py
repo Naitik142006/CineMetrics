@@ -30,3 +30,4 @@ class SHAPWaterfallResponse(BaseModel):
     top_negative_factors: List[SHAPFactor]
     waterfall_breakdown: List[SHAPFactor]
     narrative_summary: str
+

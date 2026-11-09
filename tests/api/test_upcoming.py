@@ -49,3 +49,4 @@ def test_upcoming_dashboard(client):
         assert sec_key in sections
         assert "items" in sections[sec_key]
         assert "title" in sections[sec_key]
+

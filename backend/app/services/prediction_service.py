@@ -358,3 +358,4 @@ class PredictionLifecycleService:
 
 # Singleton instance
 prediction_service = PredictionLifecycleService()
+

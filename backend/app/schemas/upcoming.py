@@ -45,3 +45,4 @@ class UpcomingDashboardResponse(BaseModel):
     total_upcoming_tracked: int
     last_updated: str
     sections: Dict[str, DashboardSection]
+

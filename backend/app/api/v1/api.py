@@ -25,3 +25,4 @@ api_router.include_router(predictions.router, tags=["ML Predictions & Explainabi
 api_router.include_router(simulation.router, tags=["Counterfactual Simulation"])
 api_router.include_router(analytics.router, tags=["Cinema Analytics & Talent Dossier"])
 api_router.include_router(admin.router, prefix="/admin", tags=["Administration & Operations"])
+

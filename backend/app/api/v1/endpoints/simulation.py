@@ -173,3 +173,4 @@ def simulate_what_if(req: WhatIfSimulationRequest, db: Session = Depends(get_db)
             strategic_verdict=verdict,
         ),
     )
+

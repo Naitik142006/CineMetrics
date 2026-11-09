@@ -206,3 +206,4 @@ def get_market_trends(db: Session = Depends(get_db)):
         total_films_analyzed=len(movies),
         segments=output_segments,
     )
+

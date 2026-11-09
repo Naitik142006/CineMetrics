@@ -62,3 +62,4 @@ def test_get_similar_movies(client):
     for s in sims:
         assert s["similarity_score"] >= 0.0
         assert s["id"] != movie_id
+

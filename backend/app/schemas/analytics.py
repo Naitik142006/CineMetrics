@@ -60,3 +60,4 @@ class ModelPerformanceResponse(BaseModel):
     conformal_coverage_95_empirical: float
     inference_p95_latency_ms: float
     shap_additivity_pass_rate: float
+
