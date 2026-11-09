@@ -17,6 +17,8 @@ export interface MovieSummary {
   box_office_gross_inr_crores?: number;
   is_released: boolean;
   youtube_trailer_id?: string;
+  poster_path?: string;
+  backdrop_path?: string;
 }
 
 export interface UpcomingMovieItem {
@@ -44,6 +46,8 @@ export interface UpcomingMovieItem {
   buzz_score: number;
   trailer_view_count: number;
   youtube_trailer_id?: string;
+  poster_path?: string;
+  backdrop_path?: string;
 }
 
 export interface DashboardSection {
@@ -224,6 +228,7 @@ export interface SimilarMovie {
   gross_formatted_usd: string;
   gross_formatted_inr: string;
   similarity_score: number;
+  poster_path?: string;
 }
 
 export interface MovieDetail extends MovieSummary {

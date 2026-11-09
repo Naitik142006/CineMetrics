@@ -57,6 +57,8 @@ def _build_upcoming_item(m: Movie, p: Optional[Prediction], b: Optional[DigitalB
         buzz_score=b.buzz_score if b else 0.0,
         trailer_view_count=b.view_count if b else 0,
         youtube_trailer_id=m.youtube_trailer_id,
+        poster_path=m.poster_path,
+        backdrop_path=m.backdrop_path,
     )
 
 

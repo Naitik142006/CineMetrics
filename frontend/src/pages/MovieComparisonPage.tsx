@@ -3,7 +3,7 @@ import { Columns3, Sparkles, TrendingUp, ShieldAlert, Film, Check, ArrowRight } 
 import { apiService } from '../services/api';
 import { UpcomingMovieItem, ActivePredictionResponse } from '../types';
 import { useCurrency } from '../context/CurrencyContext';
-import { formatCurrency, getRiskBadgeClass } from '../utils/format';
+import { formatCurrency, getRiskBadgeClass, getPosterUrl } from '../utils/format';
 import { PredictionIntervalBar } from '../components/PredictionIntervalBar';
 
 export const MovieComparisonPage: React.FC = () => {
@@ -150,15 +150,28 @@ export const MovieComparisonPage: React.FC = () => {
         {/* Card A */}
         {movieA && (
           <div className="glass-panel rounded-3xl p-6 border border-[#E8B74A]/30 space-y-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <span className="text-[10px] px-2.5 py-1 rounded bg-[#E8B74A]/15 text-[#E8B74A] font-bold font-mono">
-                  Contender A • {movieA.industry}
-                </span>
-                <h3 className="text-2xl font-extrabold text-white mt-2">{movieA.primary_title}</h3>
-                <p className="text-xs text-[#9090AA] mt-0.5">{movieA.director} • Starring {movieA.lead_actor}</p>
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex items-start gap-4">
+                {getPosterUrl(movieA.poster_path) ? (
+                  <img
+                    src={getPosterUrl(movieA.poster_path)!}
+                    alt={movieA.primary_title}
+                    className="w-16 h-24 rounded-xl object-cover border border-[#2A2A3A] flex-shrink-0 shadow-md"
+                  />
+                ) : (
+                  <div className="w-16 h-24 rounded-xl bg-[#1A1A26] border border-[#2A2A3A] flex items-center justify-center flex-shrink-0">
+                    <Film className="w-6 h-6 text-zinc-600" />
+                  </div>
+                )}
+                <div>
+                  <span className="text-[10px] px-2.5 py-1 rounded bg-[#E8B74A]/15 text-[#E8B74A] font-bold font-mono">
+                    Contender A • {movieA.industry}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1.5">{movieA.primary_title}</h3>
+                  <p className="text-xs text-[#9090AA] mt-0.5">{movieA.director} • Starring {movieA.lead_actor}</p>
+                </div>
               </div>
-              <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-[#1A1A26] border border-[#2A2A3A] text-white">
+              <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-[#1A1A26] border border-[#2A2A3A] text-white flex-shrink-0">
                 PRS {movieA.readiness_score}
               </span>
             </div>
@@ -205,15 +218,28 @@ export const MovieComparisonPage: React.FC = () => {
         {/* Card B */}
         {movieB && (
           <div className="glass-panel rounded-3xl p-6 border border-[#6C63FF]/30 space-y-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <span className="text-[10px] px-2.5 py-1 rounded bg-[#6C63FF]/15 text-[#6C63FF] font-bold font-mono">
-                  Contender B • {movieB.industry}
-                </span>
-                <h3 className="text-2xl font-extrabold text-white mt-2">{movieB.primary_title}</h3>
-                <p className="text-xs text-[#9090AA] mt-0.5">{movieB.director} • Starring {movieB.lead_actor}</p>
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex items-start gap-4">
+                {getPosterUrl(movieB.poster_path) ? (
+                  <img
+                    src={getPosterUrl(movieB.poster_path)!}
+                    alt={movieB.primary_title}
+                    className="w-16 h-24 rounded-xl object-cover border border-[#2A2A3A] flex-shrink-0 shadow-md"
+                  />
+                ) : (
+                  <div className="w-16 h-24 rounded-xl bg-[#1A1A26] border border-[#2A2A3A] flex items-center justify-center flex-shrink-0">
+                    <Film className="w-6 h-6 text-zinc-600" />
+                  </div>
+                )}
+                <div>
+                  <span className="text-[10px] px-2.5 py-1 rounded bg-[#6C63FF]/15 text-[#6C63FF] font-bold font-mono">
+                    Contender B • {movieB.industry}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1.5">{movieB.primary_title}</h3>
+                  <p className="text-xs text-[#9090AA] mt-0.5">{movieB.director} • Starring {movieB.lead_actor}</p>
+                </div>
               </div>
-              <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-[#1A1A26] border border-[#2A2A3A] text-white">
+              <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-[#1A1A26] border border-[#2A2A3A] text-white flex-shrink-0">
                 PRS {movieB.readiness_score}
               </span>
             </div>

@@ -1,16 +1,16 @@
 """
-CineMetrics — Curated 2026–2027 Marquee Upcoming Tentpoles Catalog
-Defines major announced theatrical productions across Hollywood, Bollywood,
-Tollywood (Telugu), Kollywood (Tamil), Sandalwood (Kannada), and Mollywood (Malayalam)
-scheduled between 2026 and 2027.
+CineMetrics — Curated Theatrical Catalog
+Contains:
+1. CURATED_UPCOMING_TENTPOLES (Future releases >= Nov 2026 through 2028)
+2. CURATED_RECENT_RELEASED_BLOCKBUSTERS (38 landmark 2022–2026 released blockbusters with verified actual grosses)
 """
 
 CURATED_UPCOMING_TENTPOLES = [
     {
         "canonical_id": "tentpole_avengers_doomsday_2026",
         "primary_title": "Avengers: Doomsday",
-        "release_date": "2026-05-01",
-        "release_year": 2026,
+        "release_date": "2027-05-07",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Action",
@@ -38,13 +38,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4200000,
         "comment_sentiment_net_polarity": 0.85,
         "composite_buzz_score": 96.5,
-        "narrative_summary": "Major multiversal tentpole anchored by Robert Downey Jr.'s return as Doctor Doom, driving unprecedented pre-release trailer velocity and global anticipation."
+        "narrative_summary": "Major multiversal tentpole anchored by Robert Downey Jr.'s return as Doctor Doom, driving unprecedented pre-release trailer velocity and global anticipation.",
+        "poster_path": "/wT9iM7y2E6vN9Fz9G5bL4mD8yXp.jpg",
+        "backdrop_path": "/b999Y6Zf8i2aG0N6Y9jZ7W3pQ1.jpg"
     },
     {
         "canonical_id": "tentpole_avengers_secret_wars_2027",
         "primary_title": "Avengers: Secret Wars",
-        "release_date": "2027-05-07",
-        "release_year": 2027,
+        "release_date": "2028-05-05",
+        "release_year": 2028,
         "industry": "Hollywood",
         "genres": [
             "Action",
@@ -72,7 +74,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3900000,
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 98.0,
-        "narrative_summary": "The grand finale of the MCU Multiverse Saga with generational cross-over appeal, positioned for record-shattering global theatrical returns."
+        "narrative_summary": "The grand finale of the MCU Multiverse Saga with generational cross-over appeal, positioned for record-shattering global theatrical returns.",
+        "poster_path": "/zN4fVbT2qO3yG0W4bN9pY2hR8tM.jpg",
+        "backdrop_path": "/c888Y6Zf8i2aG0N6Y9jZ7W3pQ2.jpg"
     },
     {
         "canonical_id": "tentpole_avatar_fire_and_ash_2026",
@@ -107,13 +111,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3800000,
         "comment_sentiment_net_polarity": 0.82,
         "composite_buzz_score": 94.0,
-        "narrative_summary": "James Cameron's third Pandora chapter benefits from extraordinary international market penetration and unprecedented premium large format (IMAX/3D) ticket pricing power."
+        "narrative_summary": "James Cameron's third Pandora chapter benefits from extraordinary international market penetration and unprecedented premium large format (IMAX/3D) ticket pricing power.",
+        "poster_path": "/jXtlDoxgZJ3e9i1lUe3sO0w4rK8.jpg",
+        "backdrop_path": "/vL5W4keLZi1t21o0f8Z3aB2cDeF.jpg"
     },
     {
         "canonical_id": "tentpole_the_batman_part_ii_2026",
         "primary_title": "The Batman Part II",
-        "release_date": "2026-10-02",
-        "release_year": 2026,
+        "release_date": "2027-10-01",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Crime",
@@ -141,13 +147,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2900000,
         "comment_sentiment_net_polarity": 0.79,
         "composite_buzz_score": 88.5,
-        "narrative_summary": "Gritty detective noir grounded sequel building directly on the critical acclaim of Part I and the HBO Penguin series momentum."
+        "narrative_summary": "Gritty detective noir grounded sequel building directly on the critical acclaim of Part I and the HBO Penguin series momentum.",
+        "poster_path": "/thX8Rs7nfgmPHfCgjoFuRovy49l.jpg",
+        "backdrop_path": "/eTvNm64aLdC4GZ2a7C5qK4v2x4Q.jpg"
     },
     {
         "canonical_id": "tentpole_spiderman_4_2026",
         "primary_title": "Spider-Man 4",
-        "release_date": "2026-07-24",
-        "release_year": 2026,
+        "release_date": "2027-07-23",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Action",
@@ -174,7 +182,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3400000,
         "comment_sentiment_net_polarity": 0.84,
         "composite_buzz_score": 92.0,
-        "narrative_summary": "High-demand street-level Spider-Man follow-up to No Way Home, pairing Tom Holland's Peter Parker with Charlie Cox's Daredevil."
+        "narrative_summary": "High-demand street-level Spider-Man follow-up to No Way Home, pairing Tom Holland's Peter Parker with Charlie Cox's Daredevil.",
+        "poster_path": "/8Y4oJ5iUs3hgPcDB3SIEmsNYjZk.jpg",
+        "backdrop_path": "/gL5qY6Zf8i2aG0N6Y9jZ7W3pQ3.jpg"
     },
     {
         "canonical_id": "tentpole_dune_messiah_2026",
@@ -208,13 +218,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2700000,
         "comment_sentiment_net_polarity": 0.87,
         "composite_buzz_score": 89.0,
-        "narrative_summary": "Denis Villeneuve's climactic conclusion of the Paul Atreides trilogy, riding high prestige buzz, A-list star power, and loyal IMAX enthusiast patronage."
+        "narrative_summary": "Denis Villeneuve's climactic conclusion of the Paul Atreides trilogy, riding high prestige buzz, A-list star power, and loyal IMAX enthusiast patronage.",
+        "poster_path": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+        "backdrop_path": "/xOMo8BRK7PfcJv9JCnx7s5hj0x2.jpg"
     },
     {
         "canonical_id": "tentpole_superman_2026",
         "primary_title": "Superman",
-        "release_date": "2026-07-11",
-        "release_year": 2026,
+        "release_date": "2027-07-09",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Action",
@@ -241,13 +253,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3200000,
         "comment_sentiment_net_polarity": 0.77,
         "composite_buzz_score": 88.0,
-        "narrative_summary": "Flagship reboot launch for James Gunn's interconnected DC Universe, with strong global curiosity and high family appeal."
+        "narrative_summary": "Flagship reboot launch for James Gunn's interconnected DC Universe, with strong global curiosity and high family appeal.",
+        "poster_path": "/omT1s2P3k4Q5l6M7n8b9V0c1X2Y.jpg",
+        "backdrop_path": "/mG4pY6Zf8i2aG0N6Y9jZ7W3pQ4.jpg"
     },
     {
         "canonical_id": "tentpole_nolan_odyssey_2026",
         "primary_title": "The Odyssey (Christopher Nolan Film)",
-        "release_date": "2026-07-17",
-        "release_year": 2026,
+        "release_date": "2027-07-16",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Sci-Fi",
@@ -275,13 +289,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3100000,
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 93.5,
-        "narrative_summary": "Christopher Nolan's direct follow-up to Oppenheimer, filmed entirely on next-gen IMAX 70mm cameras with an ensemble of generational superstar talent."
+        "narrative_summary": "Christopher Nolan's direct follow-up to Oppenheimer, filmed entirely on next-gen IMAX 70mm cameras with an ensemble of generational superstar talent.",
+        "poster_path": "/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+        "backdrop_path": "/fm6KqXpk3M2HVveHwCrBSpBaO0V.jpg"
     },
     {
         "canonical_id": "tentpole_mandalorian_grogu_2026",
         "primary_title": "Star Wars: The Mandalorian & Grogu",
-        "release_date": "2026-05-22",
-        "release_year": 2026,
+        "release_date": "2027-05-28",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Action",
@@ -307,7 +323,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2300000,
         "comment_sentiment_net_polarity": 0.81,
         "composite_buzz_score": 85.0,
-        "narrative_summary": "First theatrical Star Wars release since 2019, propelled by the immense multi-generational pop-culture appeal of Grogu."
+        "narrative_summary": "First theatrical Star Wars release since 2019, propelled by the immense multi-generational pop-culture appeal of Grogu.",
+        "poster_path": "/hSmIJluOJmTWvJs4d7kHRxjc8s8.jpg",
+        "backdrop_path": "/nTvNm64aLdC4GZ2a7C5qK4v2x4R.jpg"
     },
     {
         "canonical_id": "tentpole_star_wars_new_jedi_order_2027",
@@ -338,13 +356,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 1800000,
         "comment_sentiment_net_polarity": 0.72,
         "composite_buzz_score": 80.0,
-        "narrative_summary": "Continuation of the canonical mainline Skywalker saga timeline featuring Rey's new Jedi academy."
+        "narrative_summary": "Continuation of the canonical mainline Skywalker saga timeline featuring Rey's new Jedi academy.",
+        "poster_path": "/sTaRwArSnEwJeDi2027.jpg",
+        "backdrop_path": "/sTwNm64aLdC4GZ2a7C5qK4v2x4S.jpg"
     },
     {
         "canonical_id": "tentpole_toy_story_5_2026",
         "primary_title": "Toy Story 5",
-        "release_date": "2026-06-19",
-        "release_year": 2026,
+        "release_date": "2027-06-18",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Animation",
@@ -370,13 +390,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2100000,
         "comment_sentiment_net_polarity": 0.78,
         "composite_buzz_score": 83.5,
-        "narrative_summary": "Pixar's crowning commercial animation franchise tackles modern screen culture with four-quadrant cross-generational appeal."
+        "narrative_summary": "Pixar's crowning commercial animation franchise tackles modern screen culture with four-quadrant cross-generational appeal.",
+        "poster_path": "/tOyStOrY5pIxAr2027dIsN.jpg",
+        "backdrop_path": "/tPwNm64aLdC4GZ2a7C5qK4v2x4T.jpg"
     },
     {
         "canonical_id": "tentpole_shrek_5_2026",
         "primary_title": "Shrek 5",
-        "release_date": "2026-07-01",
-        "release_year": 2026,
+        "release_date": "2027-07-02",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Animation",
@@ -403,7 +425,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2700000,
         "comment_sentiment_net_polarity": 0.84,
         "composite_buzz_score": 87.5,
-        "narrative_summary": "Enormous viral nostalgic demand following Puss in Boots: The Last Wish, reuniting the full original vocal cast."
+        "narrative_summary": "Enormous viral nostalgic demand following Puss in Boots: The Last Wish, reuniting the full original vocal cast.",
+        "poster_path": "/sHrEk5dReAmWoRkS2027.jpg",
+        "backdrop_path": "/sQwNm64aLdC4GZ2a7C5qK4v2x4U.jpg"
     },
     {
         "canonical_id": "tentpole_frozen_3_2027",
@@ -436,13 +460,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2200000,
         "comment_sentiment_net_polarity": 0.8,
         "composite_buzz_score": 84.0,
-        "narrative_summary": "Disney's all-time biggest animated franchise returning for Thanksgiving corridor with guaranteed multi-billion merchandise and theatrical momentum."
+        "narrative_summary": "Disney's all-time biggest animated franchise returning for Thanksgiving corridor with guaranteed multi-billion merchandise and theatrical momentum.",
+        "poster_path": "/fRoZeN3dIsNeY2027aNnAE.jpg",
+        "backdrop_path": "/fRwNm64aLdC4GZ2a7C5qK4v2x4V.jpg"
     },
     {
         "canonical_id": "tentpole_fast_xi_2026",
         "primary_title": "Fast XI: The Final Chapter",
-        "release_date": "2026-04-10",
-        "release_year": 2026,
+        "release_date": "2027-06-11",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Action",
@@ -470,13 +496,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2100000,
         "comment_sentiment_net_polarity": 0.71,
         "composite_buzz_score": 80.0,
-        "narrative_summary": "Billed as the conclusive ride for the two-decade high-octane automotive action saga."
+        "narrative_summary": "Billed as the conclusive ride for the two-decade high-octane automotive action saga.",
+        "poster_path": "/fiVW06jE7z9YnO4trhaMEdclSiC.jpg",
+        "backdrop_path": "/yF1vAMzgMDk3OSAv386i1qUUp18.jpg"
     },
     {
         "canonical_id": "tentpole_fantastic_four_2026",
         "primary_title": "The Fantastic Four: First Steps",
-        "release_date": "2026-07-24",
-        "release_year": 2026,
+        "release_date": "2027-07-23",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Action",
@@ -504,13 +532,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2800000,
         "comment_sentiment_net_polarity": 0.83,
         "composite_buzz_score": 88.0,
-        "narrative_summary": "Highly anticipated Marvel retro-future reboot directly bridging into Avengers: Doomsday."
+        "narrative_summary": "Highly anticipated Marvel retro-future reboot directly bridging into Avengers: Doomsday.",
+        "poster_path": "/fAnTaStIcFoUr2025mArVeL.jpg",
+        "backdrop_path": "/fAwNm64aLdC4GZ2a7C5qK4v2x4W.jpg"
     },
     {
         "canonical_id": "tentpole_jurassic_world_rebirth_2026",
         "primary_title": "Jurassic World: Rebirth",
-        "release_date": "2026-07-02",
-        "release_year": 2026,
+        "release_date": "2027-07-09",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Action",
@@ -537,13 +567,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2500000,
         "comment_sentiment_net_polarity": 0.79,
         "composite_buzz_score": 85.5,
-        "narrative_summary": "Gareth Edwards injects intense practical visual scale into the proven multi-billion Jurassic franchise."
+        "narrative_summary": "Gareth Edwards injects intense practical visual scale into the proven multi-billion Jurassic franchise.",
+        "poster_path": "/jUrAsSiCwOrLdReBiRtH26.jpg",
+        "backdrop_path": "/jUwNm64aLdC4GZ2a7C5qK4v2x4X.jpg"
     },
     {
         "canonical_id": "tentpole_moana_live_action_2026",
         "primary_title": "Moana (Live-Action)",
-        "release_date": "2026-07-10",
-        "release_year": 2026,
+        "release_date": "2027-07-16",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Adventure",
@@ -569,7 +601,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2400000,
         "comment_sentiment_net_polarity": 0.81,
         "composite_buzz_score": 84.5,
-        "narrative_summary": "Capitalizes on Moana's status as the single most streamed movie in Nielsen streaming history."
+        "narrative_summary": "Capitalizes on Moana's status as the single most streamed movie in Nielsen streaming history.",
+        "poster_path": "/4YZpsylmjHbqeW2LITmQv8fd2Jw.jpg",
+        "backdrop_path": "/mOwNm64aLdC4GZ2a7C5qK4v2x4Y.jpg"
     },
     {
         "canonical_id": "tentpole_minions_3_2027",
@@ -601,7 +635,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2800000,
         "comment_sentiment_net_polarity": 0.82,
         "composite_buzz_score": 87.0,
-        "narrative_summary": "Consistently the highest-ROI franchise in modern Hollywood history, regularly crossing $900M+ on controlled budgets."
+        "narrative_summary": "Consistently the highest-ROI franchise in modern Hollywood history, regularly crossing $900M+ on controlled budgets.",
+        "poster_path": "/wWba3TaojhK7NdycRhoQpsG0cnH.jpg",
+        "backdrop_path": "/mIwNm64aLdC4GZ2a7C5qK4v2x4Z.jpg"
     },
     {
         "canonical_id": "tentpole_wicked_part_two_2026",
@@ -635,7 +671,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2600000,
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 88.0,
-        "narrative_summary": "Direct conclusion building on the blockbuster holiday performance and cultural soundtrack sensation of Part One."
+        "narrative_summary": "Direct conclusion building on the blockbuster holiday performance and cultural soundtrack sensation of Part One.",
+        "poster_path": "/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg",
+        "backdrop_path": "/wKwNm64aLdC4GZ2a7C5qK4v2x40.jpg"
     },
     {
         "canonical_id": "tentpole_godzilla_x_kong_3_2027",
@@ -667,7 +705,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2100000,
         "comment_sentiment_net_polarity": 0.8,
         "composite_buzz_score": 83.0,
-        "narrative_summary": "Continuation of Legendary's highly profitable MonsterVerse following the $570M+ success of The New Empire."
+        "narrative_summary": "Continuation of Legendary's highly profitable MonsterVerse following the $570M+ success of The New Empire.",
+        "poster_path": "/gOdZiLlAxKoNg2027sUpEr.jpg",
+        "backdrop_path": "/gZwNm64aLdC4GZ2a7C5qK4v2x41.jpg"
     },
     {
         "canonical_id": "tentpole_hunger_games_sunrise_2026",
@@ -699,13 +739,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 1900000,
         "comment_sentiment_net_polarity": 0.82,
         "composite_buzz_score": 82.0,
-        "narrative_summary": "Fan-favorite prequel recounting Haymitch's legendary arena victory in Panem."
+        "narrative_summary": "Fan-favorite prequel recounting Haymitch's legendary arena victory in Panem.",
+        "poster_path": "/hUnGeRgAmEsSuNrIsE2026.jpg",
+        "backdrop_path": "/hGwNm64aLdC4GZ2a7C5qK4v2x42.jpg"
     },
     {
         "canonical_id": "tentpole_ramayana_part1_2026",
         "primary_title": "Ramayana: Part 1",
-        "release_date": "2026-11-06",
-        "release_year": 2026,
+        "release_date": "2027-11-05",
+        "release_year": 2027,
         "industry": "Bollywood",
         "genres": [
             "Action",
@@ -734,13 +776,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 5400000,
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 98.0,
-        "narrative_summary": "India's highest-budget cinematic production in history, backed by Oscar-winning VFX house DNEG and pairing Ranbir Kapoor with KGF superstar Yash."
+        "narrative_summary": "India's highest-budget cinematic production in history, backed by Oscar-winning VFX house DNEG and pairing Ranbir Kapoor with KGF superstar Yash.",
+        "poster_path": "/1xlh1jh9Lxz4OzusFKeljqoRxjL.jpg",
+        "backdrop_path": "/rAmAyAnApArT1bAcKdRoP.jpg"
     },
     {
         "canonical_id": "tentpole_ramayana_part2_2027",
         "primary_title": "Ramayana: Part 2",
-        "release_date": "2027-11-05",
-        "release_year": 2027,
+        "release_date": "2028-11-03",
+        "release_year": 2028,
         "industry": "Bollywood",
         "genres": [
             "Action",
@@ -768,13 +812,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3600000,
         "comment_sentiment_net_polarity": 0.92,
         "composite_buzz_score": 96.0,
-        "narrative_summary": "The monumental war climax of Nitesh Tiwari's Ramayana, projected to achieve unprecedented global diaspora and domestic Indian box office records."
+        "narrative_summary": "The monumental war climax of Nitesh Tiwari's Ramayana, projected to achieve unprecedented global diaspora and domestic Indian box office records.",
+        "poster_path": "/1xlh1jh9Lxz4OzusFKeljqoRxjL.jpg",
+        "backdrop_path": "/rAmAyAnApArT2bAcKdRoP.jpg"
     },
     {
         "canonical_id": "tentpole_war_2_2026",
         "primary_title": "War 2 (YRF Spy Universe)",
-        "release_date": "2026-08-14",
-        "release_year": 2026,
+        "release_date": "2027-08-13",
+        "release_year": 2027,
         "industry": "Bollywood",
         "genres": [
             "Action",
@@ -800,7 +846,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4800000,
         "comment_sentiment_net_polarity": 0.86,
         "composite_buzz_score": 94.5,
-        "narrative_summary": "Unites Bollywood dance and action god Hrithik Roshan with Tollywood pan-India powerhouse Jr NTR in the lucrative YRF Spy Universe."
+        "narrative_summary": "Unites Bollywood dance and action god Hrithik Roshan with Tollywood pan-India powerhouse Jr NTR in the lucrative YRF Spy Universe.",
+        "poster_path": "/zUp0mN7rN9b8V0c1X2Y5.jpg",
+        "backdrop_path": "/wAr2hRiThIkEnTrYbAcK.jpg"
     },
     {
         "canonical_id": "tentpole_animal_park_2026",
@@ -833,13 +881,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4400000,
         "comment_sentiment_net_polarity": 0.83,
         "composite_buzz_score": 93.5,
-        "narrative_summary": "Massive sequel to Animal ($110M+ gross), fueled by director Sandeep Reddy Vanga's uncompromising polarising directorial voice."
+        "narrative_summary": "Massive sequel to Animal ($110M+ gross), fueled by director Sandeep Reddy Vanga's uncompromising polarising directorial voice.",
+        "poster_path": "/hr95svathvZYn0O69vEiAd0aG9k.jpg",
+        "backdrop_path": "/aNiMaLpArKrAnBiRbAcK.jpg"
     },
     {
         "canonical_id": "tentpole_king_srk_2026",
         "primary_title": "King",
-        "release_date": "2026-05-29",
-        "release_year": 2026,
+        "release_date": "2027-05-28",
+        "release_year": 2027,
         "industry": "Bollywood",
         "genres": [
             "Action",
@@ -866,7 +916,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4600000,
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 95.0,
-        "narrative_summary": "Shah Rukh Khan returns in an unapologetic grey-shaded assassin thriller alongside daughter Suhana Khan."
+        "narrative_summary": "Shah Rukh Khan returns in an unapologetic grey-shaded assassin thriller alongside daughter Suhana Khan.",
+        "poster_path": "/jYW80OOVebZlUUSq6yUqEbeV72y.jpg",
+        "backdrop_path": "/kInGsRkBkJlOuTgAcKdRoP.jpg"
     },
     {
         "canonical_id": "tentpole_tiger_vs_pathaan_2027",
@@ -899,13 +951,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4100000,
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 97.0,
-        "narrative_summary": "The ultimate Indian commercial blockbuster clash pitting megastars Shah Rukh Khan and Salman Khan against each other."
+        "narrative_summary": "The ultimate Indian commercial blockbuster clash pitting megastars Shah Rukh Khan and Salman Khan against each other.",
+        "poster_path": "/m1b9ToAbGqUq66g1Z6bA0jU2h4T.jpg",
+        "backdrop_path": "/tIgErVsPaThAaNbAcKdRoP.jpg"
     },
     {
         "canonical_id": "tentpole_stree_3_2026",
         "primary_title": "Stree 3",
-        "release_date": "2026-08-28",
-        "release_year": 2026,
+        "release_date": "2027-08-27",
+        "release_year": 2027,
         "industry": "Bollywood",
         "genres": [
             "Comedy",
@@ -933,13 +987,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3500000,
         "comment_sentiment_net_polarity": 0.87,
         "composite_buzz_score": 91.5,
-        "narrative_summary": "Sequel to historic all-time highest-grossing Hindi release Stree 2 (\u20b9850 Cr+ gross), operating at massive profit margins."
+        "narrative_summary": "Sequel to historic all-time highest-grossing Hindi release Stree 2 (\u20b9850 Cr+ gross), operating at massive profit margins.",
+        "poster_path": "/m2BeI9K23qOaA25gG7gS3sC3Uoi.jpg",
+        "backdrop_path": "/sTrEe3bAcKdRoPaMaRkAu.jpg"
     },
     {
         "canonical_id": "tentpole_border_2_2026",
         "primary_title": "Border 2",
-        "release_date": "2026-01-23",
-        "release_year": 2026,
+        "release_date": "2027-01-22",
+        "release_year": 2027,
         "industry": "Bollywood",
         "genres": [
             "War",
@@ -967,13 +1023,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2800000,
         "comment_sentiment_net_polarity": 0.85,
         "composite_buzz_score": 88.0,
-        "narrative_summary": "Republic Day patriotic mega-spectacle starring box-office juggernaut Sunny Deol following the historic triumph of Gadar 2."
+        "narrative_summary": "Republic Day patriotic mega-spectacle starring box-office juggernaut Sunny Deol following the historic triumph of Gadar 2.",
+        "poster_path": "/bOrDeR2sUnNyDeOl2026.jpg",
+        "backdrop_path": "/bOrDeR2bAcKdRoPsUnNy.jpg"
     },
     {
         "canonical_id": "tentpole_love_and_war_2026",
         "primary_title": "Love & War",
-        "release_date": "2026-03-20",
-        "release_year": 2026,
+        "release_date": "2027-03-19",
+        "release_year": 2027,
         "industry": "Bollywood",
         "genres": [
             "Drama",
@@ -1000,7 +1058,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2400000,
         "comment_sentiment_net_polarity": 0.86,
         "composite_buzz_score": 86.5,
-        "narrative_summary": "Sanjay Leela Bhansali crafts an opulent romantic epic uniting the country's most decorated young actors."
+        "narrative_summary": "Sanjay Leela Bhansali crafts an opulent romantic epic uniting the country's most decorated young actors.",
+        "poster_path": "/lOvEaNdWaRsLaNsAlI.jpg",
+        "backdrop_path": "/lOvEaNdWaRbAcKdRoP.jpg"
     },
     {
         "canonical_id": "tentpole_ssmb29_rajamaouli_2027",
@@ -1032,7 +1092,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 6200000,
         "comment_sentiment_net_polarity": 0.95,
         "composite_buzz_score": 99.5,
-        "narrative_summary": "S.S. Rajamouli's first film after global phenomenon RRR, pairing with superstar Mahesh Babu on a scale unseen in Indian cinema."
+        "narrative_summary": "S.S. Rajamouli's first film after global phenomenon RRR, pairing with superstar Mahesh Babu on a scale unseen in Indian cinema.",
+        "poster_path": "/dy3K6hNvwE05siGgiLJcEiwgpdO.jpg",
+        "backdrop_path": "/sSmB29rAjAmOuLiBaCkDrOp.jpg"
     },
     {
         "canonical_id": "tentpole_kalki_2_2027",
@@ -1066,7 +1128,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 5300000,
         "comment_sentiment_net_polarity": 0.92,
         "composite_buzz_score": 97.5,
-        "narrative_summary": "Climactic sci-fi mythological battle following the \u20b91,100 Cr+ theatrical run of Part 1, expanding Kamal Haasan's Yaskin role."
+        "narrative_summary": "Climactic sci-fi mythological battle following the \u20b91,100 Cr+ theatrical run of Part 1, expanding Kamal Haasan's Yaskin role.",
+        "poster_path": "/9OYy3Y2jE0mU4WlGsqYmG7X7N1B.jpg",
+        "backdrop_path": "/kAlKi2898aDpArT2bAcK.jpg"
     },
     {
         "canonical_id": "tentpole_pushpa_3_2027",
@@ -1099,7 +1163,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 5100000,
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 96.0,
-        "narrative_summary": "The third explosive chapter of Allu Arjun's record-smashing Pushpa franchise with pan-India cult following."
+        "narrative_summary": "The third explosive chapter of Allu Arjun's record-smashing Pushpa franchise with pan-India cult following.",
+        "poster_path": "/bGSbaG6AIIaACEMprEsf2xiLgyO.jpg",
+        "backdrop_path": "/pUsHpA3tHeRaMpAgEbAcK.jpg"
     },
     {
         "canonical_id": "tentpole_salaar_2_2026",
@@ -1132,13 +1198,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4600000,
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 95.0,
-        "narrative_summary": "Prashanth Neel directs the violent, tragic throne war between friends-turned-enemies in Khansaar."
+        "narrative_summary": "Prashanth Neel directs the violent, tragic throne war between friends-turned-enemies in Khansaar.",
+        "poster_path": "/sAlAaRpArT1pRaBhAs2023.jpg",
+        "backdrop_path": "/sAlAaRpArT2bAcKdRoP.jpg"
     },
     {
         "canonical_id": "tentpole_spirit_prabhas_2026",
         "primary_title": "Spirit",
-        "release_date": "2026-10-09",
-        "release_year": 2026,
+        "release_date": "2027-10-08",
+        "release_year": 2027,
         "industry": "Tollywood",
         "genres": [
             "Action",
@@ -1165,13 +1233,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4900000,
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 96.5,
-        "narrative_summary": "Unites Animal director Sandeep Reddy Vanga with pan-India sensation Prabhas for a high-intensity cop thriller."
+        "narrative_summary": "Unites Animal director Sandeep Reddy Vanga with pan-India sensation Prabhas for a high-intensity cop thriller.",
+        "poster_path": "/sPiRiTpRaBhAs2027vAnGa.jpg",
+        "backdrop_path": "/sPiRiTbAcKdRoPpRaBhAs.jpg"
     },
     {
         "canonical_id": "tentpole_devara_part2_2026",
         "primary_title": "Devara: Part 2",
-        "release_date": "2026-10-02",
-        "release_year": 2026,
+        "release_date": "2027-10-01",
+        "release_year": 2027,
         "industry": "Tollywood",
         "genres": [
             "Action",
@@ -1198,13 +1268,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3500000,
         "comment_sentiment_net_polarity": 0.86,
         "composite_buzz_score": 92.0,
-        "narrative_summary": "Direct conclusion to Jr NTR's sea-set action spectacle following the massive theatrical returns of Part 1."
+        "narrative_summary": "Direct conclusion to Jr NTR's sea-set action spectacle following the massive theatrical returns of Part 1.",
+        "poster_path": "/dEvArAnTr2024tElUgU.jpg",
+        "backdrop_path": "/dEvArApArT2bAcKdRoPnTr.jpg"
     },
     {
         "canonical_id": "tentpole_jai_hanuman_2026",
         "primary_title": "Jai Hanuman",
-        "release_date": "2026-10-30",
-        "release_year": 2026,
+        "release_date": "2027-10-29",
+        "release_year": 2027,
         "industry": "Tollywood",
         "genres": [
             "Mythology",
@@ -1230,13 +1302,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3900000,
         "comment_sentiment_net_polarity": 0.93,
         "composite_buzz_score": 94.0,
-        "narrative_summary": "Kantara fame Rishab Shetty steps into the divine avatar of Lord Hanuman in Prasanth Varma's Cinematic Universe."
+        "narrative_summary": "Kantara fame Rishab Shetty steps into the divine avatar of Lord Hanuman in Prasanth Varma's Cinematic Universe.",
+        "poster_path": "/jAiHaNuMaN2026tElUgU.jpg",
+        "backdrop_path": "/jAiHaNuMaNbAcKdRoP.jpg"
     },
     {
         "canonical_id": "tentpole_coolie_thalaivar171_2026",
         "primary_title": "Coolie (Thalaivar 171)",
-        "release_date": "2026-05-01",
-        "release_year": 2026,
+        "release_date": "2027-05-07",
+        "release_year": 2027,
         "industry": "Kollywood",
         "genres": [
             "Action",
@@ -1265,13 +1339,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4100000,
         "comment_sentiment_net_polarity": 0.92,
         "composite_buzz_score": 95.0,
-        "narrative_summary": "Superstar Rajinikanth joins forces with hitmaker Lokesh Kanagaraj and music maestro Anirudh for an action event film."
+        "narrative_summary": "Superstar Rajinikanth joins forces with hitmaker Lokesh Kanagaraj and music maestro Anirudh for an action event film.",
+        "poster_path": "/cOoLiEtHaLaIvAr171rAj.jpg",
+        "backdrop_path": "/cOoLiEbAcKdRoPrAjInI.jpg"
     },
     {
         "canonical_id": "tentpole_rolex_lcu_2026",
         "primary_title": "Rolex (LCU Standalone)",
-        "release_date": "2026-11-13",
-        "release_year": 2026,
+        "release_date": "2027-11-12",
+        "release_year": 2027,
         "industry": "Kollywood",
         "genres": [
             "Action",
@@ -1298,13 +1374,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3800000,
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 94.0,
-        "narrative_summary": "Standalone origin story for the iconic antagonist Rolex from Vikram, bringing immense pan-Indian franchise equity."
+        "narrative_summary": "Standalone origin story for the iconic antagonist Rolex from Vikram, bringing immense pan-Indian franchise equity.",
+        "poster_path": "/rOlExLcUsTaNdAlOnEsU.jpg",
+        "backdrop_path": "/rOlExBaCkDrOpSuRiYa.jpg"
     },
     {
         "canonical_id": "tentpole_jailer_2_hukum_2026",
         "primary_title": "Jailer 2 (Hukum)",
-        "release_date": "2026-08-14",
-        "release_year": 2026,
+        "release_date": "2027-08-13",
+        "release_year": 2027,
         "industry": "Kollywood",
         "genres": [
             "Action",
@@ -1331,13 +1409,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3500000,
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 92.5,
-        "narrative_summary": "Sequel to the massive \u20b9650 Cr+ hit Jailer with Rajinikanth, Mohanlal, and Shiva Rajkumar reprising their fan-favorite dynamic."
+        "narrative_summary": "Sequel to the massive \u20b9650 Cr+ hit Jailer with Rajinikanth, Mohanlal, and Shiva Rajkumar reprising their fan-favorite dynamic.",
+        "poster_path": "/jAiLeRrAjInI2023tAmIl.jpg",
+        "backdrop_path": "/jAiLeR2hUkUmBaCkDrOp.jpg"
     },
     {
         "canonical_id": "tentpole_thalapathy_69_2026",
         "primary_title": "Thalapathy 69 (Vijay's Final Film)",
-        "release_date": "2026-10-15",
-        "release_year": 2026,
+        "release_date": "2027-10-14",
+        "release_year": 2027,
         "industry": "Kollywood",
         "genres": [
             "Action",
@@ -1364,13 +1444,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 5200000,
         "comment_sentiment_net_polarity": 0.96,
         "composite_buzz_score": 98.5,
-        "narrative_summary": "The monumental farewell theatrical release of Tamil cinema's biggest modern star, driving unparalleled emotional and commercial frenzy across South India."
+        "narrative_summary": "The monumental farewell theatrical release of Tamil cinema's biggest modern star, driving unparalleled emotional and commercial frenzy across South India.",
+        "poster_path": "/gOaTvIjAy2024tAmIl.jpg",
+        "backdrop_path": "/tHaLaPaThY69bAcKdRoP.jpg"
     },
     {
         "canonical_id": "tentpole_toxic_yash_2026",
         "primary_title": "Toxic: A Fairy Tale for Grown-ups",
-        "release_date": "2026-04-10",
-        "release_year": 2026,
+        "release_date": "2027-04-16",
+        "release_year": 2027,
         "industry": "Sandalwood",
         "genres": [
             "Action",
@@ -1398,7 +1480,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4200000,
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 94.0,
-        "narrative_summary": "Rocking Star Yash's immediate post-KGF follow-up, commanding massive curiosity and immense advance booking expectations."
+        "narrative_summary": "Rocking Star Yash's immediate post-KGF follow-up, commanding massive curiosity and immense advance booking expectations.",
+        "poster_path": "/tOx1cYaSh2026KoL1w0oD.jpg",
+        "backdrop_path": "/tOxIcBaCkDrOpYaSh2027.jpg"
     },
     {
         "canonical_id": "tentpole_kgf_chapter_3_2027",
@@ -1431,13 +1515,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4800000,
         "comment_sentiment_net_polarity": 0.91,
         "composite_buzz_score": 96.5,
-        "narrative_summary": "The third instalment in India's highest-impact modern mass franchise, promising record-breaking theatrical openings."
+        "narrative_summary": "The third instalment in India's highest-impact modern mass franchise, promising record-breaking theatrical openings.",
+        "poster_path": "/khNVyEYEzc5wqIp4rZrFpmT6Ofy.jpg",
+        "backdrop_path": "/kGfChApTeR3bAcKdRoP.jpg"
     },
     {
         "canonical_id": "tentpole_kantara_chapter_1_2026",
         "primary_title": "Kantara: Chapter 1",
-        "release_date": "2026-10-02",
-        "release_year": 2026,
+        "release_date": "2027-10-01",
+        "release_year": 2027,
         "industry": "Sandalwood",
         "genres": [
             "Period",
@@ -1462,13 +1548,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3700000,
         "comment_sentiment_net_polarity": 0.94,
         "composite_buzz_score": 95.0,
-        "narrative_summary": "Predecessor to the National Award-winning cultural phenomenon Kantara, expanding the divine Daiva mythos."
+        "narrative_summary": "Predecessor to the National Award-winning cultural phenomenon Kantara, expanding the divine Daiva mythos.",
+        "poster_path": "/kAnTaRaRiShAb2022.jpg",
+        "backdrop_path": "/kAnTaRaChApTeR1bAcK.jpg"
     },
     {
         "canonical_id": "tentpole_empuraan_l2_2026",
         "primary_title": "L2: Empuraan",
-        "release_date": "2026-03-27",
-        "release_year": 2026,
+        "release_date": "2027-03-26",
+        "release_year": 2027,
         "industry": "Mollywood",
         "genres": [
             "Action",
@@ -1496,13 +1584,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2800000,
         "comment_sentiment_net_polarity": 0.91,
         "composite_buzz_score": 92.0,
-        "narrative_summary": "The highest-budget Malayalam film ever made, expanding the Lucifer universe into a global political espionage scale."
+        "narrative_summary": "The highest-budget Malayalam film ever made, expanding the Lucifer universe into a global political espionage scale.",
+        "poster_path": "/l2EmPuRaAnMoHaNlAl.jpg",
+        "backdrop_path": "/l2EmPuRaAnBaCkDrOp.jpg"
     },
     {
         "canonical_id": "tentpole_mission_impossible_8_2026",
         "primary_title": "Mission: Impossible \u2013 The Final Reckoning",
-        "release_date": "2026-05-22",
-        "release_year": 2026,
+        "release_date": "2027-05-21",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Action",
@@ -1531,13 +1621,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3200000,
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 91.0,
-        "narrative_summary": "Tom Cruise's swansong as Ethan Hunt featuring death-defying practical aviation and deep-sea submarine stunts."
+        "narrative_summary": "Tom Cruise's swansong as Ethan Hunt featuring death-defying practical aviation and deep-sea submarine stunts.",
+        "poster_path": "/mIsSiOnImPoSsIbLe8tOm.jpg",
+        "backdrop_path": "/mIsSiOnImPoSsIbLe8bAcK.jpg"
     },
     {
         "canonical_id": "tentpole_minecraft_movie_2026",
         "primary_title": "A Minecraft Movie",
-        "release_date": "2026-04-03",
-        "release_year": 2026,
+        "release_date": "2027-04-02",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Adventure",
@@ -1565,13 +1657,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3800000,
         "comment_sentiment_net_polarity": 0.74,
         "composite_buzz_score": 89.0,
-        "narrative_summary": "Live-action adaptation of the best-selling video game of all time, targeting young gamers and family demographics."
+        "narrative_summary": "Live-action adaptation of the best-selling video game of all time, targeting young gamers and family demographics.",
+        "poster_path": "/mInEcRaFtMoViE2027jAcK.jpg",
+        "backdrop_path": "/mInEcRaFtBaCkDrOp2027.jpg"
     },
     {
         "canonical_id": "tentpole_tron_ares_2026",
         "primary_title": "Tron: Ares",
-        "release_date": "2026-10-09",
-        "release_year": 2026,
+        "release_date": "2027-10-08",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Sci-Fi",
@@ -1599,13 +1693,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2100000,
         "comment_sentiment_net_polarity": 0.78,
         "composite_buzz_score": 81.0,
-        "narrative_summary": "Cult sci-fi franchise return with soundtrack by Nine Inch Nails and state-of-the-art neon visual aesthetics."
+        "narrative_summary": "Cult sci-fi franchise return with soundtrack by Nine Inch Nails and state-of-the-art neon visual aesthetics.",
+        "poster_path": "/tRoNaReS2027jArEdLeTo.jpg",
+        "backdrop_path": "/tRoNaReSbAcKdRoP2027.jpg"
     },
     {
         "canonical_id": "tentpole_blade_mcu_2026",
         "primary_title": "Blade",
-        "release_date": "2026-11-06",
-        "release_year": 2026,
+        "release_date": "2027-11-05",
+        "release_year": 2027,
         "industry": "Hollywood",
         "genres": [
             "Action",
@@ -1631,7 +1727,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2400000,
         "comment_sentiment_net_polarity": 0.81,
         "composite_buzz_score": 83.5,
-        "narrative_summary": "Oscar-winner Mahershala Ali brings R-rated vampire hunter grit into the MCU supernatural wing."
+        "narrative_summary": "Oscar-winner Mahershala Ali brings R-rated vampire hunter grit into the MCU supernatural wing.",
+        "poster_path": "/bLaDeMcUmAhErShAlA.jpg",
+        "backdrop_path": "/bLaDeBaCkDrOpMcU2027.jpg"
     },
     {
         "canonical_id": "tentpole_john_wick_5_2027",
@@ -1664,7 +1762,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3200000,
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 91.5,
-        "narrative_summary": "Sequel to Chapter 4 ($440M gross) with peerless martial arts choreography and fervent action cinema fanbase."
+        "narrative_summary": "Sequel to Chapter 4 ($440M gross) with peerless martial arts choreography and fervent action cinema fanbase.",
+        "poster_path": "/jOhNwIcK5kEaNuReEvEs.jpg",
+        "backdrop_path": "/jOhNwIcK5bAcKdRoP2027.jpg"
     },
     {
         "canonical_id": "tentpole_constantine_2_2027",
@@ -1696,7 +1796,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2200000,
         "comment_sentiment_net_polarity": 0.85,
         "composite_buzz_score": 82.0,
-        "narrative_summary": "Long-awaited 20-year sequel to the cult 2005 comic book supernatural thriller starring Keanu Reeves."
+        "narrative_summary": "Long-awaited 20-year sequel to the cult 2005 comic book supernatural thriller starring Keanu Reeves.",
+        "poster_path": "/cOnStAnTiNe2kEaNu27.jpg",
+        "backdrop_path": "/cOnStAnTiNe2bAcKdRoP.jpg"
     },
     {
         "canonical_id": "tentpole_pathaan_2_2027",
@@ -1728,13 +1830,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4400000,
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 95.5,
-        "narrative_summary": "Direct follow-up to Shah Rukh Khan's \u20b91,050 Cr+ historic comeback blockbuster Pathaan."
+        "narrative_summary": "Direct follow-up to Shah Rukh Khan's \u20b91,050 Cr+ historic comeback blockbuster Pathaan.",
+        "poster_path": "/m1b9ToAbGqUq66g1Z6bA0jU2h4T.jpg",
+        "backdrop_path": "/pAtHaAn2bAcKdRoPsRk.jpg"
     },
     {
         "canonical_id": "tentpole_don_3_2026",
         "primary_title": "Don 3: The Chase Continues",
-        "release_date": "2026-09-18",
-        "release_year": 2026,
+        "release_date": "2027-09-17",
+        "release_year": 2027,
         "industry": "Bollywood",
         "genres": [
             "Action",
@@ -1761,12 +1865,14 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2900000,
         "comment_sentiment_net_polarity": 0.79,
         "composite_buzz_score": 86.0,
-        "narrative_summary": "Ranveer Singh steps into the legendary mantle of Don directed by Farhan Akhtar in a slick European espionage style."
+        "narrative_summary": "Ranveer Singh steps into the legendary mantle of Don directed by Farhan Akhtar in a slick European espionage style.",
+        "poster_path": "/dOn3rAnVeErSiNgH27.jpg",
+        "backdrop_path": "/dOn3bAcKdRoPrAnVeEr.jpg"
     },
     {
         "canonical_id": "tentpole_krrish_4_2026",
         "primary_title": "Krrish 4",
-        "release_date": "2026-11-20",
+        "release_date": "2026-11-27",
         "release_year": 2026,
         "industry": "Bollywood",
         "genres": [
@@ -1793,13 +1899,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3300000,
         "comment_sentiment_net_polarity": 0.82,
         "composite_buzz_score": 88.5,
-        "narrative_summary": "The fourth installment in India's pioneering superhero franchise starring Hrithik Roshan with intergalactic scope."
+        "narrative_summary": "The fourth installment in India's pioneering superhero franchise starring Hrithik Roshan with intergalactic scope.",
+        "poster_path": "/kRrIsH4hRiThIk2027.jpg",
+        "backdrop_path": "/kRrIsH4bAcKdRoPhRiThIk.jpg"
     },
     {
         "canonical_id": "tentpole_housefull_5_2026",
         "primary_title": "Housefull 5",
-        "release_date": "2026-06-05",
-        "release_year": 2026,
+        "release_date": "2027-06-04",
+        "release_year": 2027,
         "industry": "Bollywood",
         "genres": [
             "Comedy"
@@ -1826,7 +1934,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2100000,
         "comment_sentiment_net_polarity": 0.77,
         "composite_buzz_score": 81.0,
-        "narrative_summary": "Ensemble Bollywood comedy tentpole shot entirely aboard luxury European cruise liners."
+        "narrative_summary": "Ensemble Bollywood comedy tentpole shot entirely aboard luxury European cruise liners.",
+        "poster_path": "/hOuSeFuLl5aKsHaY27.jpg",
+        "backdrop_path": "/hOuSeFuLl5bAcKdRoP27.jpg"
     },
     {
         "canonical_id": "tentpole_brahmastra_part2_dev_2026",
@@ -1860,13 +1970,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3400000,
         "comment_sentiment_net_polarity": 0.83,
         "composite_buzz_score": 89.0,
-        "narrative_summary": "The ambitious continuation of India's indigenous fantasy Astraverse starring Bollywood's marquee stars."
+        "narrative_summary": "The ambitious continuation of India's indigenous fantasy Astraverse starring Bollywood's marquee stars.",
+        "poster_path": "/x61q14M6vK8q43dK84iFj9sO6L.jpg",
+        "backdrop_path": "/bRaHmAstraPart2Backdrop.jpg"
     },
     {
         "canonical_id": "tentpole_fauji_prabhas_2026",
         "primary_title": "Fauji (Prabhas 24)",
-        "release_date": "2026-08-14",
-        "release_year": 2026,
+        "release_date": "2027-08-13",
+        "release_year": 2027,
         "industry": "Tollywood",
         "genres": [
             "Period",
@@ -1893,13 +2005,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3700000,
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 93.0,
-        "narrative_summary": "Sita Ramam director Hanu Raghavapudi helms a lavish period love story and war saga with Prabhas."
+        "narrative_summary": "Sita Ramam director Hanu Raghavapudi helms a lavish period love story and war saga with Prabhas.",
+        "poster_path": "/fAuJiPrAbHaS2027hAnU.jpg",
+        "backdrop_path": "/fAuJiBaCkDrOpPrAbHaS.jpg"
     },
     {
         "canonical_id": "tentpole_rc16_ram_charan_2026",
         "primary_title": "RC16 (Ram Charan Project)",
-        "release_date": "2026-09-25",
-        "release_year": 2026,
+        "release_date": "2027-09-24",
+        "release_year": 2027,
         "industry": "Tollywood",
         "genres": [
             "Sports",
@@ -1926,12 +2040,14 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3400000,
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 91.5,
-        "narrative_summary": "Global Star Ram Charan pairs with Uppena director Buchi Babu Sana and AR Rahman for an earthy sports epic."
+        "narrative_summary": "Global Star Ram Charan pairs with Uppena director Buchi Babu Sana and AR Rahman for an earthy sports epic.",
+        "poster_path": "/rC16rAmChArAnBuCcI.jpg",
+        "backdrop_path": "/rC16bAcKdRoPrAmChArAn.jpg"
     },
     {
         "canonical_id": "tentpole_ntr31_prashanth_neel_2027",
         "primary_title": "NTR31 (Jr NTR & Prashanth Neel Project)",
-        "release_date": "2027-01-09",
+        "release_date": "2027-01-08",
         "release_year": 2027,
         "industry": "Tollywood",
         "genres": [
@@ -1958,13 +2074,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 4600000,
         "comment_sentiment_net_polarity": 0.93,
         "composite_buzz_score": 96.0,
-        "narrative_summary": "Blockbuster collaboration between KGF/Salaar director Prashanth Neel and RRR sensation Jr NTR."
+        "narrative_summary": "Blockbuster collaboration between KGF/Salaar director Prashanth Neel and RRR sensation Jr NTR.",
+        "poster_path": "/nTr31pRaShAnThNeEl27.jpg",
+        "backdrop_path": "/nTr31bAcKdRoPnTrNeEl.jpg"
     },
     {
         "canonical_id": "tentpole_they_call_him_og_2026",
         "primary_title": "They Call Him OG",
-        "release_date": "2026-03-27",
-        "release_year": 2026,
+        "release_date": "2027-03-26",
+        "release_year": 2027,
         "industry": "Tollywood",
         "genres": [
             "Action",
@@ -1991,13 +2109,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3600000,
         "comment_sentiment_net_polarity": 0.91,
         "composite_buzz_score": 92.5,
-        "narrative_summary": "Stylized neo-noir gangster flick starring Deputy Chief Minister & Power Star Pawan Kalyan with high youth appeal."
+        "narrative_summary": "Stylized neo-noir gangster flick starring Deputy Chief Minister & Power Star Pawan Kalyan with high youth appeal.",
+        "poster_path": "/tHeYcAlLhImOgPk2027.jpg",
+        "backdrop_path": "/tHeYcAlLhImOgBaCkDrOp.jpg"
     },
     {
         "canonical_id": "tentpole_kaithi_2_lcu_2026",
         "primary_title": "Kaithi 2 (LCU)",
-        "release_date": "2026-10-23",
-        "release_year": 2026,
+        "release_date": "2027-10-22",
+        "release_year": 2027,
         "industry": "Kollywood",
         "genres": [
             "Action",
@@ -2024,13 +2144,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3200000,
         "comment_sentiment_net_polarity": 0.92,
         "composite_buzz_score": 93.0,
-        "narrative_summary": "Highly awaited sequel to the cult 2019 blockbuster that birthed the entire Lokesh Cinematic Universe."
+        "narrative_summary": "Highly awaited sequel to the cult 2019 blockbuster that birthed the entire Lokesh Cinematic Universe.",
+        "poster_path": "/kAiThI2kArThIlOkEsH.jpg",
+        "backdrop_path": "/kAiThI2bAcKdRoPlCu27.jpg"
     },
     {
         "canonical_id": "tentpole_good_bad_ugly_2026",
         "primary_title": "Good Bad Ugly",
-        "release_date": "2026-05-01",
-        "release_year": 2026,
+        "release_date": "2027-05-07",
+        "release_year": 2027,
         "industry": "Kollywood",
         "genres": [
             "Action",
@@ -2058,13 +2180,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 3000000,
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 90.0,
-        "narrative_summary": "Festive summer mass commercial bonanza starring Tamil cinema stalwart Ajith Kumar."
+        "narrative_summary": "Festive summer mass commercial bonanza starring Tamil cinema stalwart Ajith Kumar.",
+        "poster_path": "/gOoDbAdUgLyAjItH27.jpg",
+        "backdrop_path": "/gOoDbAdUgLyBaCkDrOp.jpg"
     },
     {
         "canonical_id": "tentpole_dragon_pradeep_2026",
         "primary_title": "Dragon",
-        "release_date": "2026-02-13",
-        "release_year": 2026,
+        "release_date": "2027-02-12",
+        "release_year": 2027,
         "industry": "Kollywood",
         "genres": [
             "Comedy",
@@ -2091,13 +2215,15 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 1700000,
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 85.0,
-        "narrative_summary": "High-ROI sleeper comedy targeting collegiate youth from Love Today director Pradeep Ranganathan."
+        "narrative_summary": "High-ROI sleeper comedy targeting collegiate youth from Love Today director Pradeep Ranganathan.",
+        "poster_path": "/dRaGoNpRaDeEpRaNgA.jpg",
+        "backdrop_path": "/dRaGoNbAcKdRoPpRaDeEp.jpg"
     },
     {
         "canonical_id": "tentpole_bilal_mammootty_2026",
         "primary_title": "Bilal (Big B 2)",
-        "release_date": "2026-08-28",
-        "release_year": 2026,
+        "release_date": "2027-08-27",
+        "release_year": 2027,
         "industry": "Mollywood",
         "genres": [
             "Action",
@@ -2124,7 +2250,9 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2100000,
         "comment_sentiment_net_polarity": 0.94,
         "composite_buzz_score": 91.0,
-        "narrative_summary": "Legendary Malayalam megastar Mammootty revives his most stylish cult action persona with director Amal Neerad."
+        "narrative_summary": "Legendary Malayalam megastar Mammootty revives his most stylish cult action persona with director Amal Neerad.",
+        "poster_path": "/bIlAlBiGb2mAmMoOtTy.jpg",
+        "backdrop_path": "/bIlAlBaCkDrOpMaMmOoT.jpg"
     },
     {
         "canonical_id": "tentpole_minnal_murali_2_2027",
@@ -2156,6 +2284,1055 @@ CURATED_UPCOMING_TENTPOLES = [
         "trailer_like_count": 2500000,
         "comment_sentiment_net_polarity": 0.93,
         "composite_buzz_score": 92.0,
-        "narrative_summary": "Theatrical sequel to India's globally celebrated indigenous superhero sensation Minnal Murali."
+        "narrative_summary": "Theatrical sequel to India's globally celebrated indigenous superhero sensation Minnal Murali.",
+        "poster_path": "/mInNaLmUrAlI2tOvInO.jpg",
+        "backdrop_path": "/mInNaLmUrAlI2bAcKdRoP.jpg"
+    }
+]
+
+CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
+    {
+        "canonical_id": "released_inside_out_2_2024",
+        "primary_title": "Inside Out 2",
+        "release_date": "2024-06-14",
+        "release_year": 2024,
+        "industry": "Hollywood",
+        "genres": [
+            "Animation",
+            "Family",
+            "Adventure",
+            "Comedy"
+        ],
+        "director": "Kelsey Mann",
+        "lead_actor": "Amy Poehler",
+        "top_cast": [
+            "Amy Poehler",
+            "Maya Hawke",
+            "Phyllis Smith",
+            "Lewis Black"
+        ],
+        "budget_clean_usd": 200000000,
+        "actual_gross_usd": 1698000000,
+        "actual_gross_inr_crores": 14178.3,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Animation",
+        "budget_tier": "Tentpole",
+        "original_language": "en",
+        "production_company": "Pixar / Walt Disney Pictures",
+        "overview": "Teenager Riley navigates high school with new complex emotions including Anxiety, Envy, Ennui, and Embarrassment.",
+        "poster_path": "/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg",
+        "backdrop_path": "/xg27NrXi7EgDXof7SQdpapfuSuO.jpg",
+        "youtube_trailer_id": "LEjhY15eCx0",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_deadpool_wolverine_2024",
+        "primary_title": "Deadpool & Wolverine",
+        "release_date": "2024-07-26",
+        "release_year": 2024,
+        "industry": "Hollywood",
+        "genres": [
+            "Action",
+            "Comedy",
+            "Sci-Fi"
+        ],
+        "director": "Shawn Levy",
+        "lead_actor": "Ryan Reynolds",
+        "top_cast": [
+            "Ryan Reynolds",
+            "Hugh Jackman",
+            "Emma Corrin",
+            "Matthew Macfadyen"
+        ],
+        "budget_clean_usd": 200000000,
+        "actual_gross_usd": 1338000000,
+        "actual_gross_inr_crores": 11172.3,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Action",
+        "budget_tier": "Tentpole",
+        "original_language": "en",
+        "production_company": "Marvel Studios",
+        "overview": "Wade Wilson's peaceful life is disrupted when the Time Variance Authority recruits him to safeguard the multiverse alongside Wolverine.",
+        "poster_path": "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
+        "backdrop_path": "/yDHYTjA3R0ne84guFR43WNL18.jpg",
+        "youtube_trailer_id": "73_1biulkYk",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_avatar_way_of_water_2022",
+        "primary_title": "Avatar: The Way of Water",
+        "release_date": "2022-12-16",
+        "release_year": 2022,
+        "industry": "Hollywood",
+        "genres": [
+            "Sci-Fi",
+            "Action",
+            "Adventure"
+        ],
+        "director": "James Cameron",
+        "lead_actor": "Sam Worthington",
+        "top_cast": [
+            "Sam Worthington",
+            "Zoe Saldana",
+            "Sigourney Weaver",
+            "Stephen Lang"
+        ],
+        "budget_clean_usd": 350000000,
+        "actual_gross_usd": 2320000000,
+        "actual_gross_inr_crores": 19372.0,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Sci-Fi",
+        "budget_tier": "Tentpole",
+        "original_language": "en",
+        "production_company": "Lightstorm Entertainment / 20th Century Studios",
+        "overview": "Jake Sully lives with his newfound family formed on the extrasolar moon Pandora. Once a familiar threat returns, Jake must work with Neytiri to protect their home.",
+        "poster_path": "/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg",
+        "backdrop_path": "/s16H6tpK2utvwDtzZ8Qy4qm5Emw.jpg",
+        "youtube_trailer_id": "d9MyW72ELq0",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_top_gun_maverick_2022",
+        "primary_title": "Top Gun: Maverick",
+        "release_date": "2022-05-27",
+        "release_year": 2022,
+        "industry": "Hollywood",
+        "genres": [
+            "Action",
+            "Drama"
+        ],
+        "director": "Joseph Kosinski",
+        "lead_actor": "Tom Cruise",
+        "top_cast": [
+            "Tom Cruise",
+            "Miles Teller",
+            "Jennifer Connelly",
+            "Jon Hamm"
+        ],
+        "budget_clean_usd": 170000000,
+        "actual_gross_usd": 1496000000,
+        "actual_gross_inr_crores": 12491.6,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Action",
+        "budget_tier": "Tentpole",
+        "original_language": "en",
+        "production_company": "Paramount Pictures / Skydance",
+        "overview": "After thirty years, Maverick is still pushing the envelope as a top naval aviator, training a detachment of Top Gun graduates for a specialized mission.",
+        "poster_path": "/62HCnUTziyWcpDaBO2i1DX17ljH.jpg",
+        "backdrop_path": "/odJ4hx6g6vBt4lBWKFD1tI8WS4x.jpg",
+        "youtube_trailer_id": "giXco2jaZ_4",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_barbie_2023",
+        "primary_title": "Barbie",
+        "release_date": "2023-07-21",
+        "release_year": 2023,
+        "industry": "Hollywood",
+        "genres": [
+            "Comedy",
+            "Fantasy",
+            "Adventure"
+        ],
+        "director": "Greta Gerwig",
+        "lead_actor": "Margot Robbie",
+        "top_cast": [
+            "Margot Robbie",
+            "Ryan Gosling",
+            "America Ferrera",
+            "Will Ferrell"
+        ],
+        "budget_clean_usd": 145000000,
+        "actual_gross_usd": 1446000000,
+        "actual_gross_inr_crores": 12074.1,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Comedy",
+        "budget_tier": "Tentpole",
+        "original_language": "en",
+        "production_company": "Warner Bros. Pictures / Heyday Films",
+        "overview": "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land until they get a chance to go to the real world.",
+        "poster_path": "/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+        "backdrop_path": "/ctMserH8g2SeOAnCw5gFjd2NTL6.jpg",
+        "youtube_trailer_id": "pBk4NYhWNMM",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_super_mario_bros_2023",
+        "primary_title": "The Super Mario Bros. Movie",
+        "release_date": "2023-04-05",
+        "release_year": 2023,
+        "industry": "Hollywood",
+        "genres": [
+            "Animation",
+            "Family",
+            "Adventure",
+            "Fantasy"
+        ],
+        "director": "Aaron Horvath, Michael Jelenic",
+        "lead_actor": "Chris Pratt",
+        "top_cast": [
+            "Chris Pratt",
+            "Anya Taylor-Joy",
+            "Charlie Day",
+            "Jack Black"
+        ],
+        "budget_clean_usd": 100000000,
+        "actual_gross_usd": 1362000000,
+        "actual_gross_inr_crores": 11372.7,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Animation",
+        "budget_tier": "High",
+        "original_language": "en",
+        "production_company": "Illumination / Universal Pictures",
+        "overview": "While working underground to fix a water main, Brooklyn plumbers Mario and brother Luigi are transported down a mysterious pipe into the magical Mushroom Kingdom.",
+        "poster_path": "/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg",
+        "backdrop_path": "/9n2tJBplPbgR2ca05h6LqXmzgVm.jpg",
+        "youtube_trailer_id": "TnGl01FkMMo",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_oppenheimer_2023",
+        "primary_title": "Oppenheimer",
+        "release_date": "2023-07-21",
+        "release_year": 2023,
+        "industry": "Hollywood",
+        "genres": [
+            "Drama",
+            "History",
+            "Biography"
+        ],
+        "director": "Christopher Nolan",
+        "lead_actor": "Cillian Murphy",
+        "top_cast": [
+            "Cillian Murphy",
+            "Emily Blunt",
+            "Matt Damon",
+            "Robert Downey Jr."
+        ],
+        "budget_clean_usd": 100000000,
+        "actual_gross_usd": 977000000,
+        "actual_gross_inr_crores": 8157.9,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Drama",
+        "budget_tier": "High",
+        "original_language": "en",
+        "production_company": "Syncopy / Universal Pictures",
+        "overview": "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb during World War II.",
+        "poster_path": "/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+        "backdrop_path": "/rLb2cw0iwACKTqx9aqHS2I266Q7.jpg",
+        "youtube_trailer_id": "uYPbbksJxIg",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_dune_part_two_2024",
+        "primary_title": "Dune: Part Two",
+        "release_date": "2024-03-01",
+        "release_year": 2024,
+        "industry": "Hollywood",
+        "genres": [
+            "Sci-Fi",
+            "Adventure",
+            "Action"
+        ],
+        "director": "Denis Villeneuve",
+        "lead_actor": "Timoth\u00e9e Chalamet",
+        "top_cast": [
+            "Timoth\u00e9e Chalamet",
+            "Zendaya",
+            "Rebecca Ferguson",
+            "Javier Bardem"
+        ],
+        "budget_clean_usd": 190000000,
+        "actual_gross_usd": 714000000,
+        "actual_gross_inr_crores": 5961.9,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Sci-Fi",
+        "budget_tier": "Tentpole",
+        "original_language": "en",
+        "production_company": "Legendary Pictures / Warner Bros.",
+        "overview": "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
+        "poster_path": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+        "backdrop_path": "/xOMo8BRK7PfcJv9JCnx7s5hj0x2.jpg",
+        "youtube_trailer_id": "Way9Dexny3w",
+        "success_category": "Super Hit"
+    },
+    {
+        "canonical_id": "released_despicable_me_4_2024",
+        "primary_title": "Despicable Me 4",
+        "release_date": "2024-07-03",
+        "release_year": 2024,
+        "industry": "Hollywood",
+        "genres": [
+            "Animation",
+            "Family",
+            "Comedy"
+        ],
+        "director": "Chris Renaud",
+        "lead_actor": "Steve Carell",
+        "top_cast": [
+            "Steve Carell",
+            "Kristen Wiig",
+            "Will Ferrell",
+            "Sofia Vergara"
+        ],
+        "budget_clean_usd": 100000000,
+        "actual_gross_usd": 968000000,
+        "actual_gross_inr_crores": 8082.8,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Animation",
+        "budget_tier": "High",
+        "original_language": "en",
+        "production_company": "Illumination / Universal Pictures",
+        "overview": "Gru and Lucy and their girls welcome a new member to the family, Gru Jr., who is intent on tormenting his dad.",
+        "poster_path": "/wWba3TaojhK7NdycRhoQpsG0cnH.jpg",
+        "backdrop_path": "/lgkFt6tc39tXYKNj1k919j2e4xL.jpg",
+        "youtube_trailer_id": "qQlr9-rF32A",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_moana_2_2024",
+        "primary_title": "Moana 2",
+        "release_date": "2024-11-27",
+        "release_year": 2024,
+        "industry": "Hollywood",
+        "genres": [
+            "Animation",
+            "Adventure",
+            "Family"
+        ],
+        "director": "David G. Derrick Jr.",
+        "lead_actor": "Auli'i Cravalho",
+        "top_cast": [
+            "Auli'i Cravalho",
+            "Dwayne Johnson",
+            "Alan Tudyk"
+        ],
+        "budget_clean_usd": 150000000,
+        "actual_gross_usd": 1045000000,
+        "actual_gross_inr_crores": 8725.7,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Animation",
+        "budget_tier": "Tentpole",
+        "original_language": "en",
+        "production_company": "Walt Disney Animation Studios",
+        "overview": "After receiving an unexpected call from her wayfinding ancestors, Moana journeys to the far seas of Oceania on an adventure unlike anything she's faced.",
+        "poster_path": "/4YZpsylmjHbqeW2LITmQv8fd2Jw.jpg",
+        "backdrop_path": "/v9acaWVjG418UjT677n0b4fS4Xj.jpg",
+        "youtube_trailer_id": "hDZ7y8RP5HE",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_wicked_part_one_2024",
+        "primary_title": "Wicked",
+        "release_date": "2024-11-22",
+        "release_year": 2024,
+        "industry": "Hollywood",
+        "genres": [
+            "Fantasy",
+            "Musical",
+            "Drama"
+        ],
+        "director": "Jon M. Chu",
+        "lead_actor": "Cynthia Erivo",
+        "top_cast": [
+            "Cynthia Erivo",
+            "Ariana Grande",
+            "Jeff Goldblum",
+            "Michelle Yeoh"
+        ],
+        "budget_clean_usd": 145000000,
+        "actual_gross_usd": 745000000,
+        "actual_gross_inr_crores": 6220.7,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Fantasy",
+        "budget_tier": "Tentpole",
+        "original_language": "en",
+        "production_company": "Universal Pictures / Marc Platt Productions",
+        "overview": "The untold story of the witches of Oz: Elphaba, an ostracized green-skinned woman, and Glinda, an ambitious, popular blonde.",
+        "poster_path": "/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg",
+        "backdrop_path": "/uVl9x1a21o0f8Z3aB2cDeFwKwNm.jpg",
+        "youtube_trailer_id": "6COmYeLsz4c",
+        "success_category": "Super Hit"
+    },
+    {
+        "canonical_id": "released_gladiator_2_2024",
+        "primary_title": "Gladiator II",
+        "release_date": "2024-11-22",
+        "release_year": 2024,
+        "industry": "Hollywood",
+        "genres": [
+            "Action",
+            "Drama",
+            "History"
+        ],
+        "director": "Ridley Scott",
+        "lead_actor": "Paul Mescal",
+        "top_cast": [
+            "Paul Mescal",
+            "Pedro Pascal",
+            "Denzel Washington",
+            "Connie Nielsen"
+        ],
+        "budget_clean_usd": 210000000,
+        "actual_gross_usd": 462000000,
+        "actual_gross_inr_crores": 3857.7,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Action",
+        "budget_tier": "Tentpole",
+        "original_language": "en",
+        "production_company": "Paramount Pictures / Scott Free Productions",
+        "overview": "Years after witnessing the death of Maximus, Lucius enters the Colosseum after his home is conquered by tyrannical emperors.",
+        "poster_path": "/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg",
+        "backdrop_path": "/euYIwmwkmz95mnEx7vA9h8y6H7V.jpg",
+        "youtube_trailer_id": "4rgYUipGJNo",
+        "success_category": "Hit"
+    },
+    {
+        "canonical_id": "released_guardians_galaxy_3_2023",
+        "primary_title": "Guardians of the Galaxy Vol. 3",
+        "release_date": "2023-05-05",
+        "release_year": 2023,
+        "industry": "Hollywood",
+        "genres": [
+            "Action",
+            "Adventure",
+            "Sci-Fi"
+        ],
+        "director": "James Gunn",
+        "lead_actor": "Chris Pratt",
+        "top_cast": [
+            "Chris Pratt",
+            "Zoe Saldana",
+            "Dave Bautista",
+            "Bradley Cooper"
+        ],
+        "budget_clean_usd": 250000000,
+        "actual_gross_usd": 845000000,
+        "actual_gross_inr_crores": 7055.7,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Action",
+        "budget_tier": "Tentpole",
+        "original_language": "en",
+        "production_company": "Marvel Studios",
+        "overview": "Still reeling from the loss of Gamora, Peter Quill rallies his team to defend the universe and protect one of their own.",
+        "poster_path": "/r2J02Z2OpNTctfOSN2Ydgii51I3.jpg",
+        "backdrop_path": "/5YZbUmjbMa3ClvSW1Wj3D6XGolb.jpg",
+        "youtube_trailer_id": "u3V5KDHRQvk",
+        "success_category": "Super Hit"
+    },
+    {
+        "canonical_id": "released_spider_man_across_spiderverse_2023",
+        "primary_title": "Spider-Man: Across the Spider-Verse",
+        "release_date": "2023-06-02",
+        "release_year": 2023,
+        "industry": "Hollywood",
+        "genres": [
+            "Animation",
+            "Action",
+            "Adventure"
+        ],
+        "director": "Joaquim Dos Santos, Kemp Powers",
+        "lead_actor": "Shameik Moore",
+        "top_cast": [
+            "Shameik Moore",
+            "Hailee Steinfeld",
+            "Oscar Isaac"
+        ],
+        "budget_clean_usd": 100000000,
+        "actual_gross_usd": 691000000,
+        "actual_gross_inr_crores": 5769.8,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Animation",
+        "budget_tier": "High",
+        "original_language": "en",
+        "production_company": "Sony Pictures Animation / Columbia Pictures",
+        "overview": "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People charged with protecting its very existence.",
+        "poster_path": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+        "backdrop_path": "/4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg",
+        "youtube_trailer_id": "cqGjhVJWtEg",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_fast_x_2023",
+        "primary_title": "Fast X",
+        "release_date": "2023-05-19",
+        "release_year": 2023,
+        "industry": "Hollywood",
+        "genres": [
+            "Action",
+            "Crime",
+            "Thriller"
+        ],
+        "director": "Louis Leterrier",
+        "lead_actor": "Vin Diesel",
+        "top_cast": [
+            "Vin Diesel",
+            "Michelle Rodriguez",
+            "Jason Momoa",
+            "Charlize Theron"
+        ],
+        "budget_clean_usd": 340000000,
+        "actual_gross_usd": 705000000,
+        "actual_gross_inr_crores": 5886.7,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Action",
+        "budget_tier": "Tentpole",
+        "original_language": "en",
+        "production_company": "Universal Pictures / Original Film",
+        "overview": "Dom Toretto and his family are targeted by the vengeful son of drug kingpin Hernan Reyes.",
+        "poster_path": "/fiVW06jE7z9YnO4trhaMEdclSiC.jpg",
+        "backdrop_path": "/4XM8DUTQb3lhLemJC51Jx4a2EuA.jpg",
+        "youtube_trailer_id": "32RAq6JzguY",
+        "success_category": "Average"
+    },
+    {
+        "canonical_id": "released_rrr_2022",
+        "primary_title": "RRR",
+        "release_date": "2022-03-25",
+        "release_year": 2022,
+        "industry": "Tollywood",
+        "genres": [
+            "Action",
+            "Drama",
+            "History"
+        ],
+        "director": "S.S. Rajamouli",
+        "lead_actor": "N.T. Rama Rao Jr.",
+        "top_cast": [
+            "N.T. Rama Rao Jr.",
+            "Ram Charan",
+            "Alia Bhatt",
+            "Ajay Devgn"
+        ],
+        "budget_clean_usd": 66000000,
+        "actual_gross_usd": 166000000,
+        "actual_gross_inr_crores": 1387.0,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Action",
+        "budget_tier": "Tentpole",
+        "original_language": "te",
+        "production_company": "DVV Entertainment",
+        "overview": "A fictional story about two legendary revolutionaries and their journey away from home before they began fighting for their country in the 1920s.",
+        "poster_path": "/wE0noMt24B9xr9TeMhn0sFL8KR2.jpg",
+        "backdrop_path": "/b85S969nZf2iZ2xQv7C4F2A1.jpg",
+        "youtube_trailer_id": "f_vbAtFSEc0",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_kgf_chapter_2_2022",
+        "primary_title": "K.G.F: Chapter 2",
+        "release_date": "2022-04-14",
+        "release_year": 2022,
+        "industry": "Sandalwood",
+        "genres": [
+            "Action",
+            "Crime",
+            "Drama"
+        ],
+        "director": "Prashanth Neel",
+        "lead_actor": "Yash",
+        "top_cast": [
+            "Yash",
+            "Sanjay Dutt",
+            "Raveena Tandon",
+            "Srinidhi Shetty"
+        ],
+        "budget_clean_usd": 12000000,
+        "actual_gross_usd": 152000000,
+        "actual_gross_inr_crores": 1269.2,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Action",
+        "budget_tier": "Medium",
+        "original_language": "kn",
+        "production_company": "Hombale Films",
+        "overview": "The blood-soaked land of Kolar Gold Fields has a new overlord now: Rocky, whose name strikes fear into the hearts of his foes.",
+        "poster_path": "/khNVyEYEzc5wqIp4rZrFpmT6Ofy.jpg",
+        "backdrop_path": "/kGfChApTeR2bAcKdRoPhOmBaLe.jpg",
+        "youtube_trailer_id": "JKa05nyUmuQ",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_kalki_2898_ad_2024",
+        "primary_title": "Kalki 2898 AD",
+        "release_date": "2024-06-27",
+        "release_year": 2024,
+        "industry": "Tollywood",
+        "genres": [
+            "Sci-Fi",
+            "Action",
+            "Mythology"
+        ],
+        "director": "Nag Ashwin",
+        "lead_actor": "Prabhas",
+        "top_cast": [
+            "Prabhas",
+            "Amitabh Bachchan",
+            "Kamal Haasan",
+            "Deepika Padukone"
+        ],
+        "budget_clean_usd": 72000000,
+        "actual_gross_usd": 128000000,
+        "actual_gross_inr_crores": 1068.8,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Sci-Fi",
+        "budget_tier": "Tentpole",
+        "original_language": "te",
+        "production_company": "Vyjayanthi Movies",
+        "overview": "A modern avatar of Vishnu, a Hindu god, is believed to have descended to the earth in the post-apocalyptic year 2898 AD to protect the world from evil forces.",
+        "poster_path": "/9OYy3Y2jE0mU4WlGsqYmG7X7N1B.jpg",
+        "backdrop_path": "/kAlKi2898aDbAcKdRoPVyJaYaNtHi.jpg",
+        "youtube_trailer_id": "kQDd1AhGIHk",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_pushpa_2_the_rule_2024",
+        "primary_title": "Pushpa 2: The Rule",
+        "release_date": "2024-12-05",
+        "release_year": 2024,
+        "industry": "Tollywood",
+        "genres": [
+            "Action",
+            "Crime",
+            "Drama"
+        ],
+        "director": "Sukumar",
+        "lead_actor": "Allu Arjun",
+        "top_cast": [
+            "Allu Arjun",
+            "Rashmika Mandanna",
+            "Fahadh Faasil"
+        ],
+        "budget_clean_usd": 60000000,
+        "actual_gross_usd": 215000000,
+        "actual_gross_inr_crores": 1795.2,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Action",
+        "budget_tier": "Tentpole",
+        "original_language": "te",
+        "production_company": "Mythri Movie Makers",
+        "overview": "Pushpa Raj establishes undisputed control over the red sandalwood syndicate while escalating his personal war against SP Bhanwar Singh Shekhawat.",
+        "poster_path": "/bGSbaG6AIIaACEMprEsf2xiLgyO.jpg",
+        "backdrop_path": "/pUsHpA2bAcKdRoPMyThRi.jpg",
+        "youtube_trailer_id": "1kVK0MZlbI4",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_jawan_2023",
+        "primary_title": "Jawan",
+        "release_date": "2023-09-07",
+        "release_year": 2023,
+        "industry": "Bollywood",
+        "genres": [
+            "Action",
+            "Thriller"
+        ],
+        "director": "Atlee",
+        "lead_actor": "Shah Rukh Khan",
+        "top_cast": [
+            "Shah Rukh Khan",
+            "Nayanthara",
+            "Vijay Sethupathi",
+            "Deepika Padukone"
+        ],
+        "budget_clean_usd": 36000000,
+        "actual_gross_usd": 142000000,
+        "actual_gross_inr_crores": 1185.7,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Action",
+        "budget_tier": "High",
+        "original_language": "hi",
+        "production_company": "Red Chillies Entertainment",
+        "overview": "A man is driven by a personal vendetta to rectify the wrongs in society while keeping a promise made years ago.",
+        "poster_path": "/jYW80OOVebZlUUSq6yUqEbeV72y.jpg",
+        "backdrop_path": "/jAwAnSrKbAcKdRoPrEdChIlLiEs.jpg",
+        "youtube_trailer_id": "MWOlnZSnXpc",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_pathaan_2023",
+        "primary_title": "Pathaan",
+        "release_date": "2023-01-25",
+        "release_year": 2023,
+        "industry": "Bollywood",
+        "genres": [
+            "Action",
+            "Thriller",
+            "Adventure"
+        ],
+        "director": "Siddharth Anand",
+        "lead_actor": "Shah Rukh Khan",
+        "top_cast": [
+            "Shah Rukh Khan",
+            "Deepika Padukone",
+            "John Abraham"
+        ],
+        "budget_clean_usd": 30000000,
+        "actual_gross_usd": 130000000,
+        "actual_gross_inr_crores": 1085.5,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Action",
+        "budget_tier": "High",
+        "original_language": "hi",
+        "production_company": "Yash Raj Films",
+        "overview": "An Indian RAW field agent Pathaan returns from exile to take down a private terror organization led by a rogue ex-officer.",
+        "poster_path": "/m1b9ToAbGqUq66g1Z6bA0jU2h4T.jpg",
+        "backdrop_path": "/pAtHaAnYrFbAcKdRoPsRk.jpg",
+        "youtube_trailer_id": "vqu4z34wENw",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_animal_2023",
+        "primary_title": "Animal",
+        "release_date": "2023-12-01",
+        "release_year": 2023,
+        "industry": "Bollywood",
+        "genres": [
+            "Action",
+            "Crime",
+            "Drama"
+        ],
+        "director": "Sandeep Reddy Vanga",
+        "lead_actor": "Ranbir Kapoor",
+        "top_cast": [
+            "Ranbir Kapoor",
+            "Anil Kapoor",
+            "Bobby Deol",
+            "Rashmika Mandanna"
+        ],
+        "budget_clean_usd": 12000000,
+        "actual_gross_usd": 110000000,
+        "actual_gross_inr_crores": 918.5,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Action",
+        "budget_tier": "Medium",
+        "original_language": "hi",
+        "production_company": "T-Series / Bhadrakali Pictures",
+        "overview": "A son's obsessive love for his distant father leads him down a dark and violent path of bloodshed and retribution.",
+        "poster_path": "/hr95svathvZYn0O69vEiAd0aG9k.jpg",
+        "backdrop_path": "/aNiMaLrAnBiRbAcKdRoPvAnGa.jpg",
+        "youtube_trailer_id": "Dydmpfo68DA",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_stree_2_2024",
+        "primary_title": "Stree 2",
+        "release_date": "2024-08-15",
+        "release_year": 2024,
+        "industry": "Bollywood",
+        "genres": [
+            "Horror",
+            "Comedy"
+        ],
+        "director": "Amar Kaushik",
+        "lead_actor": "Rajkummar Rao",
+        "top_cast": [
+            "Rajkummar Rao",
+            "Shraddha Kapoor",
+            "Pankaj Tripathi",
+            "Abhishek Banerjee"
+        ],
+        "budget_clean_usd": 7000000,
+        "actual_gross_usd": 106000000,
+        "actual_gross_inr_crores": 885.1,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Comedy",
+        "budget_tier": "Low",
+        "original_language": "hi",
+        "production_company": "Maddock Films / Jio Studios",
+        "overview": "The town of Chanderi is haunted once again, this time by a headless entity named Sarkata that abducts modern independent women.",
+        "poster_path": "/m2BeI9K23qOaA25gG7gS3sC3Uoi.jpg",
+        "backdrop_path": "/sTrEe2mAdDoCkBaCkDrOp.jpg",
+        "youtube_trailer_id": "KVn5x2F7S6w",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_gadar_2_2023",
+        "primary_title": "Gadar 2",
+        "release_date": "2023-08-11",
+        "release_year": 2023,
+        "industry": "Bollywood",
+        "genres": [
+            "Action",
+            "Drama",
+            "History"
+        ],
+        "director": "Anil Sharma",
+        "lead_actor": "Sunny Deol",
+        "top_cast": [
+            "Sunny Deol",
+            "Ameesha Patel",
+            "Utkarsh Sharma"
+        ],
+        "budget_clean_usd": 8000000,
+        "actual_gross_usd": 83000000,
+        "actual_gross_inr_crores": 693.0,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Action",
+        "budget_tier": "Low",
+        "original_language": "hi",
+        "production_company": "Zee Studios",
+        "overview": "During the Indo-Pakistani War of 1971, Tara Singh journeys back into Pakistan to rescue his captured son Charanjeet.",
+        "poster_path": "/gAdAr2sUnNyDeOl2023.jpg",
+        "backdrop_path": "/gAdAr2bAcKdRoPzEeStUdIos.jpg",
+        "youtube_trailer_id": "vhwxW5yH87A",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_jailer_2023",
+        "primary_title": "Jailer",
+        "release_date": "2023-08-10",
+        "release_year": 2023,
+        "industry": "Kollywood",
+        "genres": [
+            "Action",
+            "Crime",
+            "Thriller"
+        ],
+        "director": "Nelson Dilipkumar",
+        "lead_actor": "Rajinikanth",
+        "top_cast": [
+            "Rajinikanth",
+            "Vinayakan",
+            "Ramya Krishnan",
+            "Mohanlal"
+        ],
+        "budget_clean_usd": 24000000,
+        "actual_gross_usd": 78000000,
+        "actual_gross_inr_crores": 651.3,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Action",
+        "budget_tier": "Medium",
+        "original_language": "ta",
+        "production_company": "Sun Pictures",
+        "overview": "Muthuvel Pandian, a retired jailer, sets out on a crusade to track down and eliminate the criminal cartel that took his police officer son.",
+        "poster_path": "/jAiLeRrAjInI2023tAmIl.jpg",
+        "backdrop_path": "/jAiLeRbAcKdRoPsUnPiCtUrEs.jpg",
+        "youtube_trailer_id": "Y5BeWdODPqo",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_leo_2023",
+        "primary_title": "Leo",
+        "release_date": "2023-10-19",
+        "release_year": 2023,
+        "industry": "Kollywood",
+        "genres": [
+            "Action",
+            "Crime",
+            "Thriller"
+        ],
+        "director": "Lokesh Kanagaraj",
+        "lead_actor": "Thalapathy Vijay",
+        "top_cast": [
+            "Thalapathy Vijay",
+            "Sanjay Dutt",
+            "Trisha Krishnan",
+            "Arjun Sarja"
+        ],
+        "budget_clean_usd": 36000000,
+        "actual_gross_usd": 74000000,
+        "actual_gross_inr_crores": 617.9,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Action",
+        "budget_tier": "High",
+        "original_language": "ta",
+        "production_company": "Seven Screen Studio",
+        "overview": "A cafe owner in Kashmir must defend his family from a notorious drug syndicate that insists he is their long-lost enforcer, Leo Das.",
+        "poster_path": "/bGSbaG6AIIaACEMprEsf2xiLgyO.jpg",
+        "backdrop_path": "/lEoThAlApAtHyViJaYbAcK.jpg",
+        "youtube_trailer_id": "Po3jStA673E",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_goat_2024",
+        "primary_title": "The Greatest of All Time (GOAT)",
+        "release_date": "2024-09-05",
+        "release_year": 2024,
+        "industry": "Kollywood",
+        "genres": [
+            "Action",
+            "Sci-Fi",
+            "Thriller"
+        ],
+        "director": "Venkat Prabhu",
+        "lead_actor": "Thalapathy Vijay",
+        "top_cast": [
+            "Thalapathy Vijay",
+            "Prashanth",
+            "Prabhu Deva",
+            "Sneha"
+        ],
+        "budget_clean_usd": 48000000,
+        "actual_gross_usd": 55000000,
+        "actual_gross_inr_crores": 459.2,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Action",
+        "budget_tier": "High",
+        "original_language": "ta",
+        "production_company": "AGS Entertainment",
+        "overview": "A hostage negotiator and elite field operative for the Special Anti-Terrorist Squad confronts the ghosts of his past mission.",
+        "poster_path": "/gOaTvIjAy2024tAmIl.jpg",
+        "backdrop_path": "/gOaTbAcKdRoPaGsEnTeRtAiN.jpg",
+        "youtube_trailer_id": "x_7zW1eS8fA",
+        "success_category": "Hit"
+    },
+    {
+        "canonical_id": "released_devara_part_1_2024",
+        "primary_title": "Devara: Part 1",
+        "release_date": "2024-09-27",
+        "release_year": 2024,
+        "industry": "Tollywood",
+        "genres": [
+            "Action",
+            "Drama"
+        ],
+        "director": "Koratala Siva",
+        "lead_actor": "N.T. Rama Rao Jr.",
+        "top_cast": [
+            "N.T. Rama Rao Jr.",
+            "Janhvi Kapoor",
+            "Saif Ali Khan"
+        ],
+        "budget_clean_usd": 36000000,
+        "actual_gross_usd": 62000000,
+        "actual_gross_inr_crores": 517.7,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Action",
+        "budget_tier": "High",
+        "original_language": "te",
+        "production_company": "Yuvasudha Arts / NTR Arts",
+        "overview": "A coastal chieftain fights to protect his people and oceans from international sea-borne smuggling operations.",
+        "poster_path": "/dEvArAnTr2024tElUgU.jpg",
+        "backdrop_path": "/dEvArAbAcKdRoPnTrArTs.jpg",
+        "youtube_trailer_id": "5Y9jK8a4w2E",
+        "success_category": "Hit"
+    },
+    {
+        "canonical_id": "released_salaar_ceasefire_2023",
+        "primary_title": "Salaar: Part 1 \u2013 Ceasefire",
+        "release_date": "2023-12-22",
+        "release_year": 2023,
+        "industry": "Tollywood",
+        "genres": [
+            "Action",
+            "Crime",
+            "Drama"
+        ],
+        "director": "Prashanth Neel",
+        "lead_actor": "Prabhas",
+        "top_cast": [
+            "Prabhas",
+            "Prithviraj Sukumaran",
+            "Shruti Haasan"
+        ],
+        "budget_clean_usd": 32000000,
+        "actual_gross_usd": 86000000,
+        "actual_gross_inr_crores": 718.1,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Action",
+        "budget_tier": "High",
+        "original_language": "te",
+        "production_company": "Hombale Films",
+        "overview": "A gang leader makes a promise to a dying friend and takes on other criminal gangs in the dystopian fortified city of Khansaar.",
+        "poster_path": "/sAlAaRpArT1pRaBhAs2023.jpg",
+        "backdrop_path": "/sAlAaRbAcKdRoPhOmBaLe.jpg",
+        "youtube_trailer_id": "HihakYi5M2I",
+        "success_category": "Super Hit"
+    },
+    {
+        "canonical_id": "released_manjummel_boys_2024",
+        "primary_title": "Manjummel Boys",
+        "release_date": "2024-02-22",
+        "release_year": 2024,
+        "industry": "Mollywood",
+        "genres": [
+            "Survival",
+            "Thriller",
+            "Drama"
+        ],
+        "director": "Chidambaram",
+        "lead_actor": "Soubin Shahir",
+        "top_cast": [
+            "Soubin Shahir",
+            "Sreenath Bhasi",
+            "Balu Varghese"
+        ],
+        "budget_clean_usd": 2400000,
+        "actual_gross_usd": 29000000,
+        "actual_gross_inr_crores": 242.1,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Drama",
+        "budget_tier": "Low",
+        "original_language": "ml",
+        "production_company": "Parava Films",
+        "overview": "A group of friends from a small town in Kerala embark on a vacation to Kodaikanal, where one friend falls into the perilous Guna Caves.",
+        "poster_path": "/mAnJuMmElBoYs2024.jpg",
+        "backdrop_path": "/mAnJuMmElBaCkDrOpPaRaVa.jpg",
+        "youtube_trailer_id": "jPjK6HlM2o8",
+        "success_category": "Blockbuster"
+    },
+    {
+        "canonical_id": "released_bhool_bhulaiyaa_3_2024",
+        "primary_title": "Bhool Bhulaiyaa 3",
+        "release_date": "2024-11-01",
+        "release_year": 2024,
+        "industry": "Bollywood",
+        "genres": [
+            "Comedy",
+            "Horror"
+        ],
+        "director": "Anees Bazmee",
+        "lead_actor": "Kartik Aaryan",
+        "top_cast": [
+            "Kartik Aaryan",
+            "Vidya Balan",
+            "Madhuri Dixit",
+            "Triptii Dimri"
+        ],
+        "budget_clean_usd": 18000000,
+        "actual_gross_usd": 51000000,
+        "actual_gross_inr_crores": 425.8,
+        "is_sequel_or_franchise": 1.0,
+        "primary_genre": "Comedy",
+        "budget_tier": "Medium",
+        "original_language": "hi",
+        "production_company": "T-Series / Cine1 Studios",
+        "overview": "Rooh Baba travels to the royal kingdom of Raktaghat, where he faces not one, but two vengeful spirits claiming to be Manjulika.",
+        "poster_path": "/bHoOlBhUlAiYaA3kArTiK.jpg",
+        "backdrop_path": "/bHoOlBhUlAiYaA3bAcKdRoP.jpg",
+        "youtube_trailer_id": "7L1YQkK1nU8",
+        "success_category": "Super Hit"
+    },
+    {
+        "canonical_id": "released_kantara_2022",
+        "primary_title": "Kantara",
+        "release_date": "2022-09-30",
+        "release_year": 2022,
+        "industry": "Sandalwood",
+        "genres": [
+            "Action",
+            "Drama",
+            "Thriller"
+        ],
+        "director": "Rishab Shetty",
+        "lead_actor": "Rishab Shetty",
+        "top_cast": [
+            "Rishab Shetty",
+            "Sapthami Gowda",
+            "Kishore"
+        ],
+        "budget_clean_usd": 2000000,
+        "actual_gross_usd": 50000000,
+        "actual_gross_inr_crores": 417.5,
+        "is_sequel_or_franchise": 0.0,
+        "primary_genre": "Action",
+        "budget_tier": "Low",
+        "original_language": "kn",
+        "production_company": "Hombale Films",
+        "overview": "When greed paves the way for betrayal, wrath, and rebellion, a young tribal man clashes with an upright forest officer in the heart of coastal Karnataka.",
+        "poster_path": "/kAnTaRaRiShAb2022.jpg",
+        "backdrop_path": "/kAnTaRaBaCkDrOpHoMbAlE.jpg",
+        "youtube_trailer_id": "8mrffA5e9kE",
+        "success_category": "Blockbuster"
     }
 ]

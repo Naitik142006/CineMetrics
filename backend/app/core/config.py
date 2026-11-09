@@ -51,6 +51,7 @@ class Settings(BaseSettings):
     ]
 
     # Model & Data Paths
+    DATA_DIR: Path = BASE_DIR / "data"
     MODELS_DIR: Path = BASE_DIR / "ml" / "models" / "production"
     PROCESSED_DIR: Path = BASE_DIR / "data" / "processed"
     UNIFIED_DIR: Path = BASE_DIR / "data" / "unified"

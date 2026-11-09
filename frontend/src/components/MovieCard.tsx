@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, Calendar, Sparkles } from 'lucide-react';
+import { Play, Calendar, Sparkles, Film } from 'lucide-react';
 import { UpcomingMovieItem, MovieSummary } from '../types';
 import { useCurrency } from '../context/CurrencyContext';
-import { formatCurrency, getRiskBadgeClass } from '../utils/format';
+import { formatCurrency, getRiskBadgeClass, getPosterUrl } from '../utils/format';
 import { PredictionIntervalBar } from './PredictionIntervalBar';
 
 interface MovieCardProps {
@@ -12,6 +12,7 @@ interface MovieCardProps {
 
 export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   const { currency } = useCurrency();
+  const [imgError, setImgError] = useState(false);
 
   const isUpcoming = 'readiness_score' in movie;
   const upcomingMovie = isUpcoming ? (movie as UpcomingMovieItem) : null;
@@ -32,73 +33,118 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
       ? 'Good Confidence'
       : 'Early Estimate';
 
+  const posterUrl = !imgError ? getPosterUrl(movie.poster_path) : null;
+
   return (
     <div className="glass-card rounded-2xl overflow-hidden border border-[#2A2A3A] flex flex-col justify-between group hover:border-[#E8B74A]/50 transition-all duration-300">
-      {/* Top Header & Poster Placeholder / Banner */}
-      <div className="relative p-5 pb-3">
-        {/* Industry, Year & Confidence Badges */}
-        <div className="flex items-center justify-between gap-2 mb-3">
+      {/* Top Poster Image Container */}
+      <div className="relative h-56 w-full overflow-hidden bg-[#101018]">
+        {posterUrl ? (
+          <img
+            src={posterUrl}
+            alt={movie.primary_title}
+            loading="lazy"
+            onError={() => setImgError(true)}
+            className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#1A1A28] via-[#12121A] to-[#0A0A10] p-4 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(108,99,255,0.12),transparent_70%)]" />
+            <Film className="w-10 h-10 text-zinc-600 mb-2 group-hover:text-[#E8B74A] transition-colors" />
+            <span className="text-xs font-semibold text-zinc-300 line-clamp-1">{movie.primary_title}</span>
+            <span className="text-[10px] text-zinc-500 mt-1 uppercase tracking-wider">{movie.industry || 'Cinema'}</span>
+          </div>
+        )}
+
+        {/* Gradient Overlay for Readable Badges */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#12121A] via-[#12121A]/20 to-black/60 pointer-events-none" />
+
+        {/* Floating Top Badges */}
+        <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2 z-10">
           <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-[#1A1A26] border border-[#2A2A3A] text-zinc-300">
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-zinc-200">
               {movie.industry || 'Global'}
             </span>
-            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#E8B74A]/15 text-[#E8B74A] border border-[#E8B74A]/30">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#E8B74A]/25 backdrop-blur-md text-[#E8B74A] border border-[#E8B74A]/40">
               {movie.release_year || '2026'}
             </span>
           </div>
 
-          {upcomingMovie && (
+          {upcomingMovie ? (
             <span
               title={`Readiness: ${readinessScore}/100 • ${confidenceLabel}`}
-              className={`text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full border flex items-center gap-1 ${
+              className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full backdrop-blur-md border flex items-center gap-1 ${
                 readinessScore >= 80
-                  ? 'bg-emerald-950/60 text-emerald-400 border-emerald-500/40'
+                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/50'
                   : readinessScore >= 60
-                  ? 'bg-amber-950/60 text-amber-400 border-amber-500/40'
-                  : 'bg-zinc-800 text-zinc-400 border-zinc-700'
+                  ? 'bg-amber-950/80 text-amber-300 border-amber-500/50'
+                  : 'bg-zinc-900/80 text-zinc-300 border-zinc-700'
               }`}
             >
               <Sparkles className="w-2.5 h-2.5" />
-              <span>{readinessScore}% Confidence</span>
+              <span>{readinessScore}% Conf.</span>
+            </span>
+          ) : (
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-950/80 backdrop-blur-md text-emerald-300 border border-emerald-500/40">
+              Released
             </span>
           )}
         </div>
 
-        {/* Title */}
-        <Link to={`/movies/${movie.id}`}>
-          <h3 className="font-bold text-lg text-white group-hover:text-[#E8B74A] transition-colors line-clamp-1">
-            {movie.primary_title}
-          </h3>
-        </Link>
+        {/* Trailer Play Button Overlay */}
+        {movie.youtube_trailer_id && (
+          <a
+            href={`https://www.youtube.com/watch?v=${movie.youtube_trailer_id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="absolute bottom-3 right-3 z-10 p-2.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white hover:bg-red-600 hover:border-red-500 transition-all shadow-lg group/play"
+            title="Watch Official Trailer"
+          >
+            <Play className="w-3.5 h-3.5 fill-current" />
+          </a>
+        )}
+      </div>
 
-        {/* Talent & Date */}
-        <p className="text-xs text-[#9090AA] mt-1 flex items-center gap-1.5">
-          <Calendar className="w-3.5 h-3.5 text-[#5A5A72]" />
-          <span>{movie.release_date || `${movie.release_year}`}</span>
-          <span>•</span>
-          <span className="truncate max-w-[150px]">{movie.director || 'Director TBD'}</span>
-        </p>
+      {/* Card Content & Metadata */}
+      <div className="p-4 pb-3 flex-1 flex flex-col justify-between">
+        <div>
+          {/* Title */}
+          <Link to={`/movies/${movie.id}`}>
+            <h3 className="font-bold text-base text-white group-hover:text-[#E8B74A] transition-colors line-clamp-1">
+              {movie.primary_title}
+            </h3>
+          </Link>
 
-        {/* Genres */}
-        <div className="flex flex-wrap gap-1 mt-2.5">
-          {(movie.genres || []).slice(0, 3).map((g, idx) => (
-            <span
-              key={idx}
-              className="text-[10px] px-2 py-0.5 rounded bg-[#15151E] text-[#9090AA] border border-[#2A2A3A]/60"
-            >
-              {g}
-            </span>
-          ))}
+          {/* Talent & Date */}
+          <p className="text-xs text-[#9090AA] mt-1 flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5 text-[#5A5A72]" />
+            <span>{movie.release_date || `${movie.release_year}`}</span>
+            <span>•</span>
+            <span className="truncate max-w-[140px]">{movie.director || 'Director TBD'}</span>
+          </p>
+
+          {/* Genres */}
+          <div className="flex flex-wrap gap-1 mt-2.5">
+            {(movie.genres || []).slice(0, 3).map((g, idx) => (
+              <span
+                key={idx}
+                className="text-[10px] px-2 py-0.5 rounded bg-[#15151E] text-[#9090AA] border border-[#2A2A3A]/60"
+              >
+                {g}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Middle Financial Forecast Section */}
-      <div className="px-5 py-3.5 bg-[#111118]/60 border-t border-b border-[#2A2A3A]/40 space-y-2.5">
+      <div className="px-4 py-3 bg-[#111118]/60 border-t border-b border-[#2A2A3A]/40 space-y-2">
         <div className="flex items-baseline justify-between">
           <span className="text-[11px] text-[#9090AA] uppercase font-mono font-medium">
-            {isUpcoming ? 'Most Likely Box Office' : 'Theatrical Gross'}
+            {isUpcoming ? 'Most Likely Gross' : 'Theatrical Gross'}
           </span>
-          <span className="text-xl font-extrabold font-mono text-[#E8B74A]">
+          <span className="text-lg font-extrabold font-mono text-[#E8B74A]">
             {formatCurrency(expectedUsd, currency)}
           </span>
         </div>
@@ -115,7 +161,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
       </div>
 
       {/* Footer & Actions */}
-      <div className="p-4 flex items-center justify-between gap-2">
+      <div className="p-3.5 flex items-center justify-between gap-2">
         {upcomingMovie ? (
           <span
             className={`text-[11px] px-2.5 py-1 rounded-lg border font-medium ${riskClass.bg} ${riskClass.text} ${riskClass.border}`}
@@ -124,23 +170,11 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
           </span>
         ) : (
           <span className="text-[11px] px-2.5 py-1 rounded-lg bg-[#1A1A26] text-zinc-300 border border-[#2A2A3A]">
-            Released Film
+            Historical Release
           </span>
         )}
 
         <div className="flex items-center gap-1.5">
-          {movie.youtube_trailer_id && (
-            <a
-              href={`https://www.youtube.com/watch?v=${movie.youtube_trailer_id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-xl bg-[#1A1A26] border border-[#2A2A3A] hover:border-red-500/50 hover:text-red-400 text-[#9090AA] transition-colors"
-              title="Watch Official Trailer"
-            >
-              <Play className="w-3.5 h-3.5 fill-current" />
-            </a>
-          )}
-
           <Link
             to={`/movies/${movie.id}`}
             className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#6C63FF]/20 hover:bg-[#6C63FF]/30 border border-[#6C63FF]/40 text-xs font-semibold text-white transition-all"

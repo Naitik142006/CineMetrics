@@ -45,6 +45,8 @@ def _format_movie_summary(m: Movie) -> MovieSummary:
         box_office_gross_inr_crores=m.box_office_gross_inr_crores,
         is_released=m.is_released,
         youtube_trailer_id=m.youtube_trailer_id,
+        poster_path=m.poster_path,
+        backdrop_path=m.backdrop_path,
     )
 
 
@@ -276,6 +278,7 @@ def get_similar_movies(movie_id: str, limit: int = Query(6, ge=1, le=20), db: Se
                 gross_formatted_usd=f"${gross / 1_000_000:.1f}M",
                 gross_formatted_inr=f"₹{inr_cr:,.1f} Cr",
                 similarity_score=round(score, 3),
+                poster_path=cand.poster_path,
             )
         )
 

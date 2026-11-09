@@ -79,3 +79,14 @@ export function getSuccessCategoryBadge(cat: string): { bg: string; text: string
   }
 }
 
+export function getPosterUrl(posterPath?: string | null): string | null {
+  if (!posterPath || !posterPath.trim()) return null;
+  const clean = posterPath.trim();
+  if (clean.startsWith('http://') || clean.startsWith('https://')) {
+    return clean;
+  }
+  const normalized = clean.startsWith('/') ? clean : `/${clean}`;
+  return `https://image.tmdb.org/t/p/w500${normalized}`;
+}
+
+

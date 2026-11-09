@@ -24,7 +24,7 @@ import {
   SimilarMovie,
 } from '../types';
 import { useCurrency } from '../context/CurrencyContext';
-import { formatCurrency, getRiskBadgeClass, getSuccessCategoryBadge } from '../utils/format';
+import { formatCurrency, getRiskBadgeClass, getSuccessCategoryBadge, getPosterUrl } from '../utils/format';
 import { PredictionIntervalBar } from '../components/PredictionIntervalBar';
 import { SHAPWaterfall } from '../components/SHAPWaterfall';
 
@@ -39,6 +39,7 @@ export const MovieDossierPage: React.FC = () => {
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [posterError, setPosterError] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -128,6 +129,8 @@ export const MovieDossierPage: React.FC = () => {
       ? 'Moderate Confidence'
       : 'Early Estimate';
 
+  const posterUrl = !posterError ? getPosterUrl(movie.poster_path) : null;
+
   return (
     <div className="space-y-8 pb-20">
       {/* Back button */}
@@ -140,11 +143,31 @@ export const MovieDossierPage: React.FC = () => {
       </Link>
 
       {/* Dossier Header Banner */}
-      <div className="relative glass-panel rounded-3xl p-6 lg:p-10 border border-[#2A2A3A] overflow-hidden">
+      <div className="relative glass-panel rounded-3xl p-6 lg:p-8 border border-[#2A2A3A] overflow-hidden">
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-[#E8B74A]/15 to-[#6C63FF]/20 blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
-          <div className="space-y-3 max-w-3xl">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-start gap-6 lg:gap-8 justify-between">
+          {/* Theatrical Poster */}
+          <div className="w-40 sm:w-48 lg:w-52 aspect-[2/3] rounded-2xl overflow-hidden border border-[#2A2A3A] shadow-2xl flex-shrink-0 bg-[#12121A] relative group">
+            {posterUrl ? (
+              <img
+                src={posterUrl}
+                alt={movie.primary_title}
+                onError={() => setPosterError(true)}
+                className="w-full h-full object-cover object-center"
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center bg-gradient-to-b from-[#1A1A28] to-[#0D0D14]">
+                <Film className="w-12 h-12 text-zinc-600 mb-2" />
+                <span className="text-xs font-semibold text-zinc-400 line-clamp-2">{movie.primary_title}</span>
+                <span className="text-[10px] text-zinc-600 mt-1 uppercase tracking-wider">{movie.industry}</span>
+              </div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+          </div>
+
+          {/* Dossier Core Info */}
+          <div className="space-y-3 flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#1A1A26] border border-[#2A2A3A] text-zinc-300">
                 {movie.industry}
@@ -208,7 +231,7 @@ export const MovieDossierPage: React.FC = () => {
           </div>
 
           {/* Quick Action / Budget Highlight */}
-          <div className="bg-[#15151E] rounded-2xl p-5 border border-[#2A2A3A] min-w-[220px] text-right space-y-3">
+          <div className="bg-[#15151E] rounded-2xl p-5 border border-[#2A2A3A] min-w-[200px] text-right space-y-3 self-start flex-shrink-0">
             <div>
               <p className="text-[11px] text-[#9090AA] uppercase font-mono">Reported Budget</p>
               <p className="text-xl font-bold font-mono text-white">

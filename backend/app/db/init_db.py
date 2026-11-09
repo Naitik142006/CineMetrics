@@ -24,7 +24,7 @@ from backend.app.db.models import (
     DigitalBuzzObservation,
     PredictionHistoryRecord,
 )
-from backend.app.db.curated_tentpoles import CURATED_UPCOMING_TENTPOLES
+from backend.app.db.curated_tentpoles import CURATED_UPCOMING_TENTPOLES, CURATED_RECENT_RELEASED_BLOCKBUSTERS
 from backend.app.services.prediction_service import prediction_service
 
 logger = logging.getLogger("InitDB")
@@ -70,6 +70,36 @@ def seed_database(db: Session, force_reseed: bool = False):
     for existing in db.query(Movie.canonical_id).all():
         inserted_ids.add(existing[0])
 
+    # Cache TMDB Poster Hashes from raw parquets
+    tmdb_poster_map = {}
+    tmdb_title_map = {}
+    try:
+        up_path = settings.DATA_DIR / "raw" / "tmdb" / "tmdb_upcoming.parquet"
+        ind_path = settings.DATA_DIR / "raw" / "tmdb" / "tmdb_indian_catalog.parquet"
+        if up_path.exists():
+            df_up_tmdb = pd.read_parquet(up_path)
+            for _, r in df_up_tmdb.iterrows():
+                tid = safe_int(r.get("id"), None)
+                p = r.get("poster_path")
+                if tid and pd.notna(p):
+                    tmdb_poster_map[tid] = str(p)
+                t_str = str(r.get("title", "")).lower().strip()
+                if t_str and pd.notna(p):
+                    tmdb_title_map[t_str] = str(p)
+        if ind_path.exists():
+            df_ind_tmdb = pd.read_parquet(ind_path)
+            for _, r in df_ind_tmdb.iterrows():
+                tid = safe_int(r.get("id"), None)
+                p = r.get("poster_path")
+                if tid and pd.notna(p):
+                    tmdb_poster_map[tid] = str(p)
+                t_str = str(r.get("title", "")).lower().strip()
+                if t_str and pd.notna(p):
+                    tmdb_title_map[t_str] = str(p)
+        logger.info(f"Loaded TMDB poster cache with {len(tmdb_poster_map)} IDs and {len(tmdb_title_map)} titles.")
+    except Exception as e:
+        logger.warning(f"Could not load TMDB poster caches: {e}")
+
     # 1. Seed Curated 2026–2027 Marquee Upcoming Tentpoles
     for t in CURATED_UPCOMING_TENTPOLES:
         cid = t["canonical_id"]
@@ -101,6 +131,8 @@ def seed_database(db: Session, force_reseed: bool = False):
             box_office_gross_inr_crores=None,
             is_released=False,
             youtube_trailer_id=t.get("youtube_trailer_id"),
+            poster_path=t.get("poster_path"),
+            backdrop_path=t.get("backdrop_path"),
         )
         db.add(movie_entity)
         db.flush()
@@ -180,7 +212,76 @@ def seed_database(db: Session, force_reseed: bool = False):
         except Exception as e:
             logger.warning(f"Could not evaluate prediction for {cid}: {e}")
 
-    # 2. Seed Upcoming Parquet Catalog if available
+    # 2. Seed Curated Recent Released Blockbusters (2022–2026 actuals)
+    for r in CURATED_RECENT_RELEASED_BLOCKBUSTERS:
+        cid = r["canonical_id"]
+        if cid in inserted_ids:
+            continue
+
+        budget_usd = float(r.get("budget_clean_usd", 20_000_000))
+        budget_inr = round(budget_usd * settings.DEFAULT_INR_USD_RATE / 10_000_000.0, 2)
+        gross_usd = float(r.get("actual_gross_usd", 50_000_000))
+        gross_inr = float(r.get("actual_gross_inr_crores", round(gross_usd * settings.DEFAULT_INR_USD_RATE / 10_000_000.0, 2)))
+        genres_json = json.dumps(r.get("genres", ["Action"]))
+        cast_json = json.dumps(r.get("top_cast", [r.get("lead_actor", "Lead Actor")]))
+
+        movie_entity = Movie(
+            canonical_id=cid,
+            primary_title=r["primary_title"],
+            release_date=r["release_date"],
+            release_year=r["release_year"],
+            runtime_minutes=145,
+            original_language=r.get("original_language", "en"),
+            industry=r["industry"],
+            genres=genres_json,
+            director=r["director"],
+            lead_actor=r["lead_actor"],
+            cast_members=cast_json,
+            production_company=r.get("production_company", "Studio"),
+            overview=r.get("overview", ""),
+            budget_usd=budget_usd,
+            budget_inr_crores=budget_inr,
+            box_office_gross_usd=gross_usd,
+            box_office_gross_inr_crores=gross_inr,
+            is_released=True,
+            youtube_trailer_id=r.get("youtube_trailer_id"),
+            poster_path=r.get("poster_path"),
+            backdrop_path=r.get("backdrop_path"),
+        )
+        db.add(movie_entity)
+        db.flush()
+        inserted_ids.add(cid)
+
+        # Seed audited actual prediction record
+        pred_entity = Prediction(
+            movie_id=movie_entity.id,
+            prediction_stage="Stage 5 Concluded Run",
+            readiness_score=100,
+            status_badge="Theatrical Run Concluded",
+            model_version="catboost_revenue_v1",
+            expected_gross_usd=gross_usd,
+            expected_gross_inr_crores=gross_inr,
+            pessimistic_bound_80_usd=round(gross_usd * 0.90, 2),
+            optimistic_bound_80_usd=round(gross_usd * 1.10, 2),
+            pessimistic_bound_80_inr=round(gross_inr * 0.90, 2),
+            optimistic_bound_80_inr=round(gross_inr * 1.10, 2),
+            extreme_downside_95_usd=round(gross_usd * 0.85, 2),
+            extreme_upside_95_usd=round(gross_usd * 1.15, 2),
+            conformal_confidence=0.95,
+            success_category=r.get("success_category", "Blockbuster"),
+            success_probabilities=json.dumps({r.get("success_category", "Blockbuster"): 0.95, "Hit": 0.05}),
+            prob_break_even=0.99 if gross_usd > budget_usd else 0.40,
+            prob_commercial_profit=0.95 if gross_usd > budget_usd * 2.0 else 0.50,
+            prob_catastrophic_disaster=0.01,
+            risk_assessment_tier="Audited Actuals",
+            risk_badge="Concluded",
+            top_positive_factor="Massive Box Office Actual",
+            top_negative_factor="Completed Theatrical Run",
+            narrative_summary=f"Theatrical run concluded with a global cumulative gross of ${gross_usd / 1_000_000:.1f}M USD (₹{gross_inr:,.1f} Cr).",
+        )
+        db.add(pred_entity)
+
+    # 3. Seed Upcoming Parquet Catalog if available
     upcoming_cat_path = settings.PROCESSED_DIR / "upcoming_discovery_catalog.parquet"
     if upcoming_cat_path.exists():
         df_up = pd.read_parquet(upcoming_cat_path)
@@ -197,12 +298,14 @@ def seed_database(db: Session, force_reseed: bool = False):
             cast_list = [c.strip() for c in top_cast_raw.split(",") if c.strip()] if isinstance(top_cast_raw, str) else []
             cast_json = json.dumps(cast_list)
 
+            poster_val = tmdb_poster_map.get(safe_int(row.get("tmdb_id"))) or tmdb_title_map.get(str(row.get("primary_title", "")).lower().strip())
+
             movie_entity = Movie(
                 canonical_id=cid,
                 tmdb_id=safe_int(row.get("tmdb_id"), None),
                 primary_title=str(row.get("primary_title", "Untitled")),
                 original_title=str(row.get("original_title", "")),
-                release_date=str(row.get("release_date", "2026-06-01")),
+                release_date=str(row.get("release_date", "2026-11-20")),
                 release_year=safe_int(row.get("release_year"), 2026),
                 runtime_minutes=safe_int(row.get("runtime_minutes_clean"), 120),
                 original_language=str(row.get("original_language", "en")),
@@ -218,6 +321,7 @@ def seed_database(db: Session, force_reseed: bool = False):
                 box_office_gross_inr_crores=None,
                 is_released=False,
                 youtube_trailer_id=str(row.get("youtube_trailer_id", "")) if pd.notna(row.get("youtube_trailer_id")) else None,
+                poster_path=poster_val,
             )
             db.add(movie_entity)
             db.flush()
@@ -301,6 +405,7 @@ def seed_database(db: Session, force_reseed: bool = False):
 
             lead_actor = str(row.get("lead_actor") or "Unknown")
             cast_json = json.dumps([lead_actor] if lead_actor != "Unknown" else [])
+            poster_val = tmdb_poster_map.get(safe_int(row.get("tmdb_id"))) or tmdb_title_map.get(str(row.get("primary_title", "")).lower().strip())
 
             movie_entity = Movie(
                 canonical_id=cid,
@@ -324,6 +429,7 @@ def seed_database(db: Session, force_reseed: bool = False):
                 box_office_gross_usd=gross_usd,
                 box_office_gross_inr_crores=gross_inr,
                 is_released=True,
+                poster_path=poster_val,
             )
             db.add(movie_entity)
             db.flush()

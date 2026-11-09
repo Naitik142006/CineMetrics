@@ -25,6 +25,8 @@ class MovieSummary(BaseModel):
     box_office_gross_inr_crores: Optional[float] = None
     is_released: bool = False
     youtube_trailer_id: Optional[str] = None
+    poster_path: Optional[str] = None
+    backdrop_path: Optional[str] = None
 
 
 class MovieDetail(MovieSummary):
@@ -55,6 +57,7 @@ class SimilarMovie(BaseModel):
     gross_formatted_usd: str
     gross_formatted_inr: str
     similarity_score: float
+    poster_path: Optional[str] = None
 
 
 class MovieSearchResponse(BaseModel):

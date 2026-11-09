@@ -31,6 +31,8 @@ class UpcomingMovieItem(BaseModel):
     buzz_score: float = 0.0
     trailer_view_count: int = 0
     youtube_trailer_id: Optional[str] = None
+    poster_path: Optional[str] = None
+    backdrop_path: Optional[str] = None
 
 
 class DashboardSection(BaseModel):
