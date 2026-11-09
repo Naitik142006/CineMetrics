@@ -16,3 +16,4 @@ echo  - 3D Animated Landing & Terminal UI: http://localhost:5173
 echo  - Interactive Swagger API Docs:      http://localhost:8000/docs
 echo ============================================================
 pause
+
