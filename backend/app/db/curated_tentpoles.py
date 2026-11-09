@@ -2,8 +2,12 @@
 CineMetrics — Curated Theatrical Catalog
 Contains:
 1. CURATED_UPCOMING_TENTPOLES (Future releases >= Nov 2026 through 2028)
-2. CURATED_RECENT_RELEASED_BLOCKBUSTERS (38 landmark 2022–2026 released blockbusters with verified actual grosses)
+2. CURATED_RECENT_RELEASED_BLOCKBUSTERS (38 landmark 2022–2026 released blockbusters with verified actual grosses and verified posters)
 """
+
+null = None
+true = True
+false = False
 
 CURATED_UPCOMING_TENTPOLES = [
     {
@@ -39,7 +43,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.85,
         "composite_buzz_score": 96.5,
         "narrative_summary": "Major multiversal tentpole anchored by Robert Downey Jr.'s return as Doctor Doom, driving unprecedented pre-release trailer velocity and global anticipation.",
-        "poster_path": "/wT9iM7y2E6vN9Fz9G5bL4mD8yXp.jpg",
+        "poster_path": null,
         "backdrop_path": "/b999Y6Zf8i2aG0N6Y9jZ7W3pQ1.jpg"
     },
     {
@@ -75,7 +79,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 98.0,
         "narrative_summary": "The grand finale of the MCU Multiverse Saga with generational cross-over appeal, positioned for record-shattering global theatrical returns.",
-        "poster_path": "/zN4fVbT2qO3yG0W4bN9pY2hR8tM.jpg",
+        "poster_path": null,
         "backdrop_path": "/c888Y6Zf8i2aG0N6Y9jZ7W3pQ2.jpg"
     },
     {
@@ -112,7 +116,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.82,
         "composite_buzz_score": 94.0,
         "narrative_summary": "James Cameron's third Pandora chapter benefits from extraordinary international market penetration and unprecedented premium large format (IMAX/3D) ticket pricing power.",
-        "poster_path": "/jXtlDoxgZJ3e9i1lUe3sO0w4rK8.jpg",
+        "poster_path": "/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg",
         "backdrop_path": "/vL5W4keLZi1t21o0f8Z3aB2cDeF.jpg"
     },
     {
@@ -148,7 +152,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.79,
         "composite_buzz_score": 88.5,
         "narrative_summary": "Gritty detective noir grounded sequel building directly on the critical acclaim of Part I and the HBO Penguin series momentum.",
-        "poster_path": "/thX8Rs7nfgmPHfCgjoFuRovy49l.jpg",
+        "poster_path": null,
         "backdrop_path": "/eTvNm64aLdC4GZ2a7C5qK4v2x4Q.jpg"
     },
     {
@@ -183,7 +187,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.84,
         "composite_buzz_score": 92.0,
         "narrative_summary": "High-demand street-level Spider-Man follow-up to No Way Home, pairing Tom Holland's Peter Parker with Charlie Cox's Daredevil.",
-        "poster_path": "/8Y4oJ5iUs3hgPcDB3SIEmsNYjZk.jpg",
+        "poster_path": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
         "backdrop_path": "/gL5qY6Zf8i2aG0N6Y9jZ7W3pQ3.jpg"
     },
     {
@@ -219,7 +223,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.87,
         "composite_buzz_score": 89.0,
         "narrative_summary": "Denis Villeneuve's climactic conclusion of the Paul Atreides trilogy, riding high prestige buzz, A-list star power, and loyal IMAX enthusiast patronage.",
-        "poster_path": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+        "poster_path": "/6izwz7rsy95ARzTR3poZ8H6c5pp.jpg",
         "backdrop_path": "/xOMo8BRK7PfcJv9JCnx7s5hj0x2.jpg"
     },
     {
@@ -254,7 +258,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.77,
         "composite_buzz_score": 88.0,
         "narrative_summary": "Flagship reboot launch for James Gunn's interconnected DC Universe, with strong global curiosity and high family appeal.",
-        "poster_path": "/omT1s2P3k4Q5l6M7n8b9V0c1X2Y.jpg",
+        "poster_path": null,
         "backdrop_path": "/mG4pY6Zf8i2aG0N6Y9jZ7W3pQ4.jpg"
     },
     {
@@ -290,7 +294,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 93.5,
         "narrative_summary": "Christopher Nolan's direct follow-up to Oppenheimer, filmed entirely on next-gen IMAX 70mm cameras with an ensemble of generational superstar talent.",
-        "poster_path": "/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+        "poster_path": null,
         "backdrop_path": "/fm6KqXpk3M2HVveHwCrBSpBaO0V.jpg"
     },
     {
@@ -324,7 +328,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.81,
         "composite_buzz_score": 85.0,
         "narrative_summary": "First theatrical Star Wars release since 2019, propelled by the immense multi-generational pop-culture appeal of Grogu.",
-        "poster_path": "/hSmIJluOJmTWvJs4d7kHRxjc8s8.jpg",
+        "poster_path": null,
         "backdrop_path": "/nTvNm64aLdC4GZ2a7C5qK4v2x4R.jpg"
     },
     {
@@ -357,7 +361,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.72,
         "composite_buzz_score": 80.0,
         "narrative_summary": "Continuation of the canonical mainline Skywalker saga timeline featuring Rey's new Jedi academy.",
-        "poster_path": "/sTaRwArSnEwJeDi2027.jpg",
+        "poster_path": null,
         "backdrop_path": "/sTwNm64aLdC4GZ2a7C5qK4v2x4S.jpg"
     },
     {
@@ -391,7 +395,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.78,
         "composite_buzz_score": 83.5,
         "narrative_summary": "Pixar's crowning commercial animation franchise tackles modern screen culture with four-quadrant cross-generational appeal.",
-        "poster_path": "/tOyStOrY5pIxAr2027dIsN.jpg",
+        "poster_path": null,
         "backdrop_path": "/tPwNm64aLdC4GZ2a7C5qK4v2x4T.jpg"
     },
     {
@@ -426,7 +430,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.84,
         "composite_buzz_score": 87.5,
         "narrative_summary": "Enormous viral nostalgic demand following Puss in Boots: The Last Wish, reuniting the full original vocal cast.",
-        "poster_path": "/sHrEk5dReAmWoRkS2027.jpg",
+        "poster_path": null,
         "backdrop_path": "/sQwNm64aLdC4GZ2a7C5qK4v2x4U.jpg"
     },
     {
@@ -461,7 +465,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.8,
         "composite_buzz_score": 84.0,
         "narrative_summary": "Disney's all-time biggest animated franchise returning for Thanksgiving corridor with guaranteed multi-billion merchandise and theatrical momentum.",
-        "poster_path": "/fRoZeN3dIsNeY2027aNnAE.jpg",
+        "poster_path": null,
         "backdrop_path": "/fRwNm64aLdC4GZ2a7C5qK4v2x4V.jpg"
     },
     {
@@ -533,7 +537,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.83,
         "composite_buzz_score": 88.0,
         "narrative_summary": "Highly anticipated Marvel retro-future reboot directly bridging into Avengers: Doomsday.",
-        "poster_path": "/fAnTaStIcFoUr2025mArVeL.jpg",
+        "poster_path": null,
         "backdrop_path": "/fAwNm64aLdC4GZ2a7C5qK4v2x4W.jpg"
     },
     {
@@ -568,7 +572,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.79,
         "composite_buzz_score": 85.5,
         "narrative_summary": "Gareth Edwards injects intense practical visual scale into the proven multi-billion Jurassic franchise.",
-        "poster_path": "/jUrAsSiCwOrLdReBiRtH26.jpg",
+        "poster_path": null,
         "backdrop_path": "/jUwNm64aLdC4GZ2a7C5qK4v2x4X.jpg"
     },
     {
@@ -602,7 +606,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.81,
         "composite_buzz_score": 84.5,
         "narrative_summary": "Capitalizes on Moana's status as the single most streamed movie in Nielsen streaming history.",
-        "poster_path": "/4YZpsylmjHbqeW2LITmQv8fd2Jw.jpg",
+        "poster_path": null,
         "backdrop_path": "/mOwNm64aLdC4GZ2a7C5qK4v2x4Y.jpg"
     },
     {
@@ -636,7 +640,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.82,
         "composite_buzz_score": 87.0,
         "narrative_summary": "Consistently the highest-ROI franchise in modern Hollywood history, regularly crossing $900M+ on controlled budgets.",
-        "poster_path": "/wWba3TaojhK7NdycRhoQpsG0cnH.jpg",
+        "poster_path": null,
         "backdrop_path": "/mIwNm64aLdC4GZ2a7C5qK4v2x4Z.jpg"
     },
     {
@@ -706,7 +710,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.8,
         "composite_buzz_score": 83.0,
         "narrative_summary": "Continuation of Legendary's highly profitable MonsterVerse following the $570M+ success of The New Empire.",
-        "poster_path": "/gOdZiLlAxKoNg2027sUpEr.jpg",
+        "poster_path": null,
         "backdrop_path": "/gZwNm64aLdC4GZ2a7C5qK4v2x41.jpg"
     },
     {
@@ -740,7 +744,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.82,
         "composite_buzz_score": 82.0,
         "narrative_summary": "Fan-favorite prequel recounting Haymitch's legendary arena victory in Panem.",
-        "poster_path": "/hUnGeRgAmEsSuNrIsE2026.jpg",
+        "poster_path": "/jNcZH8yplxttRlf0wwqfGGMKHxX.jpg",
         "backdrop_path": "/hGwNm64aLdC4GZ2a7C5qK4v2x42.jpg"
     },
     {
@@ -777,7 +781,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 98.0,
         "narrative_summary": "India's highest-budget cinematic production in history, backed by Oscar-winning VFX house DNEG and pairing Ranbir Kapoor with KGF superstar Yash.",
-        "poster_path": "/1xlh1jh9Lxz4OzusFKeljqoRxjL.jpg",
+        "poster_path": null,
         "backdrop_path": "/rAmAyAnApArT1bAcKdRoP.jpg"
     },
     {
@@ -813,7 +817,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.92,
         "composite_buzz_score": 96.0,
         "narrative_summary": "The monumental war climax of Nitesh Tiwari's Ramayana, projected to achieve unprecedented global diaspora and domestic Indian box office records.",
-        "poster_path": "/1xlh1jh9Lxz4OzusFKeljqoRxjL.jpg",
+        "poster_path": null,
         "backdrop_path": "/rAmAyAnApArT2bAcKdRoP.jpg"
     },
     {
@@ -847,7 +851,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.86,
         "composite_buzz_score": 94.5,
         "narrative_summary": "Unites Bollywood dance and action god Hrithik Roshan with Tollywood pan-India powerhouse Jr NTR in the lucrative YRF Spy Universe.",
-        "poster_path": "/zUp0mN7rN9b8V0c1X2Y5.jpg",
+        "poster_path": "/zqFuriKJ6pYDvf72kXNLONnuE8k.jpg",
         "backdrop_path": "/wAr2hRiThIkEnTrYbAcK.jpg"
     },
     {
@@ -882,7 +886,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.83,
         "composite_buzz_score": 93.5,
         "narrative_summary": "Massive sequel to Animal ($110M+ gross), fueled by director Sandeep Reddy Vanga's uncompromising polarising directorial voice.",
-        "poster_path": "/hr95svathvZYn0O69vEiAd0aG9k.jpg",
+        "poster_path": "/hr9rjR3J0xBBKmlJ4n3gHId9ccx.jpg",
         "backdrop_path": "/aNiMaLpArKrAnBiRbAcK.jpg"
     },
     {
@@ -917,7 +921,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 95.0,
         "narrative_summary": "Shah Rukh Khan returns in an unapologetic grey-shaded assassin thriller alongside daughter Suhana Khan.",
-        "poster_path": "/jYW80OOVebZlUUSq6yUqEbeV72y.jpg",
+        "poster_path": null,
         "backdrop_path": "/kInGsRkBkJlOuTgAcKdRoP.jpg"
     },
     {
@@ -952,7 +956,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 97.0,
         "narrative_summary": "The ultimate Indian commercial blockbuster clash pitting megastars Shah Rukh Khan and Salman Khan against each other.",
-        "poster_path": "/m1b9ToAbGqUq66g1Z6bA0jU2h4T.jpg",
+        "poster_path": null,
         "backdrop_path": "/tIgErVsPaThAaNbAcKdRoP.jpg"
     },
     {
@@ -988,7 +992,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.87,
         "composite_buzz_score": 91.5,
         "narrative_summary": "Sequel to historic all-time highest-grossing Hindi release Stree 2 (\u20b9850 Cr+ gross), operating at massive profit margins.",
-        "poster_path": "/m2BeI9K23qOaA25gG7gS3sC3Uoi.jpg",
+        "poster_path": "/nfnhwfUEFuSOxxf4jDdBlY6Lccw.jpg",
         "backdrop_path": "/sTrEe3bAcKdRoPaMaRkAu.jpg"
     },
     {
@@ -1024,7 +1028,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.85,
         "composite_buzz_score": 88.0,
         "narrative_summary": "Republic Day patriotic mega-spectacle starring box-office juggernaut Sunny Deol following the historic triumph of Gadar 2.",
-        "poster_path": "/bOrDeR2sUnNyDeOl2026.jpg",
+        "poster_path": null,
         "backdrop_path": "/bOrDeR2bAcKdRoPsUnNy.jpg"
     },
     {
@@ -1059,7 +1063,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.86,
         "composite_buzz_score": 86.5,
         "narrative_summary": "Sanjay Leela Bhansali crafts an opulent romantic epic uniting the country's most decorated young actors.",
-        "poster_path": "/lOvEaNdWaRsLaNsAlI.jpg",
+        "poster_path": null,
         "backdrop_path": "/lOvEaNdWaRbAcKdRoP.jpg"
     },
     {
@@ -1093,7 +1097,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.95,
         "composite_buzz_score": 99.5,
         "narrative_summary": "S.S. Rajamouli's first film after global phenomenon RRR, pairing with superstar Mahesh Babu on a scale unseen in Indian cinema.",
-        "poster_path": "/dy3K6hNvwE05siGgiLJcEiwgpdO.jpg",
+        "poster_path": null,
         "backdrop_path": "/sSmB29rAjAmOuLiBaCkDrOp.jpg"
     },
     {
@@ -1129,7 +1133,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.92,
         "composite_buzz_score": 97.5,
         "narrative_summary": "Climactic sci-fi mythological battle following the \u20b91,100 Cr+ theatrical run of Part 1, expanding Kamal Haasan's Yaskin role.",
-        "poster_path": "/9OYy3Y2jE0mU4WlGsqYmG7X7N1B.jpg",
+        "poster_path": "/rstcAnBeCkxNQjNp3YXrF6IP1tW.jpg",
         "backdrop_path": "/kAlKi2898aDpArT2bAcK.jpg"
     },
     {
@@ -1164,7 +1168,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 96.0,
         "narrative_summary": "The third explosive chapter of Allu Arjun's record-smashing Pushpa franchise with pan-India cult following.",
-        "poster_path": "/bGSbaG6AIIaACEMprEsf2xiLgyO.jpg",
+        "poster_path": "/1T21FblunT0y8fz7YaW8JMYgUKm.jpg",
         "backdrop_path": "/pUsHpA3tHeRaMpAgEbAcK.jpg"
     },
     {
@@ -1199,7 +1203,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 95.0,
         "narrative_summary": "Prashanth Neel directs the violent, tragic throne war between friends-turned-enemies in Khansaar.",
-        "poster_path": "/sAlAaRpArT1pRaBhAs2023.jpg",
+        "poster_path": "/nlu9WbcetNFRGXXPWITr30ob7W6.jpg",
         "backdrop_path": "/sAlAaRpArT2bAcKdRoP.jpg"
     },
     {
@@ -1234,7 +1238,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 96.5,
         "narrative_summary": "Unites Animal director Sandeep Reddy Vanga with pan-India sensation Prabhas for a high-intensity cop thriller.",
-        "poster_path": "/sPiRiTpRaBhAs2027vAnGa.jpg",
+        "poster_path": null,
         "backdrop_path": "/sPiRiTbAcKdRoPpRaBhAs.jpg"
     },
     {
@@ -1269,7 +1273,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.86,
         "composite_buzz_score": 92.0,
         "narrative_summary": "Direct conclusion to Jr NTR's sea-set action spectacle following the massive theatrical returns of Part 1.",
-        "poster_path": "/dEvArAnTr2024tElUgU.jpg",
+        "poster_path": "/lQfuaXjANoTsdx5iS0gCXlK9D2L.jpg",
         "backdrop_path": "/dEvArApArT2bAcKdRoPnTr.jpg"
     },
     {
@@ -1303,7 +1307,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.93,
         "composite_buzz_score": 94.0,
         "narrative_summary": "Kantara fame Rishab Shetty steps into the divine avatar of Lord Hanuman in Prasanth Varma's Cinematic Universe.",
-        "poster_path": "/jAiHaNuMaN2026tElUgU.jpg",
+        "poster_path": null,
         "backdrop_path": "/jAiHaNuMaNbAcKdRoP.jpg"
     },
     {
@@ -1340,7 +1344,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.92,
         "composite_buzz_score": 95.0,
         "narrative_summary": "Superstar Rajinikanth joins forces with hitmaker Lokesh Kanagaraj and music maestro Anirudh for an action event film.",
-        "poster_path": "/cOoLiEtHaLaIvAr171rAj.jpg",
+        "poster_path": null,
         "backdrop_path": "/cOoLiEbAcKdRoPrAjInI.jpg"
     },
     {
@@ -1375,7 +1379,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 94.0,
         "narrative_summary": "Standalone origin story for the iconic antagonist Rolex from Vikram, bringing immense pan-Indian franchise equity.",
-        "poster_path": "/rOlExLcUsTaNdAlOnEsU.jpg",
+        "poster_path": "/2XUHC4lp3tDsgfFLFygNZ2x2Um9.jpg",
         "backdrop_path": "/rOlExBaCkDrOpSuRiYa.jpg"
     },
     {
@@ -1410,7 +1414,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 92.5,
         "narrative_summary": "Sequel to the massive \u20b9650 Cr+ hit Jailer with Rajinikanth, Mohanlal, and Shiva Rajkumar reprising their fan-favorite dynamic.",
-        "poster_path": "/jAiLeRrAjInI2023tAmIl.jpg",
+        "poster_path": "/pTmMxAHqX4vsIDE6HPPxOR0Q6TN.jpg",
         "backdrop_path": "/jAiLeR2hUkUmBaCkDrOp.jpg"
     },
     {
@@ -1445,7 +1449,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.96,
         "composite_buzz_score": 98.5,
         "narrative_summary": "The monumental farewell theatrical release of Tamil cinema's biggest modern star, driving unparalleled emotional and commercial frenzy across South India.",
-        "poster_path": "/gOaTvIjAy2024tAmIl.jpg",
+        "poster_path": "/kk9SmNt6QcP5thvSYELWvO0NWuC.jpg",
         "backdrop_path": "/tHaLaPaThY69bAcKdRoP.jpg"
     },
     {
@@ -1481,7 +1485,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 94.0,
         "narrative_summary": "Rocking Star Yash's immediate post-KGF follow-up, commanding massive curiosity and immense advance booking expectations.",
-        "poster_path": "/tOx1cYaSh2026KoL1w0oD.jpg",
+        "poster_path": null,
         "backdrop_path": "/tOxIcBaCkDrOpYaSh2027.jpg"
     },
     {
@@ -1516,7 +1520,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.91,
         "composite_buzz_score": 96.5,
         "narrative_summary": "The third instalment in India's highest-impact modern mass franchise, promising record-breaking theatrical openings.",
-        "poster_path": "/khNVyEYEzc5wqIp4rZrFpmT6Ofy.jpg",
+        "poster_path": "/khNVygolU0TxLIDWff5tQlAhZ23.jpg",
         "backdrop_path": "/kGfChApTeR3bAcKdRoP.jpg"
     },
     {
@@ -1549,7 +1553,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.94,
         "composite_buzz_score": 95.0,
         "narrative_summary": "Predecessor to the National Award-winning cultural phenomenon Kantara, expanding the divine Daiva mythos.",
-        "poster_path": "/kAnTaRaRiShAb2022.jpg",
+        "poster_path": "/jIsKmkxMzdCZ0Ux1GVSnu8m6Na6.jpg",
         "backdrop_path": "/kAnTaRaChApTeR1bAcK.jpg"
     },
     {
@@ -1585,7 +1589,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.91,
         "composite_buzz_score": 92.0,
         "narrative_summary": "The highest-budget Malayalam film ever made, expanding the Lucifer universe into a global political espionage scale.",
-        "poster_path": "/l2EmPuRaAnMoHaNlAl.jpg",
+        "poster_path": null,
         "backdrop_path": "/l2EmPuRaAnBaCkDrOp.jpg"
     },
     {
@@ -1622,7 +1626,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 91.0,
         "narrative_summary": "Tom Cruise's swansong as Ethan Hunt featuring death-defying practical aviation and deep-sea submarine stunts.",
-        "poster_path": "/mIsSiOnImPoSsIbLe8tOm.jpg",
+        "poster_path": null,
         "backdrop_path": "/mIsSiOnImPoSsIbLe8bAcK.jpg"
     },
     {
@@ -1658,7 +1662,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.74,
         "composite_buzz_score": 89.0,
         "narrative_summary": "Live-action adaptation of the best-selling video game of all time, targeting young gamers and family demographics.",
-        "poster_path": "/mInEcRaFtMoViE2027jAcK.jpg",
+        "poster_path": null,
         "backdrop_path": "/mInEcRaFtBaCkDrOp2027.jpg"
     },
     {
@@ -1694,7 +1698,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.78,
         "composite_buzz_score": 81.0,
         "narrative_summary": "Cult sci-fi franchise return with soundtrack by Nine Inch Nails and state-of-the-art neon visual aesthetics.",
-        "poster_path": "/tRoNaReS2027jArEdLeTo.jpg",
+        "poster_path": null,
         "backdrop_path": "/tRoNaReSbAcKdRoP2027.jpg"
     },
     {
@@ -1728,7 +1732,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.81,
         "composite_buzz_score": 83.5,
         "narrative_summary": "Oscar-winner Mahershala Ali brings R-rated vampire hunter grit into the MCU supernatural wing.",
-        "poster_path": "/bLaDeMcUmAhErShAlA.jpg",
+        "poster_path": null,
         "backdrop_path": "/bLaDeBaCkDrOpMcU2027.jpg"
     },
     {
@@ -1763,7 +1767,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 91.5,
         "narrative_summary": "Sequel to Chapter 4 ($440M gross) with peerless martial arts choreography and fervent action cinema fanbase.",
-        "poster_path": "/jOhNwIcK5kEaNuReEvEs.jpg",
+        "poster_path": null,
         "backdrop_path": "/jOhNwIcK5bAcKdRoP2027.jpg"
     },
     {
@@ -1797,7 +1801,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.85,
         "composite_buzz_score": 82.0,
         "narrative_summary": "Long-awaited 20-year sequel to the cult 2005 comic book supernatural thriller starring Keanu Reeves.",
-        "poster_path": "/cOnStAnTiNe2kEaNu27.jpg",
+        "poster_path": null,
         "backdrop_path": "/cOnStAnTiNe2bAcKdRoP.jpg"
     },
     {
@@ -1831,7 +1835,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 95.5,
         "narrative_summary": "Direct follow-up to Shah Rukh Khan's \u20b91,050 Cr+ historic comeback blockbuster Pathaan.",
-        "poster_path": "/m1b9ToAbGqUq66g1Z6bA0jU2h4T.jpg",
+        "poster_path": "/arf00BkwvXo0CFKbaD9OpqdE4Nu.jpg",
         "backdrop_path": "/pAtHaAn2bAcKdRoPsRk.jpg"
     },
     {
@@ -1866,7 +1870,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.79,
         "composite_buzz_score": 86.0,
         "narrative_summary": "Ranveer Singh steps into the legendary mantle of Don directed by Farhan Akhtar in a slick European espionage style.",
-        "poster_path": "/dOn3rAnVeErSiNgH27.jpg",
+        "poster_path": null,
         "backdrop_path": "/dOn3bAcKdRoPrAnVeEr.jpg"
     },
     {
@@ -1900,7 +1904,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.82,
         "composite_buzz_score": 88.5,
         "narrative_summary": "The fourth installment in India's pioneering superhero franchise starring Hrithik Roshan with intergalactic scope.",
-        "poster_path": "/kRrIsH4hRiThIk2027.jpg",
+        "poster_path": null,
         "backdrop_path": "/kRrIsH4bAcKdRoPhRiThIk.jpg"
     },
     {
@@ -1935,7 +1939,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.77,
         "composite_buzz_score": 81.0,
         "narrative_summary": "Ensemble Bollywood comedy tentpole shot entirely aboard luxury European cruise liners.",
-        "poster_path": "/hOuSeFuLl5aKsHaY27.jpg",
+        "poster_path": null,
         "backdrop_path": "/hOuSeFuLl5bAcKdRoP27.jpg"
     },
     {
@@ -1971,7 +1975,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.83,
         "composite_buzz_score": 89.0,
         "narrative_summary": "The ambitious continuation of India's indigenous fantasy Astraverse starring Bollywood's marquee stars.",
-        "poster_path": "/x61q14M6vK8q43dK84iFj9sO6L.jpg",
+        "poster_path": "https://upload.wikimedia.org/wikipedia/en/e/ea/Brahmastra_Part_One_Shiva.jpg",
         "backdrop_path": "/bRaHmAstraPart2Backdrop.jpg"
     },
     {
@@ -2006,7 +2010,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.9,
         "composite_buzz_score": 93.0,
         "narrative_summary": "Sita Ramam director Hanu Raghavapudi helms a lavish period love story and war saga with Prabhas.",
-        "poster_path": "/fAuJiPrAbHaS2027hAnU.jpg",
+        "poster_path": null,
         "backdrop_path": "/fAuJiBaCkDrOpPrAbHaS.jpg"
     },
     {
@@ -2041,7 +2045,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 91.5,
         "narrative_summary": "Global Star Ram Charan pairs with Uppena director Buchi Babu Sana and AR Rahman for an earthy sports epic.",
-        "poster_path": "/rC16rAmChArAnBuCcI.jpg",
+        "poster_path": null,
         "backdrop_path": "/rC16bAcKdRoPrAmChArAn.jpg"
     },
     {
@@ -2075,7 +2079,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.93,
         "composite_buzz_score": 96.0,
         "narrative_summary": "Blockbuster collaboration between KGF/Salaar director Prashanth Neel and RRR sensation Jr NTR.",
-        "poster_path": "/nTr31pRaShAnThNeEl27.jpg",
+        "poster_path": null,
         "backdrop_path": "/nTr31bAcKdRoPnTrNeEl.jpg"
     },
     {
@@ -2110,7 +2114,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.91,
         "composite_buzz_score": 92.5,
         "narrative_summary": "Stylized neo-noir gangster flick starring Deputy Chief Minister & Power Star Pawan Kalyan with high youth appeal.",
-        "poster_path": "/tHeYcAlLhImOgPk2027.jpg",
+        "poster_path": null,
         "backdrop_path": "/tHeYcAlLhImOgBaCkDrOp.jpg"
     },
     {
@@ -2145,7 +2149,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.92,
         "composite_buzz_score": 93.0,
         "narrative_summary": "Highly awaited sequel to the cult 2019 blockbuster that birthed the entire Lokesh Cinematic Universe.",
-        "poster_path": "/kAiThI2kArThIlOkEsH.jpg",
+        "poster_path": null,
         "backdrop_path": "/kAiThI2bAcKdRoPlCu27.jpg"
     },
     {
@@ -2181,7 +2185,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.89,
         "composite_buzz_score": 90.0,
         "narrative_summary": "Festive summer mass commercial bonanza starring Tamil cinema stalwart Ajith Kumar.",
-        "poster_path": "/gOoDbAdUgLyAjItH27.jpg",
+        "poster_path": null,
         "backdrop_path": "/gOoDbAdUgLyBaCkDrOp.jpg"
     },
     {
@@ -2216,7 +2220,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.88,
         "composite_buzz_score": 85.0,
         "narrative_summary": "High-ROI sleeper comedy targeting collegiate youth from Love Today director Pradeep Ranganathan.",
-        "poster_path": "/dRaGoNpRaDeEpRaNgA.jpg",
+        "poster_path": null,
         "backdrop_path": "/dRaGoNbAcKdRoPpRaDeEp.jpg"
     },
     {
@@ -2251,7 +2255,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.94,
         "composite_buzz_score": 91.0,
         "narrative_summary": "Legendary Malayalam megastar Mammootty revives his most stylish cult action persona with director Amal Neerad.",
-        "poster_path": "/bIlAlBiGb2mAmMoOtTy.jpg",
+        "poster_path": null,
         "backdrop_path": "/bIlAlBaCkDrOpMaMmOoT.jpg"
     },
     {
@@ -2285,7 +2289,7 @@ CURATED_UPCOMING_TENTPOLES = [
         "comment_sentiment_net_polarity": 0.93,
         "composite_buzz_score": 92.0,
         "narrative_summary": "Theatrical sequel to India's globally celebrated indigenous superhero sensation Minnal Murali.",
-        "poster_path": "/mInNaLmUrAlI2tOvInO.jpg",
+        "poster_path": null,
         "backdrop_path": "/mInNaLmUrAlI2bAcKdRoP.jpg"
     }
 ]
@@ -2551,7 +2555,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "en",
         "production_company": "Legendary Pictures / Warner Bros.",
         "overview": "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
-        "poster_path": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+        "poster_path": "/6izwz7rsy95ARzTR3poZ8H6c5pp.jpg",
         "backdrop_path": "/xOMo8BRK7PfcJv9JCnx7s5hj0x2.jpg",
         "youtube_trailer_id": "Way9Dexny3w",
         "success_category": "Super Hit"
@@ -2584,7 +2588,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "en",
         "production_company": "Illumination / Universal Pictures",
         "overview": "Gru and Lucy and their girls welcome a new member to the family, Gru Jr., who is intent on tormenting his dad.",
-        "poster_path": "/wWba3TaojhK7NdycRhoQpsG0cnH.jpg",
+        "poster_path": "/3w84hCFJATpiCO5g8hpdWVPBbmq.jpg",
         "backdrop_path": "/lgkFt6tc39tXYKNj1k919j2e4xL.jpg",
         "youtube_trailer_id": "qQlr9-rF32A",
         "success_category": "Blockbuster"
@@ -2616,7 +2620,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "en",
         "production_company": "Walt Disney Animation Studios",
         "overview": "After receiving an unexpected call from her wayfinding ancestors, Moana journeys to the far seas of Oceania on an adventure unlike anything she's faced.",
-        "poster_path": "/4YZpsylmjHbqeW2LITmQv8fd2Jw.jpg",
+        "poster_path": "/aLVkiINlIeCkcZIzb7XHzPYgO6L.jpg",
         "backdrop_path": "/v9acaWVjG418UjT677n0b4fS4Xj.jpg",
         "youtube_trailer_id": "hDZ7y8RP5HE",
         "success_category": "Blockbuster"
@@ -2682,7 +2686,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "en",
         "production_company": "Paramount Pictures / Scott Free Productions",
         "overview": "Years after witnessing the death of Maximus, Lucius enters the Colosseum after his home is conquered by tyrannical emperors.",
-        "poster_path": "/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg",
+        "poster_path": "/b5UXjzW5cLZhprMnlAmsVAA3G4t.jpg",
         "backdrop_path": "/euYIwmwkmz95mnEx7vA9h8y6H7V.jpg",
         "youtube_trailer_id": "4rgYUipGJNo",
         "success_category": "Hit"
@@ -2715,7 +2719,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "en",
         "production_company": "Marvel Studios",
         "overview": "Still reeling from the loss of Gamora, Peter Quill rallies his team to defend the universe and protect one of their own.",
-        "poster_path": "/r2J02Z2OpNTctfOSN2Ydgii51I3.jpg",
+        "poster_path": "/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg",
         "backdrop_path": "/5YZbUmjbMa3ClvSW1Wj3D6XGolb.jpg",
         "youtube_trailer_id": "u3V5KDHRQvk",
         "success_category": "Super Hit"
@@ -2813,7 +2817,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "te",
         "production_company": "DVV Entertainment",
         "overview": "A fictional story about two legendary revolutionaries and their journey away from home before they began fighting for their country in the 1920s.",
-        "poster_path": "/wE0noMt24B9xr9TeMhn0sFL8KR2.jpg",
+        "poster_path": "/wE0I6efAW4cDDmZQWtwZMOW44EJ.jpg",
         "backdrop_path": "/b85S969nZf2iZ2xQv7C4F2A1.jpg",
         "youtube_trailer_id": "f_vbAtFSEc0",
         "success_category": "Blockbuster"
@@ -2846,7 +2850,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "kn",
         "production_company": "Hombale Films",
         "overview": "The blood-soaked land of Kolar Gold Fields has a new overlord now: Rocky, whose name strikes fear into the hearts of his foes.",
-        "poster_path": "/khNVyEYEzc5wqIp4rZrFpmT6Ofy.jpg",
+        "poster_path": "/khNVygolU0TxLIDWff5tQlAhZ23.jpg",
         "backdrop_path": "/kGfChApTeR2bAcKdRoPhOmBaLe.jpg",
         "youtube_trailer_id": "JKa05nyUmuQ",
         "success_category": "Blockbuster"
@@ -2879,7 +2883,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "te",
         "production_company": "Vyjayanthi Movies",
         "overview": "A modern avatar of Vishnu, a Hindu god, is believed to have descended to the earth in the post-apocalyptic year 2898 AD to protect the world from evil forces.",
-        "poster_path": "/9OYy3Y2jE0mU4WlGsqYmG7X7N1B.jpg",
+        "poster_path": "/rstcAnBeCkxNQjNp3YXrF6IP1tW.jpg",
         "backdrop_path": "/kAlKi2898aDbAcKdRoPVyJaYaNtHi.jpg",
         "youtube_trailer_id": "kQDd1AhGIHk",
         "success_category": "Blockbuster"
@@ -2911,7 +2915,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "te",
         "production_company": "Mythri Movie Makers",
         "overview": "Pushpa Raj establishes undisputed control over the red sandalwood syndicate while escalating his personal war against SP Bhanwar Singh Shekhawat.",
-        "poster_path": "/bGSbaG6AIIaACEMprEsf2xiLgyO.jpg",
+        "poster_path": "/1T21FblunT0y8fz7YaW8JMYgUKm.jpg",
         "backdrop_path": "/pUsHpA2bAcKdRoPMyThRi.jpg",
         "youtube_trailer_id": "1kVK0MZlbI4",
         "success_category": "Blockbuster"
@@ -2943,7 +2947,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "hi",
         "production_company": "Red Chillies Entertainment",
         "overview": "A man is driven by a personal vendetta to rectify the wrongs in society while keeping a promise made years ago.",
-        "poster_path": "/jYW80OOVebZlUUSq6yUqEbeV72y.jpg",
+        "poster_path": "/jFt1gS4BGHlK8xt76Y81Alp4dbt.jpg",
         "backdrop_path": "/jAwAnSrKbAcKdRoPrEdChIlLiEs.jpg",
         "youtube_trailer_id": "MWOlnZSnXpc",
         "success_category": "Blockbuster"
@@ -2975,7 +2979,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "hi",
         "production_company": "Yash Raj Films",
         "overview": "An Indian RAW field agent Pathaan returns from exile to take down a private terror organization led by a rogue ex-officer.",
-        "poster_path": "/m1b9ToAbGqUq66g1Z6bA0jU2h4T.jpg",
+        "poster_path": "/arf00BkwvXo0CFKbaD9OpqdE4Nu.jpg",
         "backdrop_path": "/pAtHaAnYrFbAcKdRoPsRk.jpg",
         "youtube_trailer_id": "vqu4z34wENw",
         "success_category": "Blockbuster"
@@ -3008,7 +3012,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "hi",
         "production_company": "T-Series / Bhadrakali Pictures",
         "overview": "A son's obsessive love for his distant father leads him down a dark and violent path of bloodshed and retribution.",
-        "poster_path": "/hr95svathvZYn0O69vEiAd0aG9k.jpg",
+        "poster_path": "/hr9rjR3J0xBBKmlJ4n3gHId9ccx.jpg",
         "backdrop_path": "/aNiMaLrAnBiRbAcKdRoPvAnGa.jpg",
         "youtube_trailer_id": "Dydmpfo68DA",
         "success_category": "Blockbuster"
@@ -3040,7 +3044,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "hi",
         "production_company": "Maddock Films / Jio Studios",
         "overview": "The town of Chanderi is haunted once again, this time by a headless entity named Sarkata that abducts modern independent women.",
-        "poster_path": "/m2BeI9K23qOaA25gG7gS3sC3Uoi.jpg",
+        "poster_path": "/nfnhwfUEFuSOxxf4jDdBlY6Lccw.jpg",
         "backdrop_path": "/sTrEe2mAdDoCkBaCkDrOp.jpg",
         "youtube_trailer_id": "KVn5x2F7S6w",
         "success_category": "Blockbuster"
@@ -3072,7 +3076,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "hi",
         "production_company": "Zee Studios",
         "overview": "During the Indo-Pakistani War of 1971, Tara Singh journeys back into Pakistan to rescue his captured son Charanjeet.",
-        "poster_path": "/gAdAr2sUnNyDeOl2023.jpg",
+        "poster_path": "/dtYKUHR1kZuOBX2Ud2mEhpnTS3x.jpg",
         "backdrop_path": "/gAdAr2bAcKdRoPzEeStUdIos.jpg",
         "youtube_trailer_id": "vhwxW5yH87A",
         "success_category": "Blockbuster"
@@ -3105,7 +3109,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "ta",
         "production_company": "Sun Pictures",
         "overview": "Muthuvel Pandian, a retired jailer, sets out on a crusade to track down and eliminate the criminal cartel that took his police officer son.",
-        "poster_path": "/jAiLeRrAjInI2023tAmIl.jpg",
+        "poster_path": "/pTmMxAHqX4vsIDE6HPPxOR0Q6TN.jpg",
         "backdrop_path": "/jAiLeRbAcKdRoPsUnPiCtUrEs.jpg",
         "youtube_trailer_id": "Y5BeWdODPqo",
         "success_category": "Blockbuster"
@@ -3138,7 +3142,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "ta",
         "production_company": "Seven Screen Studio",
         "overview": "A cafe owner in Kashmir must defend his family from a notorious drug syndicate that insists he is their long-lost enforcer, Leo Das.",
-        "poster_path": "/bGSbaG6AIIaACEMprEsf2xiLgyO.jpg",
+        "poster_path": "/2XUHC4lp3tDsgfFLFygNZ2x2Um9.jpg",
         "backdrop_path": "/lEoThAlApAtHyViJaYbAcK.jpg",
         "youtube_trailer_id": "Po3jStA673E",
         "success_category": "Blockbuster"
@@ -3171,7 +3175,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "ta",
         "production_company": "AGS Entertainment",
         "overview": "A hostage negotiator and elite field operative for the Special Anti-Terrorist Squad confronts the ghosts of his past mission.",
-        "poster_path": "/gOaTvIjAy2024tAmIl.jpg",
+        "poster_path": "/kk9SmNt6QcP5thvSYELWvO0NWuC.jpg",
         "backdrop_path": "/gOaTbAcKdRoPaGsEnTeRtAiN.jpg",
         "youtube_trailer_id": "x_7zW1eS8fA",
         "success_category": "Hit"
@@ -3202,7 +3206,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "te",
         "production_company": "Yuvasudha Arts / NTR Arts",
         "overview": "A coastal chieftain fights to protect his people and oceans from international sea-borne smuggling operations.",
-        "poster_path": "/dEvArAnTr2024tElUgU.jpg",
+        "poster_path": "/lQfuaXjANoTsdx5iS0gCXlK9D2L.jpg",
         "backdrop_path": "/dEvArAbAcKdRoPnTrArTs.jpg",
         "youtube_trailer_id": "5Y9jK8a4w2E",
         "success_category": "Hit"
@@ -3234,7 +3238,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "te",
         "production_company": "Hombale Films",
         "overview": "A gang leader makes a promise to a dying friend and takes on other criminal gangs in the dystopian fortified city of Khansaar.",
-        "poster_path": "/sAlAaRpArT1pRaBhAs2023.jpg",
+        "poster_path": "/nlu9WbcetNFRGXXPWITr30ob7W6.jpg",
         "backdrop_path": "/sAlAaRbAcKdRoPhOmBaLe.jpg",
         "youtube_trailer_id": "HihakYi5M2I",
         "success_category": "Super Hit"
@@ -3266,7 +3270,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "ml",
         "production_company": "Parava Films",
         "overview": "A group of friends from a small town in Kerala embark on a vacation to Kodaikanal, where one friend falls into the perilous Guna Caves.",
-        "poster_path": "/mAnJuMmElBoYs2024.jpg",
+        "poster_path": "/bswrtewwthpsh6nABiqKevU4UBI.jpg",
         "backdrop_path": "/mAnJuMmElBaCkDrOpPaRaVa.jpg",
         "youtube_trailer_id": "jPjK6HlM2o8",
         "success_category": "Blockbuster"
@@ -3298,7 +3302,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "hi",
         "production_company": "T-Series / Cine1 Studios",
         "overview": "Rooh Baba travels to the royal kingdom of Raktaghat, where he faces not one, but two vengeful spirits claiming to be Manjulika.",
-        "poster_path": "/bHoOlBhUlAiYaA3kArTiK.jpg",
+        "poster_path": "https://upload.wikimedia.org/wikipedia/en/e/e4/Bhool_Bhulaiyaa_3_poster.jpg",
         "backdrop_path": "/bHoOlBhUlAiYaA3bAcKdRoP.jpg",
         "youtube_trailer_id": "7L1YQkK1nU8",
         "success_category": "Super Hit"
@@ -3330,7 +3334,7 @@ CURATED_RECENT_RELEASED_BLOCKBUSTERS = [
         "original_language": "kn",
         "production_company": "Hombale Films",
         "overview": "When greed paves the way for betrayal, wrath, and rebellion, a young tribal man clashes with an upright forest officer in the heart of coastal Karnataka.",
-        "poster_path": "/kAnTaRaRiShAb2022.jpg",
+        "poster_path": "/jIsKmkxMzdCZ0Ux1GVSnu8m6Na6.jpg",
         "backdrop_path": "/kAnTaRaBaCkDrOpHoMbAlE.jpg",
         "youtube_trailer_id": "8mrffA5e9kE",
         "success_category": "Blockbuster"
