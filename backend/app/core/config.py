@@ -40,6 +40,10 @@ class Settings(BaseSettings):
     # Currency Exchange Reference
     DEFAULT_INR_USD_RATE: float = 83.50
 
+    # Authentication
+    AUTH_SECRET_KEY: str = "cinemetrics-auth-session-key-2026"
+    AUTH_TOKEN_TTL_HOURS: int = 168
+
     # Rate Limiting
     RATE_LIMIT_DEFAULT: str = "100/minute"
     RATE_LIMIT_SIMULATION: str = "30/minute"

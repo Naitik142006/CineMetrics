@@ -6,6 +6,7 @@ Assembles and prefixes all v1 endpoints (health, movies, upcoming, predictions, 
 from fastapi import APIRouter
 
 from backend.app.api.v1.endpoints import (
+    auth,
     health,
     movies,
     upcoming,
@@ -19,6 +20,7 @@ from backend.app.api.v1.endpoints import (
 api_router = APIRouter()
 
 # Register endpoint routers
+api_router.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 api_router.include_router(health.router, tags=["Health & Governance"])
 api_router.include_router(movies.router, tags=["Movie Catalog & Search"])
 api_router.include_router(upcoming.router, tags=["Upcoming Releases & Intelligence"])

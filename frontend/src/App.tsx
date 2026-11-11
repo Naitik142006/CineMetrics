@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { CurrencyProvider } from './context/CurrencyContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AuthModal } from './components/AuthModal';
@@ -12,6 +12,30 @@ import { WhatIfSimulatorPage } from './pages/WhatIfSimulatorPage';
 import { MovieComparisonPage } from './pages/MovieComparisonPage';
 import { MarketTrendsPage } from './pages/MarketTrendsPage';
 import { TalentDossierPage } from './pages/TalentDossierPage';
+
+const RequireAuth: React.FC<{ children: React.ReactElement }> = ({ children }) => {
+  const { isAuthenticated, isLoadingAuth, openAuthModal } = useAuth();
+
+  useEffect(() => {
+    if (!isLoadingAuth && !isAuthenticated) {
+      openAuthModal();
+    }
+  }, [isLoadingAuth, isAuthenticated, openAuthModal]);
+
+  if (isLoadingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-xs font-mono text-[#9090AA]">
+        Verifying session...
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/landing" replace />;
+  }
+
+  return children;
+};
 
 const MainLayout: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -29,13 +53,13 @@ const MainLayout: React.FC = () => {
         <Routes>
           <Route path="/" element={isAuthenticated ? <DashboardPage /> : <LandingPage />} />
           <Route path="/landing" element={<LandingPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/upcoming" element={<UpcomingRadarPage />} />
-          <Route path="/movies/:id" element={<MovieDossierPage />} />
-          <Route path="/simulate" element={<WhatIfSimulatorPage />} />
-          <Route path="/compare" element={<MovieComparisonPage />} />
-          <Route path="/market" element={<MarketTrendsPage />} />
-          <Route path="/talent/:role/:name" element={<TalentDossierPage />} />
+          <Route path="/dashboard" element={<RequireAuth><DashboardPage /></RequireAuth>} />
+          <Route path="/upcoming" element={<RequireAuth><UpcomingRadarPage /></RequireAuth>} />
+          <Route path="/movies/:id" element={<RequireAuth><MovieDossierPage /></RequireAuth>} />
+          <Route path="/simulate" element={<RequireAuth><WhatIfSimulatorPage /></RequireAuth>} />
+          <Route path="/compare" element={<RequireAuth><MovieComparisonPage /></RequireAuth>} />
+          <Route path="/market" element={<RequireAuth><MarketTrendsPage /></RequireAuth>} />
+          <Route path="/talent/:role/:name" element={<RequireAuth><TalentDossierPage /></RequireAuth>} />
         </Routes>
       </main>
 

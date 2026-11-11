@@ -226,7 +226,7 @@ export const Navbar: React.FC = () => {
             className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#1A1A26] border border-[#2A2A3A] hover:border-[#6C63FF]/60 text-xs font-mono text-[#9090AA] hover:text-white transition-all ml-1"
           >
             <Compass className="w-3.5 h-3.5 text-[#6C63FF]" />
-            <span className="hidden lg:inline">[Showcase]</span>
+            <span className="hidden lg:inline">Overview</span>
           </Link>
 
           {/* User Session / Sign Out Pill */}

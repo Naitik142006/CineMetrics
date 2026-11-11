@@ -313,7 +313,7 @@ export const LandingPage: React.FC = () => {
                 onClick={handleEnterTerminal}
                 className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#E8B74A] to-[#D49E28] hover:from-[#F3C766] hover:to-[#E8B74A] text-black font-extrabold text-sm transition-all cursor-pointer flex items-center gap-2.5 shadow-xl shadow-[#E8B74A]/25 group"
               >
-                <span>{isAuthenticated ? 'OPEN DASHBOARD' : 'EXPLORE LIVE DASHBOARD'}</span>
+                <span>{isAuthenticated ? 'OPEN DASHBOARD' : 'SIGN IN TO EXPLORE'}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
@@ -817,7 +817,7 @@ export const LandingPage: React.FC = () => {
               onClick={handleEnterTerminal}
               className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#E8B74A] to-[#D49E28] hover:from-[#F3C766] hover:to-[#E8B74A] text-black font-extrabold text-sm transition-all cursor-pointer shadow-xl shadow-[#E8B74A]/25 flex items-center gap-2 group"
             >
-              <span>{isAuthenticated ? 'CONTINUE TO DASHBOARD' : 'SIGN IN / OPEN APP'}</span>
+              <span>{isAuthenticated ? 'CONTINUE TO DASHBOARD' : 'SIGN IN TO CONTINUE'}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>

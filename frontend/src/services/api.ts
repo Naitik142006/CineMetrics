@@ -148,5 +148,23 @@ export const apiService = {
     const res = await apiClient.post(`/movies/${movieId}/advance-booking-update`, payload);
     return res.data;
   },
+
+  // Authentication
+  async login(email: string, password: string) {
+    const res = await apiClient.post('/auth/login', { email, password });
+    return res.data;
+  },
+
+  async register(name: string, email: string, password: string) {
+    const res = await apiClient.post('/auth/register', { name, email, password });
+    return res.data;
+  },
+
+  async getCurrentUser(token: string) {
+    const res = await apiClient.get('/auth/me', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.data;
+  },
 };
 

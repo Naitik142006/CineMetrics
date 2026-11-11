@@ -24,6 +24,7 @@ from backend.app.db.models import (
     DigitalBuzzObservation,
     PredictionHistoryRecord,
     AdvanceBookingObservation,
+    User,
 )
 from backend.app.db.curated_tentpoles import CURATED_UPCOMING_TENTPOLES, CURATED_RECENT_RELEASED_BLOCKBUSTERS
 from backend.app.services.prediction_service import prediction_service

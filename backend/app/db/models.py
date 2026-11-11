@@ -153,3 +153,15 @@ class AdvanceBookingObservation(Base):
 
     movie = relationship("Movie", back_populates="advance_bookings")
 
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(String(64), primary_key=True, default=generate_uuid)
+    name = Column(String(128), nullable=False)
+    email = Column(String(255), unique=True, index=True, nullable=False)
+    password_hash = Column(String(255), nullable=False)
+    role = Column(String(32), default="User", nullable=False)
+    created_at = Column(DateTime, default=utc_now)
+
+
