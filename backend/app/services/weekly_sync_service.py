@@ -119,24 +119,45 @@ class WeeklySyncService:
         events: List[Dict[str, Any]] = []
 
         try:
-            # Query candidate movies: Prioritize upcoming titles and recent tentpoles
-            upcoming_movies = db.query(Movie).filter(Movie.is_released == False).order_by(Movie.release_date).limit(max_titles).all()
+            # Query candidate movies: Prioritize upcoming release-week (nearest dated) titles first
+            upcoming_movies = (
+                db.query(Movie)
+                .filter(Movie.is_released == False)
+                .order_by(Movie.release_date.is_(None), Movie.release_date)
+                .limit(max_titles)
+                .all()
+            )
             recent_movies = db.query(Movie).filter(Movie.is_released == True).order_by(Movie.release_date.desc()).limit(20).all()
             candidate_movies = upcoming_movies + recent_movies
 
-            today_iso = now.strftime("%Y-%m-%d")
+            today_iso = datetime.now().strftime("%Y-%m-%d")
 
             for movie in candidate_movies:
                 movies_scanned += 1
                 movie_changed = False
                 change_notes: List[str] = []
 
+                # Check for theatrical release transition against current system date
+                if not movie.is_released and movie.release_date and str(movie.release_date).split("T")[0] <= today_iso:
+                    movie.is_released = True
+                    movie_changed = True
+                    change_notes.append("Theatrical release date reached; transitioned to released catalog")
+
                 # 1. Query OMDb API for latest authoritative information
                 omdb_info = omdb_service.fetch_movie_by_title(movie.primary_title, movie.release_year)
 
                 if omdb_info:
-                    # Check for Poster updates
-                    if (not movie.poster_path or "tmdb.org" not in movie.poster_path) and omdb_info.get("poster_url"):
+                    raw_omdb_year = str(omdb_info.get("year") or "")[:4]
+                    if raw_omdb_year.isdigit() and movie.release_year and abs(int(raw_omdb_year) - int(movie.release_year)) > 2:
+                        logger.info(
+                            f"Ignoring mismatched OMDb record for '{movie.primary_title}': "
+                            f"OMDb year {raw_omdb_year} vs tracked year {movie.release_year}"
+                        )
+                        omdb_info = None
+
+                if omdb_info:
+                    # Only backfill Poster from OMDb for released movies with no TMDB poster
+                    if movie.is_released and not movie.poster_path and omdb_info.get("poster_url"):
                         new_poster = omdb_info["poster_url"]
                         if new_poster != movie.poster_path:
                             movie.poster_path = new_poster
@@ -155,9 +176,17 @@ class WeeklySyncService:
                         try:
                             # OMDb returns e.g. "20 Jul 2026" or "N/A"
                             parsed_date = datetime.strptime(omdb_date, "%d %b %Y").strftime("%Y-%m-%d")
-                            if parsed_date != movie.release_date:
+                            parsed_year = int(parsed_date[:4])
+                            # Guard against OMDb fuzzy fallback matching an unrelated legacy film from a different decade
+                            if movie.release_year and abs(parsed_year - int(movie.release_year)) > 2:
+                                logger.info(
+                                    f"Skipping OMDb release date shift for '{movie.primary_title}': "
+                                    f"OMDb returned {parsed_date} vs tracked year {movie.release_year}"
+                                )
+                            elif parsed_date != movie.release_date:
                                 old_d = movie.release_date
                                 movie.release_date = parsed_date
+                                movie.release_year = parsed_year
                                 dates_updated += 1
                                 movie_changed = True
                                 change_notes.append(f"Release date shifted from {old_d} to {parsed_date}")
@@ -180,23 +209,35 @@ class WeeklySyncService:
                             movie_changed = True
                             change_notes.append(f"Box office actual updated: ${omdb_gross / 1_000_000:.1f}M USD")
 
-                # 2. Check & Update Weekly Digital Buzz Observation
+                # 2. Check & Update Real YouTube Trailer Views (when valid 11-char ID exists)
                 buzz = db.query(DigitalBuzzObservation).filter(DigitalBuzzObservation.movie_id == movie.id).first()
-                if buzz:
-                    # Organic weekly engagement growth: 2% to 6% weekly growth for active titles
-                    old_views = buzz.view_count
-                    view_growth = int(old_views * 0.04) if old_views > 0 else 50000
-                    buzz.view_count += view_growth
-                    buzz.like_count += int(view_growth * 0.035)
-                    buzz.comment_count += int(view_growth * 0.005)
-                    # Recalculate buzz score
-                    buzz.buzz_score = min(99.0, round(float(buzz.buzz_score + 0.5), 1))
-                    buzz.observed_at = now
-                    change_notes.append(f"Trailer momentum updated (+{view_growth:,} weekly views)")
-                    movie_changed = True
+                if buzz and movie.youtube_trailer_id:
+                    from backend.app.services.advance_booking_service import fetch_youtube_view_count
+                    live_views = fetch_youtube_view_count(movie.youtube_trailer_id)
+                    if live_views is not None and live_views > 0 and live_views != buzz.view_count:
+                        view_delta = live_views - (buzz.view_count or 0)
+                        buzz.view_count = live_views
+                        buzz.observed_at = now
+                        change_notes.append(f"Live trailer views synced ({view_delta:+,} delta)")
+                        movie_changed = True
 
-                # 3. Recalibrate Model Prediction if movie information changed or if unreleased
-                if movie_changed or not movie.is_released:
+                # 3. Check if movie is in Stage 4 Release-Week window (1..7 days to release)
+                days_to_rel = None
+                if not movie.is_released and movie.release_date and str(movie.release_date).strip() not in ("None", "TBD", ""):
+                    try:
+                        rdt = datetime.fromisoformat(str(movie.release_date).split("T")[0]).date()
+                        days_to_rel = (rdt - datetime.now(timezone.utc).date()).days
+                    except Exception:
+                        days_to_rel = None
+
+                if not movie.is_released and days_to_rel is not None and 0 < days_to_rel <= 7:
+                    from backend.app.services.advance_booking_service import sync_stage4_for_movie
+                    pred_record = db.query(Prediction).filter(Prediction.movie_id == movie.id).first()
+                    sync_stage4_for_movie(db, movie, prediction=pred_record, fetch_live=True, persist=True)
+                    change_notes.append(f"Auto Stage 4 live recalibration executed (T-{days_to_rel}d)")
+                    predictions_recalibrated += 1
+                elif movie_changed or not movie.is_released:
+                    # Standard Stage 1-3 recalibration when metadata changed or movie is >7d out
                     pred_record = db.query(Prediction).filter(Prediction.movie_id == movie.id).first()
                     
                     movie_dict = {

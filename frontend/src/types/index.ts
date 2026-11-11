@@ -62,6 +62,7 @@ export interface DashboardSection {
 
 export interface UpcomingDashboardResponse {
   total_upcoming_tracked: number;
+  total_historical_tracked?: number;
   last_updated: string;
   sections: Record<string, DashboardSection>;
 }

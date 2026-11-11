@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Play, Calendar, Sparkles, Film } from 'lucide-react';
 import { UpcomingMovieItem, MovieSummary } from '../types';
 import { useCurrency } from '../context/CurrencyContext';
-import { formatCurrency, getRiskBadgeClass, getPosterUrl } from '../utils/format';
+import { formatCurrency, getRiskBadgeClass, getPosterUrl, getDisplayYear, getYoutubeTrailerUrl } from '../utils/format';
 import { PredictionIntervalBar } from './PredictionIntervalBar';
 
 interface MovieCardProps {
@@ -34,6 +34,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
       : 'Early Estimate';
 
   const posterUrl = !imgError ? getPosterUrl(movie.poster_path) : null;
+  const trailerUrl = getYoutubeTrailerUrl(movie.youtube_trailer_id);
 
   const renderStageBadge = () => {
     if (!upcomingMovie) {
@@ -122,7 +123,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
               {movie.industry || 'Global'}
             </span>
             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#E8B74A]/25 backdrop-blur-md text-[#E8B74A] border border-[#E8B74A]/40">
-              {movie.release_year || '2026'}
+              {getDisplayYear(movie.release_year, movie.release_date)}
             </span>
           </div>
 
@@ -130,9 +131,9 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
         </div>
 
         {/* Trailer Play Button Overlay */}
-        {movie.youtube_trailer_id && (
+        {trailerUrl && (
           <a
-            href={`https://www.youtube.com/watch?v=${movie.youtube_trailer_id}`}
+            href={trailerUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}

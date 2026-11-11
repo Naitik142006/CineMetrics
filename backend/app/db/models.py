@@ -64,6 +64,7 @@ class Movie(Base):
     predictions = relationship("Prediction", back_populates="movie", cascade="all, delete-orphan")
     buzz_observations = relationship("DigitalBuzzObservation", back_populates="movie", cascade="all, delete-orphan")
     history_records = relationship("PredictionHistoryRecord", back_populates="movie", cascade="all, delete-orphan")
+    advance_bookings = relationship("AdvanceBookingObservation", back_populates="movie", cascade="all, delete-orphan")
 
 
 class Prediction(Base):
@@ -133,4 +134,22 @@ class PredictionHistoryRecord(Base):
     evaluated_at = Column(DateTime, default=utc_now)
 
     movie = relationship("Movie", back_populates="history_records")
+
+
+class AdvanceBookingObservation(Base):
+    __tablename__ = "advance_booking_observations"
+
+    id = Column(String(64), primary_key=True, default=generate_uuid)
+    movie_id = Column(String(64), ForeignKey("movies.id"), index=True, nullable=False)
+    signal_source = Column(String(64), default="live_demand_proxy", nullable=False)
+    advance_tickets_sold = Column(Integer, default=0, nullable=False)
+    average_ticket_price_usd = Column(Float, default=14.50, nullable=False)
+    hours_to_release = Column(Integer, default=24, nullable=False)
+    screen_count = Column(Integer, default=3200, nullable=False)
+    early_critic_score_pct = Column(Float, nullable=True)
+    tmdb_popularity = Column(Float, nullable=True)
+    youtube_views = Column(Integer, nullable=True)
+    observed_at = Column(DateTime, default=utc_now)
+
+    movie = relationship("Movie", back_populates="advance_bookings")
 

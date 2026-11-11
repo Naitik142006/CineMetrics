@@ -122,8 +122,16 @@ export const UpcomingRadarPage: React.FC = () => {
     );
   });
 
-  const segments = ['All', 'Hollywood', 'Bollywood', 'Tollywood', 'Kollywood'];
-  const years = ['All', '2026', '2027'];
+  const segments = ['All', 'Hollywood', 'Bollywood', 'Tollywood', 'Kollywood', 'Mollywood', 'Sandalwood'];
+  const currentYear = new Date().getFullYear();
+  const dynamicYears = Array.from(
+    new Set(
+      movies
+        .map((m) => m.release_year)
+        .filter((y): y is number => typeof y === 'number' && y >= currentYear)
+    )
+  ).sort((a, b) => a - b);
+  const years = ['All', ...(dynamicYears.length > 0 ? dynamicYears.map(String) : [String(currentYear), String(currentYear + 1)])];
 
   return (
     <div className="space-y-8 pb-16">
@@ -132,19 +140,19 @@ export const UpcomingRadarPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#E8B74A] uppercase tracking-wider mb-1">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>2026–2027 Marquee Releases • Theatrical AI Forecasting</span>
+            <span>Live Upcoming Releases • Synced to System Date</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
             Upcoming Movies Intelligence Radar
           </h1>
           <p className="text-xs sm:text-sm text-[#9090AA] mt-1">
-            Discover projected worldwide box office earnings, best-case vs worst-case ranges, and AI confidence for announced titles.
+            Discover projected worldwide box office earnings, best-case vs worst-case ranges, and AI confidence for upcoming titles.
           </p>
         </div>
 
         <div className="flex items-center gap-4">
           <div className="text-right">
-            <p className="text-xs text-[#9090AA]">Tracked 2026–2027 Titles</p>
+            <p className="text-xs text-[#9090AA]">Tracked Upcoming Titles</p>
             <p className="text-2xl font-extrabold font-mono text-[#E8B74A]">
               {filteredMovies.length} Films
             </p>
@@ -305,7 +313,7 @@ export const UpcomingRadarPage: React.FC = () => {
                       : 'bg-[#15151E] text-[#9090AA] hover:text-white border border-[#2A2A3A]'
                   }`}
                 >
-                  {y === 'All' ? 'All (2026–2027)' : `${y} Releases`}
+                  {y === 'All' ? 'All Upcoming' : `${y} Releases`}
                 </button>
               ))}
             </div>

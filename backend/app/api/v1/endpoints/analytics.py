@@ -58,7 +58,7 @@ def get_actor_dossier(person_name: str, db: Session = Depends(get_db)):
         credits.append(
             FilmCredit(
                 title=m.primary_title,
-                year=m.release_year or 2020,
+                year=m.release_year or (int(m.release_date[:4]) if m.release_date and m.release_date[:4].isdigit() else 0),
                 gross_usd=gross,
                 gross_formatted_usd=f"${gross/1e6:.1f}M",
                 roi_multiplier=roi,
@@ -124,7 +124,7 @@ def get_director_dossier(person_name: str, db: Session = Depends(get_db)):
         credits.append(
             FilmCredit(
                 title=m.primary_title,
-                year=m.release_year or 2020,
+                year=m.release_year or (int(m.release_date[:4]) if m.release_date and m.release_date[:4].isdigit() else 0),
                 gross_usd=gross,
                 gross_formatted_usd=f"${gross/1e6:.1f}M",
                 roi_multiplier=roi,

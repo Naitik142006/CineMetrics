@@ -82,11 +82,41 @@ export function getSuccessCategoryBadge(cat: string): { bg: string; text: string
 export function getPosterUrl(posterPath?: string | null): string | null {
   if (!posterPath || !posterPath.trim()) return null;
   const clean = posterPath.trim();
+  const lower = clean.toLowerCase();
+  if (lower === 'n/a' || lower === 'none' || lower === 'null' || lower === 'undefined') {
+    return null;
+  }
   if (clean.startsWith('http://') || clean.startsWith('https://')) {
     return clean;
   }
   const normalized = clean.startsWith('/') ? clean : `/${clean}`;
   return `https://image.tmdb.org/t/p/w500${normalized}`;
+}
+
+export function getDisplayYear(releaseYear?: number | null, releaseDate?: string | null): string {
+  if (releaseDate) {
+    const match = releaseDate.trim().match(/^((?:19|20)\d{2})\b/);
+    if (match) {
+      return match[1];
+    }
+  }
+  if (releaseYear && releaseYear >= 1900 && releaseYear <= 2100) {
+    return String(releaseYear);
+  }
+  return 'TBD';
+}
+
+const YOUTUBE_ID_RE = /^[A-Za-z0-9_-]{11}$/;
+
+/**
+ * Returns a safe YouTube watch URL only if trailerId is a valid 11-character YouTube video key.
+ */
+export function getYoutubeTrailerUrl(trailerId?: string | null): string | null {
+  if (!trailerId) return null;
+  const trimmed = trailerId.trim();
+  if (trimmed.startsWith('Teaser_') || trimmed.startsWith('Trailer_')) return null;
+  if (!YOUTUBE_ID_RE.test(trimmed)) return null;
+  return `https://www.youtube.com/watch?v=${trimmed}`;
 }
 
 

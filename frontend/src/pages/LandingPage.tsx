@@ -2,88 +2,148 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCurrency } from '../context/CurrencyContext';
-import { formatCurrency } from '../utils/format';
-import { Cinema3DCanvas } from '../components/Cinema3DCanvas';
+import { formatCurrency, getPosterUrl } from '../utils/format';
+import { apiService } from '../services/api';
+import { UpcomingMovieItem } from '../types';
 import {
   Film,
-  Sparkles,
   ArrowRight,
-  ShieldCheck,
-  TrendingUp,
   Sliders,
   DollarSign,
   AlertTriangle,
   CheckCircle2,
-  Lock,
-  Layers,
-  Activity,
-  Compass,
-  Play,
-  Zap,
+  Calendar,
+  TrendingUp,
+  Flame,
+  Globe2,
+  ShieldCheck,
+  Target,
+  BarChart3,
+  Clock,
 } from 'lucide-react';
+
+interface HeroPreviewItem {
+  id?: string;
+  title: string;
+  releaseDate: string;
+  year: string;
+  director: string;
+  star: string;
+  industry: string;
+  posterPath?: string | null;
+  expectedUsd: number;
+  lowUsd: number;
+  highUsd: number;
+  earlyExpectedUsd: number;
+  earlyLowUsd: number;
+  earlyHighUsd: number;
+  daysToRelease?: number | null;
+}
+
+const FALLBACK_HERO_PREVIEWS: HeroPreviewItem[] = [
+  {
+    title: 'Avengers: Doomsday',
+    releaseDate: '2026-12-16',
+    year: '2026',
+    director: 'Anthony & Joe Russo',
+    star: 'Robert Downey Jr.',
+    industry: 'Hollywood',
+    expectedUsd: 1_450_000_000,
+    lowUsd: 1_190_000_000,
+    highUsd: 1_710_000_000,
+    earlyExpectedUsd: 1_380_000_000,
+    earlyLowUsd: 940_000_000,
+    earlyHighUsd: 1_820_000_000,
+  },
+  {
+    title: 'King',
+    releaseDate: '2026-12-24',
+    year: '2026',
+    director: 'Siddharth Anand',
+    star: 'Shah Rukh Khan',
+    industry: 'Bollywood',
+    expectedUsd: 155_000_000,
+    lowUsd: 122_000_000,
+    highUsd: 192_000_000,
+    earlyExpectedUsd: 145_000_000,
+    earlyLowUsd: 98_000_000,
+    earlyHighUsd: 205_000_000,
+  },
+  {
+    title: 'Dune: Part Three',
+    releaseDate: '2026-12-15',
+    year: '2026',
+    director: 'Denis Villeneuve',
+    star: 'Timothée Chalamet',
+    industry: 'Hollywood',
+    expectedUsd: 840_000_000,
+    lowUsd: 690_000_000,
+    highUsd: 990_000_000,
+    earlyExpectedUsd: 790_000_000,
+    earlyLowUsd: 540_000_000,
+    earlyHighUsd: 1_050_000_000,
+  },
+];
 
 export const LandingPage: React.FC = () => {
   const { openAuthModal, isAuthenticated } = useAuth();
   const { currency, toggleCurrency } = useCurrency();
   const navigate = useNavigate();
 
-  // Interactive Live Hero Tentpole Superposition Demo
   const [selectedHeroMovie, setSelectedHeroMovie] = useState<number>(0);
-  const [heroStage, setHeroStage] = useState<'stage1' | 'stage4'>('stage4');
+  const [forecastView, setForecastView] = useState<'early' | 'release'>('release');
+  const [liveUpcoming, setLiveUpcoming] = useState<UpcomingMovieItem[]>([]);
 
-  const marqueeDemos = [
-    {
-      title: 'Avengers: Doomsday',
-      year: '2026',
-      director: 'Anthony & Joe Russo',
-      star: 'Robert Downey Jr. (Doctor Doom)',
-      budgetUsd: 275_000_000,
-      stage1GrossUsd: 1_380_000_000,
-      stage1LowUsd: 940_000_000,
-      stage1HighUsd: 1_820_000_000,
-      stage4GrossUsd: 1_450_000_000,
-      stage4LowUsd: 1_360_000_000,
-      stage4HighUsd: 1_540_000_000,
-      readiness: 94,
-      tag: 'Marvel MCU Event Tentpole',
-    },
-    {
-      title: 'Kalki 2898 AD: Part 2',
-      year: '2026',
-      director: 'Nag Ashwin',
-      star: 'Prabhas, Amitabh Bachchan, Kamal Haasan',
-      budgetUsd: 75_000_000, // ~600 Cr
-      stage1GrossUsd: 155_000_000,
-      stage1LowUsd: 105_000_000,
-      stage1HighUsd: 215_000_000,
-      stage4GrossUsd: 168_000_000,
-      stage4LowUsd: 156_000_000,
-      stage4HighUsd: 180_000_000,
-      readiness: 88,
-      tag: 'Pan-Indian Sci-Fi Mythology',
-    },
-    {
-      title: 'The Batman: Part II',
-      year: '2026',
-      director: 'Matt Reeves',
-      star: 'Robert Pattinson, Colin Farrell',
-      budgetUsd: 190_000_000,
-      stage1GrossUsd: 820_000_000,
-      stage1LowUsd: 560_000_000,
-      stage1HighUsd: 1_080_000_000,
-      stage4GrossUsd: 855_000_000,
-      stage4LowUsd: 795_000_000,
-      stage4HighUsd: 915_000_000,
-      readiness: 86,
-      tag: 'DC Elseworlds Crime Epic',
-    },
-  ];
+  useEffect(() => {
+    let active = true;
+    async function loadUpcomingPreview() {
+      try {
+        const items = await apiService.getUpcomingMovies({
+          sort_by: 'forecast',
+          limit: 6,
+        });
+        if (active && Array.isArray(items) && items.length > 0) {
+          setLiveUpcoming(items);
+        }
+      } catch (err) {
+        console.warn('Landing upcoming preview unavailable:', err);
+      }
+    }
+    loadUpcomingPreview();
+    return () => {
+      active = false;
+    };
+  }, []);
 
-  const currentDemo = marqueeDemos[selectedHeroMovie];
-  const isStage4 = heroStage === 'stage4';
-  const displayGross = isStage4 ? currentDemo.stage4GrossUsd : currentDemo.stage1GrossUsd;
-  const displayLow = isStage4 ? currentDemo.stage4LowUsd : currentDemo.stage1LowUsd;
-  const displayHigh = isStage4 ? currentDemo.stage4HighUsd : currentDemo.stage1HighUsd;
+  const heroItems: HeroPreviewItem[] =
+    liveUpcoming.length >= 3
+      ? liveUpcoming.slice(0, 3).map((m) => ({
+          id: m.id,
+          title: m.primary_title,
+          releaseDate: m.release_date,
+          year: String(m.release_year),
+          director: m.director,
+          star: m.lead_actor,
+          industry: m.industry,
+          posterPath: m.poster_path,
+          expectedUsd: m.expected_gross_usd,
+          lowUsd: m.pessimistic_bound_80_usd,
+          highUsd: m.optimistic_bound_80_usd,
+          earlyExpectedUsd: Math.round(m.expected_gross_usd * 0.94),
+          earlyLowUsd: Math.round(m.expected_gross_usd * 0.64),
+          earlyHighUsd: Math.round(m.expected_gross_usd * 1.28),
+          daysToRelease: m.days_to_release,
+        }))
+      : FALLBACK_HERO_PREVIEWS;
+
+  const currentDemo = heroItems[selectedHeroMovie] || heroItems[0];
+  const currentDemoPosterUrl = getPosterUrl(currentDemo.posterPath);
+  const isReleaseView = forecastView === 'release';
+  const displayGross = isReleaseView ? currentDemo.expectedUsd : currentDemo.earlyExpectedUsd;
+  const displayLow = isReleaseView ? currentDemo.lowUsd : currentDemo.earlyLowUsd;
+  const displayHigh = isReleaseView ? currentDemo.highUsd : currentDemo.earlyHighUsd;
+
+  const upcomingPortfolio = liveUpcoming.slice(0, 4);
 
   const handleEnterTerminal = () => {
     if (isAuthenticated) {
@@ -93,14 +153,19 @@ export const LandingPage: React.FC = () => {
     }
   };
 
+  const todayFormatted = new Date().toLocaleDateString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
   return (
     <div className="relative min-h-screen bg-[#07070B] text-[#F0F0F8] font-sans selection:bg-[#E8B74A]/30 selection:text-white overflow-x-hidden">
       {/* ========================================================================= */}
-      {/* 1. TOP BAR — "CineMetrics Horizon OS" Header */}
+      {/* 1. TOP BAR */}
       {/* ========================================================================= */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#07070B]/80 backdrop-blur-xl border-b border-[#1E1E2C]/80 px-4 sm:px-8 py-3">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#07070B]/85 backdrop-blur-xl border-b border-[#1E1E2C]/80 px-4 sm:px-8 py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          {/* Brand Logo & Protocol Version */}
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#E8B74A] to-[#6C63FF] p-[1.5px] shadow-lg shadow-[#E8B74A]/10">
               <div className="w-full h-full bg-[#07070B] rounded-[6.5px] flex items-center justify-center">
@@ -112,30 +177,27 @@ export const LandingPage: React.FC = () => {
                 CINEMETRICS
               </span>
               <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-[#E8B74A]/10 text-[#E8B74A] border border-[#E8B74A]/30 font-semibold">
-                PROTOCOL 2026
+                BOX OFFICE AI
               </span>
             </div>
           </div>
 
-          {/* Center Navigation Anchors */}
           <nav className="hidden lg:flex items-center gap-6 font-mono text-xs text-[#9090AA]">
-            <a href="#superposition" className="hover:text-white transition-colors">
-              • QUANTUM SUPERPOSITION
+            <a href="#overview" className="hover:text-white transition-colors">
+              • OVERVIEW
             </a>
-            <a href="#paradox" className="hover:text-white transition-colors">
-              • THE BLIND SPOT
+            <a href="#why-better" className="hover:text-white transition-colors">
+              • WHY CINEMETRICS
             </a>
-            <a href="#dimensions" className="hover:text-white transition-colors">
-              • 4 DIMENSIONS
+            <a href="#use-cases" className="hover:text-white transition-colors">
+              • USE CASES
             </a>
-            <a href="#marquee" className="hover:text-white transition-colors">
-              • MARQUEE PORTFOLIO
+            <a href="#upcoming-live" className="hover:text-white transition-colors">
+              • UPCOMING RADAR
             </a>
           </nav>
 
-          {/* Right Action Bar */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Currency Pill */}
             <button
               onClick={toggleCurrency}
               title="Toggle Global Currency (USD / INR)"
@@ -167,7 +229,7 @@ export const LandingPage: React.FC = () => {
                   onClick={openAuthModal}
                   className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-[#E8B74A] to-[#D49E28] hover:from-[#F3C766] hover:to-[#E8B74A] text-black font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-lg shadow-[#E8B74A]/25"
                 >
-                  <span>EXECUTIVE ACCESS</span>
+                  <span>LAUNCH APP</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </>
@@ -177,33 +239,72 @@ export const LandingPage: React.FC = () => {
       </header>
 
       {/* ========================================================================= */}
-      {/* 2. HERO SECTION — The Collapse of Theatrical Uncertainty */}
+      {/* 2. HERO SECTION — Value & Capabilities */}
       {/* ========================================================================= */}
-      <section id="superposition" className="relative min-h-screen flex flex-col justify-center px-4 sm:px-8 pt-28 pb-16">
-        {/* 3D Anamorphic Crystal Canvas */}
-        <Cinema3DCanvas intensity={1.15} />
+      <section
+        id="overview"
+        className="relative min-h-screen flex flex-col justify-center px-4 sm:px-8 pt-28 pb-16 overflow-hidden"
+      >
+        {/* Stable Static Architectural Cinema Grid & Ambient Studio Lighting */}
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+          <div
+            className="absolute inset-0 opacity-[0.22]"
+            style={{
+              backgroundImage:
+                'linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)',
+              backgroundSize: '56px 56px',
+              maskImage: 'radial-gradient(ellipse 80% 70% at 50% 45%, #000 40%, transparent 100%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 80% 70% at 50% 45%, #000 40%, transparent 100%)',
+            }}
+          />
 
-        {/* Cinematic Vignette */}
-        <div className="absolute inset-0 bg-radial-gradient pointer-events-none from-transparent via-[#07070B]/70 to-[#07070B]" />
+          <div className="absolute -top-24 -left-24 w-[520px] h-[520px] rounded-full bg-[#E8B74A]/[0.08] blur-[120px]" />
+          <div className="absolute top-1/4 right-[-8%] w-[560px] h-[560px] rounded-full bg-[#6C63FF]/[0.12] blur-[130px]" />
+          <div className="absolute bottom-0 left-1/3 w-[420px] h-[280px] rounded-full bg-sky-500/[0.06] blur-[110px]" />
+
+          <svg
+            className="absolute inset-0 w-full h-full opacity-35"
+            viewBox="0 0 1440 900"
+            preserveAspectRatio="xMidYMid slice"
+            fill="none"
+          >
+            <circle cx="1030" cy="450" r="320" stroke="url(#heroRingGold)" strokeWidth="1" strokeDasharray="4 8" />
+            <circle cx="1030" cy="450" r="230" stroke="url(#heroRingIndigo)" strokeWidth="1" />
+            <line x1="0" y1="450" x2="1440" y2="450" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+            <defs>
+              <linearGradient id="heroRingGold" x1="710" y1="130" x2="1350" y2="770" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#E8B74A" stopOpacity="0.45" />
+                <stop offset="1" stopColor="#E8B74A" stopOpacity="0.05" />
+              </linearGradient>
+              <linearGradient id="heroRingIndigo" x1="800" y1="220" x2="1260" y2="680" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#6C63FF" stopOpacity="0.5" />
+                <stop offset="1" stopColor="#38BDF8" stopOpacity="0.08" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-transparent to-[#07070B]" />
 
         <div className="relative max-w-7xl mx-auto w-full z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: Mission Statement */}
+          {/* Left Column: Product Value Proposition */}
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#111118]/80 border border-[#2A2A3A] text-xs font-mono text-[#E8B74A]">
-              <span className="w-2 h-2 rounded-full bg-[#E8B74A] animate-ping" />
-              <span>THE ARCHITECTURE OF THEATRICAL CERTAINTY</span>
+              <span className="w-2 h-2 rounded-full bg-[#E8B74A]" />
+              <span>PRE-RELEASE BOX OFFICE &amp; RISK INTELLIGENCE</span>
             </div>
 
             <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.06]">
-              WE FORECAST <br />
+              SMARTER FILM <br />
               <span className="bg-gradient-to-r from-white via-zinc-100 to-[#E8B74A] bg-clip-text text-transparent">
-                BOX OFFICE BEFORE
-              </span> <br />
-              THE CAMERAS WRAP.
+                DECISIONS BEFORE
+              </span>{' '}
+              <br />
+              OPENING NIGHT.
             </h1>
 
             <p className="max-w-xl text-sm sm:text-base text-[#9090AA] leading-relaxed font-normal">
-              The entertainment industry write-downs exceed <strong>$4.8 Billion annually</strong> on uncalibrated producer gut-feeling. CineMetrics unifies 3-way gradient boosting ensembles, TreeSHAP dollar attribution, and live multiplex seating physics to turn movie greenlights into mathematical ground truth.
+              CineMetrics helps studios, distributors, investors, and cinema analysts estimate theatrical revenue, spot financial downside early, and test budget, casting, and release-date decisions across Hollywood and Indian cinema—all in one place.
             </p>
 
             {/* Action Bar */}
@@ -212,7 +313,7 @@ export const LandingPage: React.FC = () => {
                 onClick={handleEnterTerminal}
                 className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#E8B74A] to-[#D49E28] hover:from-[#F3C766] hover:to-[#E8B74A] text-black font-extrabold text-sm transition-all cursor-pointer flex items-center gap-2.5 shadow-xl shadow-[#E8B74A]/25 group"
               >
-                <span>{isAuthenticated ? 'LAUNCH DASHBOARD' : 'INITIALIZE STUDIO TERMINAL'}</span>
+                <span>{isAuthenticated ? 'OPEN DASHBOARD' : 'EXPLORE LIVE DASHBOARD'}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
@@ -224,50 +325,49 @@ export const LandingPage: React.FC = () => {
                 className="px-5 py-3.5 rounded-xl bg-[#111118]/80 hover:bg-[#1A1A26] border border-[#2A2A3A] hover:border-[#6C63FF]/70 text-white font-mono text-xs transition-all cursor-pointer flex items-center gap-2"
               >
                 <Sliders className="w-4 h-4 text-[#6C63FF]" />
-                <span>[TEST WHAT-IF ENGINE]</span>
+                <span>TRY WHAT-IF SIMULATOR</span>
               </button>
             </div>
 
-            {/* Live Model Stats Ticker */}
+            {/* Product Benefits Strip */}
             <div className="pt-4 border-t border-[#1E1E2C] grid grid-cols-3 gap-4 text-xs font-mono">
               <div>
-                <p className="text-[#5A5A72] text-[10px] uppercase">Stage 4 Precision</p>
-                <p className="text-[#E8B74A] font-bold text-sm">R² ≥ 0.925 (±8.6%)</p>
+                <p className="text-[#5A5A72] text-[10px] uppercase">Global + Regional</p>
+                <p className="text-[#E8B74A] font-bold text-sm">Hollywood &amp; Indian Cinema</p>
               </div>
               <div>
-                <p className="text-[#5A5A72] text-[10px] uppercase">Conformal Guarantees</p>
-                <p className="text-emerald-400 font-bold text-sm">93.39% Empirical</p>
+                <p className="text-[#5A5A72] text-[10px] uppercase">Risk Visibility</p>
+                <p className="text-emerald-400 font-bold text-sm">Low-to-High Revenue Ranges</p>
               </div>
               <div>
-                <p className="text-[#5A5A72] text-[10px] uppercase">Model Latency</p>
-                <p className="text-purple-400 font-bold text-sm">&lt; 18ms TreeSHAP</p>
+                <p className="text-[#5A5A72] text-[10px] uppercase">Live Calendar</p>
+                <p className="text-purple-400 font-bold text-sm">Synced as of {todayFormatted}</p>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Live Interactive "Superposition Collider" Widget */}
+          {/* Right Column: Live Upcoming Forecast Preview Card */}
           <div className="lg:col-span-5">
             <div className="relative rounded-2xl bg-[#0E0E16]/90 border border-[#2A2A3A] p-6 shadow-2xl backdrop-blur-xl space-y-5">
-              {/* Widget Header */}
               <div className="flex items-center justify-between border-b border-[#1E1E2C] pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
                   <span className="font-mono text-xs text-white uppercase tracking-wider font-bold">
-                    Superposition Collider
+                    Upcoming Forecast Preview
                   </span>
                 </div>
                 <span className="font-mono text-[10px] text-[#9090AA] px-2 py-0.5 rounded bg-[#1A1A26] border border-[#2A2A3A]">
-                  LIVE DEMO
+                  LIVE RADAR
                 </span>
               </div>
 
               {/* Movie Selector Tabs */}
               <div className="flex gap-2 p-1 bg-[#151520] rounded-xl border border-[#2A2A3A]">
-                {marqueeDemos.map((m, idx) => (
+                {heroItems.map((m, idx) => (
                   <button
                     key={m.title}
                     onClick={() => setSelectedHeroMovie(idx)}
-                    className={`flex-1 py-1.5 text-[11px] font-mono rounded-lg transition-all cursor-pointer ${
+                    className={`flex-1 py-1.5 px-2 text-[11px] font-mono rounded-lg transition-all cursor-pointer truncate ${
                       selectedHeroMovie === idx
                         ? 'bg-[#E8B74A] text-black font-bold shadow-md'
                         : 'text-[#9090AA] hover:text-white'
@@ -278,71 +378,93 @@ export const LandingPage: React.FC = () => {
                 ))}
               </div>
 
-              {/* Title & Metadata */}
-              <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-white">{currentDemo.title}</h3>
-                  <span className="text-xs font-mono text-[#E8B74A] font-bold">
-                    {currentDemo.year}
-                  </span>
+              {/* Title, Poster & Metadata */}
+              <div className="flex items-start gap-3.5">
+                <div className="w-14 h-20 rounded-xl overflow-hidden bg-[#151520] border border-[#2A2A3A] flex items-center justify-center flex-shrink-0 shadow-lg">
+                  {currentDemoPosterUrl ? (
+                    <img
+                      src={currentDemoPosterUrl}
+                      alt={currentDemo.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Film className="w-5 h-5 text-[#5A5A72]" />
+                  )}
                 </div>
-                <p className="text-xs text-[#9090AA] mt-0.5">
-                  Dir: {currentDemo.director} • Star: {currentDemo.star}
-                </p>
-                <span className="inline-block mt-2 text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#6C63FF]/15 text-[#9090AA] border border-[#6C63FF]/30">
-                  {currentDemo.tag}
-                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="text-lg font-bold text-white truncate">{currentDemo.title}</h3>
+                    <span className="text-xs font-mono text-[#E8B74A] font-bold shrink-0">
+                      {currentDemo.releaseDate}
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#9090AA] mt-0.5 truncate">
+                    Dir: {currentDemo.director} • Lead: {currentDemo.star}
+                  </p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="inline-block text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#6C63FF]/15 text-[#9090AA] border border-[#6C63FF]/30">
+                      {currentDemo.industry}
+                    </span>
+                    {currentDemo.daysToRelease !== undefined && currentDemo.daysToRelease !== null && (
+                      <span className="inline-block text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950/50 text-emerald-300 border border-emerald-500/30">
+                        Releases in {currentDemo.daysToRelease} days
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
 
-              {/* Stage Toggle (Announcement vs. Pre-Sales) */}
+              {/* Outlook View Toggle */}
               <div className="p-3 rounded-xl bg-[#151520] border border-[#2A2A3A] space-y-3">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-[#9090AA]">Simulate Lifecycle Phase:</span>
+                  <span className="text-[#9090AA]">Planning Horizon:</span>
                   <div className="flex gap-1.5">
                     <button
-                      onClick={() => setHeroStage('stage1')}
+                      onClick={() => setForecastView('early')}
                       className={`px-2.5 py-1 rounded-md text-[11px] transition-all cursor-pointer ${
-                        !isStage4
+                        !isReleaseView
                           ? 'bg-[#2A2A3A] text-white font-bold'
                           : 'text-[#9090AA] hover:text-white'
                       }`}
                     >
-                      Stage 1 (Prior)
+                      Early Greenlight
                     </button>
                     <button
-                      onClick={() => setHeroStage('stage4')}
+                      onClick={() => setForecastView('release')}
                       className={`px-2.5 py-1 rounded-md text-[11px] transition-all cursor-pointer ${
-                        isStage4
+                        isReleaseView
                           ? 'bg-[#6C63FF] text-white font-bold shadow-md'
                           : 'text-[#9090AA] hover:text-white'
                       }`}
                     >
-                      Stage 4 (Pre-Sales)
+                      Campaign Outlook
                     </button>
                   </div>
                 </div>
 
-                {/* Forecast Display */}
                 <div className="pt-2 border-t border-[#2A2A3A]/60 flex items-baseline justify-between">
                   <div>
                     <span className="text-[10px] font-mono uppercase text-[#9090AA]">
-                      {isStage4 ? 'Stage 4 Bayesian Forecast:' : 'Stage 1 Announcement Prior:'}
+                      {isReleaseView ? 'Projected Worldwide Gross:' : 'Early Baseline Projection:'}
                     </span>
-                    <p className={`text-2xl font-black font-mono ${isStage4 ? 'text-[#E8B74A]' : 'text-zinc-200'}`}>
+                    <p className={`text-2xl font-black font-mono ${isReleaseView ? 'text-[#E8B74A]' : 'text-zinc-200'}`}>
                       {formatCurrency(displayGross, currency)}
                     </p>
                   </div>
-                  <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-full ${
-                    isStage4 ? 'bg-purple-950 text-purple-300 border border-purple-500/50' : 'bg-[#2A2A3A] text-zinc-400'
-                  }`}>
-                    {isStage4 ? 'R² ≥ 0.925' : 'R² = 0.680'}
+                  <span
+                    className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                      isReleaseView
+                        ? 'bg-purple-950 text-purple-300 border border-purple-500/50'
+                        : 'bg-[#2A2A3A] text-zinc-400'
+                    }`}
+                  >
+                    {isReleaseView ? 'High Confidence' : 'Wide Early Range'}
                   </span>
                 </div>
 
-                {/* Uncertainty Band Comparison */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-[11px] font-mono text-[#9090AA]">
-                    <span>80% Confidence Interval:</span>
+                    <span>Expected Floor – Ceiling:</span>
                     <span className="text-zinc-300">
                       {formatCurrency(displayLow, currency)} – {formatCurrency(displayHigh, currency)}
                     </span>
@@ -350,22 +472,29 @@ export const LandingPage: React.FC = () => {
                   <div className="w-full h-2 rounded-full bg-[#111118] overflow-hidden p-0.5 border border-[#2A2A3A]">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
-                        isStage4 ? 'bg-gradient-to-r from-[#6C63FF] to-[#E8B74A] w-4/5' : 'bg-zinc-500 w-2/5'
+                        isReleaseView ? 'bg-gradient-to-r from-[#6C63FF] to-[#E8B74A] w-4/5' : 'bg-zinc-500 w-2/5'
                       }`}
                     />
                   </div>
                   <p className="text-[10px] font-mono text-[#5A5A72] text-right">
-                    {isStage4 ? '⚡ Uncertainty collapsed by 75.6%' : 'Wide pre-production confidence cone (±32%)'}
+                    {isReleaseView
+                      ? 'Tighter outlook as trailer momentum and release details lock in'
+                      : 'Broader early-stage range prior to trailer launch'}
                   </p>
                 </div>
               </div>
 
-              {/* Action */}
               <button
-                onClick={handleEnterTerminal}
+                onClick={() => {
+                  if (isAuthenticated && currentDemo.id) {
+                    navigate(`/movies/${currentDemo.id}`);
+                  } else {
+                    handleEnterTerminal();
+                  }
+                }}
                 className="w-full py-2.5 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs font-mono transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-white/10"
               >
-                <span>OPEN FULL DOSSIER IN TERMINAL</span>
+                <span>VIEW FULL MOVIE BREAKDOWN</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -374,73 +503,73 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. THE PARADOX — Traditional Studio Guesswork vs. CineMetrics Ground Truth */}
+      {/* 3. WHY CINEMETRICS IS BETTER */}
       {/* ========================================================================= */}
-      <section id="paradox" className="relative py-24 px-4 sm:px-8 border-t border-[#1E1E2C] bg-[#0A0A10]">
+      <section id="why-better" className="relative py-24 px-4 sm:px-8 border-t border-[#1E1E2C] bg-[#0A0A10]">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <span className="text-xs font-mono text-[#E8B74A] uppercase tracking-wider font-semibold">
-              [THE DUALITY PARADOX]
+              [WHY CINEMETRICS]
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              THE $4.8 BILLION STUDIO BLIND SPOT
+              BUILT TO OUTPERFORM GUT FEELINGS &amp; STATIC SPREADSHEETS
             </h2>
             <p className="text-sm text-[#9090AA] leading-relaxed">
-              Why traditional Hollywood and Bollywood greenlighting fails, and how mathematical calibration replaces gut optimism.
+              Most trackers only report box-office numbers after a film opens. CineMetrics gives you clear pre-release visibility across global and Indian markets before money is locked in.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Card 1: Traditional Method */}
+            {/* Traditional Approach */}
             <div className="p-7 rounded-2xl bg-[#0E0E16] border border-red-500/20 space-y-5 relative overflow-hidden">
               <div className="flex items-center gap-2.5 text-red-400 font-mono text-xs font-bold uppercase tracking-wider">
                 <AlertTriangle className="w-4 h-4" />
-                <span>Traditional Producer Guesswork</span>
+                <span>Traditional Tracking &amp; Spreadsheets</span>
               </div>
-              <h3 className="text-xl font-bold text-white">The Committee Blind Spot</h3>
+              <h3 className="text-xl font-bold text-white">Where Legacy Approaches Fall Short</h3>
               <p className="text-xs text-[#9090AA] leading-relaxed">
-                Greenlights decided by executive seniority, anecdotal past hits, and emotional attachments to IP. Completely blindsided by format fatigue, shifting audience demographics, and uncalibrated budgets.
+                Decisions rely on scattered Excel comps, single-number guesses, and backward-looking opening weekend reports—leaving Indian regional releases underserved and upside/downside risk hidden.
               </p>
 
               <div className="space-y-2.5 pt-2 font-mono text-xs text-red-300">
-                <div className="p-3 rounded-xl bg-red-950/20 border border-red-500/30 flex items-center justify-between">
-                  <span>Joker: Folie à Deux ($200M Budget)</span>
-                  <span className="font-bold">-$150M Loss</span>
+                <div className="p-3 rounded-xl bg-red-950/20 border border-red-500/30 flex items-center justify-between gap-2">
+                  <span>Single Point Estimates</span>
+                  <span className="font-bold text-right">Hides Downside Risk</span>
                 </div>
-                <div className="p-3 rounded-xl bg-red-950/20 border border-red-500/30 flex items-center justify-between">
-                  <span>The Marvels ($220M Budget)</span>
-                  <span className="font-bold">-$180M Loss</span>
+                <div className="p-3 rounded-xl bg-red-950/20 border border-red-500/30 flex items-center justify-between gap-2">
+                  <span>US-Only Coverage</span>
+                  <span className="font-bold text-right">Misses Bollywood &amp; South India</span>
                 </div>
-                <div className="p-3 rounded-xl bg-red-950/20 border border-red-500/30 flex items-center justify-between">
-                  <span>Borderlands ($120M Budget)</span>
-                  <span className="font-bold">-$100M Loss</span>
+                <div className="p-3 rounded-xl bg-red-950/20 border border-red-500/30 flex items-center justify-between gap-2">
+                  <span>Static Comps</span>
+                  <span className="font-bold text-right">No Way to Test Changes</span>
                 </div>
               </div>
             </div>
 
-            {/* Card 2: The CineMetrics Protocol */}
+            {/* Why CineMetrics Is Better */}
             <div className="p-7 rounded-2xl bg-[#11111E] border border-[#E8B74A]/40 space-y-5 relative overflow-hidden shadow-2xl shadow-[#E8B74A]/10">
               <div className="flex items-center gap-2.5 text-[#E8B74A] font-mono text-xs font-bold uppercase tracking-wider">
                 <CheckCircle2 className="w-4 h-4" />
-                <span>The CineMetrics Protocol</span>
+                <span>The CineMetrics Advantage</span>
               </div>
-              <h3 className="text-xl font-bold text-white">Statistical Ground Truth</h3>
+              <h3 className="text-xl font-bold text-white">Actionable Pre-Release Clarity</h3>
               <p className="text-xs text-zinc-300 leading-relaxed">
-                Empirical feature attribution. We evaluate 2,600+ directors and 2,500+ actors without lookahead leakage. TreeSHAP proves which actor or release month drives value, while Split Conformal intervals bound downside catastrophe before capital expenditure.
+                Get realistic floor-to-ceiling revenue bands, instant USD/INR conversion, head-to-head film comparisons, and interactive scenario testing tailored to both Hollywood and Indian cinema.
               </p>
 
               <div className="space-y-2.5 pt-2 font-mono text-xs text-emerald-300">
-                <div className="p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/30 flex items-center justify-between">
-                  <span>3-Way Stacking Ensemble</span>
-                  <span className="font-bold">R² = 0.473 (Pre-Release)</span>
+                <div className="p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/30 flex items-center justify-between gap-2">
+                  <span>Worst, Expected &amp; Best-Case Bands</span>
+                  <span className="font-bold text-right">Clear Break-Even Odds</span>
                 </div>
-                <div className="p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/30 flex items-center justify-between">
-                  <span>TreeSHAP Local Attribution</span>
-                  <span className="font-bold">Machine Precision &lt; 1e-4</span>
+                <div className="p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/30 flex items-center justify-between gap-2">
+                  <span>Global + Pan-Indian Markets</span>
+                  <span className="font-bold text-right">USD &amp; ₹ Crore Ready</span>
                 </div>
-                <div className="p-3 rounded-xl bg-purple-950/20 border border-purple-500/40 flex items-center justify-between text-purple-300">
-                  <span>Stage 4 Pre-Sales Velocity</span>
-                  <span className="font-bold">R² ≥ 0.925 (±8.6% Error)</span>
+                <div className="p-3 rounded-xl bg-purple-950/20 border border-purple-500/40 flex items-center justify-between gap-2 text-purple-300">
+                  <span>Interactive Scenario Sandbox</span>
+                  <span className="font-bold text-right">Test Budget, Cast &amp; Dates</span>
                 </div>
               </div>
             </div>
@@ -449,92 +578,100 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. FOUR DIMENSIONS OF PREDICTABILITY — The Original 4-Pillar Grid */}
+      {/* 4. USE CASES — What You Can Use CineMetrics For */}
       {/* ========================================================================= */}
-      <section id="dimensions" className="relative py-24 px-4 sm:px-8 border-t border-[#1E1E2C] bg-[#07070B]">
+      <section id="use-cases" className="relative py-24 px-4 sm:px-8 border-t border-[#1E1E2C] bg-[#07070B]">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="space-y-2">
             <span className="text-xs font-mono text-[#6C63FF] uppercase tracking-wider font-semibold">
-              [FOUR DIMENSIONS OF PREDICTABILITY]
+              [USES OF CINEMETRICS]
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              HOW CINEMETRICS CRACKS THE BOX OFFICE
+              WHAT YOU CAN DO WITH THIS PLATFORM
             </h2>
             <p className="text-sm text-[#9090AA] max-w-2xl">
-              Four domain-engineered machine learning engines operating in harmony to eliminate financial blind spots.
+              Practical workflows designed for producers, acquisition teams, marketing strategists, and film enthusiasts.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Dimension 1 */}
+            {/* Use Case 1 */}
             <div className="p-6 rounded-2xl bg-[#0E0E16] border border-[#2A2A3A] hover:border-[#E8B74A]/60 transition-all space-y-4 group">
               <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-[#E8B74A] font-bold">DIMENSION I</span>
-                <span className="text-[#5A5A72]">TALENT EQUITY ENGINE</span>
+                <span className="text-[#E8B74A] font-bold flex items-center gap-1.5">
+                  <Target className="w-3.5 h-3.5" /> USE CASE 01
+                </span>
+                <span className="text-[#5A5A72]">BUDGET &amp; GREENLIGHTING</span>
               </div>
               <h3 className="text-lg font-bold text-white group-hover:text-[#E8B74A] transition-colors">
-                Ordered Target Statistics on Talent
+                Evaluate ROI &amp; Capital Risk Before Investing
               </h3>
               <p className="text-xs text-[#9090AA] leading-relaxed">
-                Director career hit rates and lead actor historical ROI multiples are calculated strictly using chronological snapshots (zero future leakage). Oblivious trees in CatBoost prevent overfitting on small sample sizes.
+                Check whether a film&apos;s production budget makes financial sense against projected theatrical returns, worst-case downside floors, and commercial break-even probabilities.
               </p>
               <div className="pt-2 text-[11px] font-mono text-[#5A5A72] flex items-center gap-3">
-                <span>• 2,608 Directors Evaluated</span>
-                <span>• 2,526 Lead Actors Tracked</span>
+                <span>• Break-Even Probability</span>
+                <span>• Worst-to-Best Range</span>
               </div>
             </div>
 
-            {/* Dimension 2 */}
+            {/* Use Case 2 */}
             <div className="p-6 rounded-2xl bg-[#0E0E16] border border-[#2A2A3A] hover:border-[#6C63FF]/60 transition-all space-y-4 group">
               <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-[#6C63FF] font-bold">DIMENSION II</span>
-                <span className="text-[#5A5A72]">AUDIENCE VELOCITY NLP</span>
+                <span className="text-[#6C63FF] font-bold flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5" /> USE CASE 02
+                </span>
+                <span className="text-[#5A5A72]">RELEASE PLANNING</span>
               </div>
               <h3 className="text-lg font-bold text-white group-hover:text-[#6C63FF] transition-colors">
-                Multilingual YouTube Trailer Velocity
+                Pick Stronger Release Windows &amp; Avoid Clashes
               </h3>
               <p className="text-xs text-[#9090AA] leading-relaxed">
-                Free YouTube views don't predict ticket sales without passion. We fuse daily view accumulation velocity (Δviews / Δt), like-to-view ratios, and domain-adapted cinema sentiment for English and Indian regional slang.
+                Browse an always-current radar of upcoming theatrical releases filtered by industry, release year, and countdown window so you can spot crowded holiday weekends early.
               </p>
               <div className="pt-2 text-[11px] font-mono text-[#5A5A72] flex items-center gap-3">
-                <span>• Sub-Millisecond CPU Inference</span>
-                <span>• Hinglish &amp; Emoji Valence</span>
+                <span>• Live Countdown Radar</span>
+                <span>• Multi-Industry Calendar</span>
               </div>
             </div>
 
-            {/* Dimension 3 */}
+            {/* Use Case 3 */}
             <div className="p-6 rounded-2xl bg-[#0E0E16] border border-[#2A2A3A] hover:border-purple-500/60 transition-all space-y-4 group">
               <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-purple-400 font-bold">DIMENSION III</span>
-                <span className="text-[#5A5A72]">PRE-SALES SEATING PHYSICS</span>
+                <span className="text-purple-400 font-bold flex items-center gap-1.5">
+                  <Globe2 className="w-3.5 h-3.5" /> USE CASE 03
+                </span>
+                <span className="text-[#5A5A72]">TALENT &amp; MARKET BENCHMARKS</span>
               </div>
               <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition-colors">
-                Stage 4 Conjugate Bayesian Updating
+                Compare Films, Stars, Directors &amp; Regional Markets
               </h3>
               <p className="text-xs text-[#9090AA] leading-relaxed">
-                When tickets go on sale 7 days before opening night, pre-sales velocity replaces casual curiosity. The Bayesian posterior snaps the forecast to real money with 75.6% variance shrinkage and $R^2 \ge 0.925$.
+                Inspect director and lead-actor box-office track records, compare up to four films side by side, and explore market trends across Hollywood, Bollywood, Tollywood, Kollywood, and more.
               </p>
               <div className="pt-2 text-[11px] font-mono text-[#5A5A72] flex items-center gap-3">
-                <span>• Multiplex Screen Capacity Bounding</span>
-                <span>• MAPE ±8.6%</span>
+                <span>• Talent Track Records</span>
+                <span>• Side-by-Side Comparison</span>
               </div>
             </div>
 
-            {/* Dimension 4 */}
+            {/* Use Case 4 */}
             <div className="p-6 rounded-2xl bg-[#0E0E16] border border-[#2A2A3A] hover:border-emerald-500/60 transition-all space-y-4 group">
               <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-emerald-400 font-bold">DIMENSION IV</span>
-                <span className="text-[#5A5A72]">COUNTERFACTUAL SANDBOX</span>
+                <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+                  <BarChart3 className="w-3.5 h-3.5" /> USE CASE 04
+                </span>
+                <span className="text-[#5A5A72]">SCENARIO &amp; BUZZ TRACKING</span>
               </div>
               <h3 className="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors">
-                Studio What-If Simulator Digital Twin
+                Test &ldquo;What-If&rdquo; Changes &amp; Track Audience Hype
               </h3>
               <p className="text-xs text-[#9090AA] leading-relaxed">
-                Test alternative production choices before greenlighting: What if we cast Ryan Reynolds instead of Chris Pratt? What if we move release from September to Christmas? Generates exact dollar delta with causal TreeSHAP breakdown.
+                Experiment with different budgets, directors, lead actors, or trailer momentum in the What-If Simulator and watch how audience sentiment and campaign buzz shift the forecast.
               </p>
               <div className="pt-2 text-[11px] font-mono text-[#5A5A72] flex items-center gap-3">
-                <span>• Instantaneous Scenario Evaluation</span>
-                <span>• Break-Even Probability</span>
+                <span>• Instant What-If Testing</span>
+                <span>• Trailer Hype &amp; Sentiment</span>
               </div>
             </div>
           </div>
@@ -542,20 +679,21 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 5. MARQUEE PORTFOLIO PREVIEW — Live Tentpoles from CineMetrics Catalog */}
+      {/* 5. LIVE UPCOMING RELEASES — Strictly Filtered by Current System Date */}
       {/* ========================================================================= */}
-      <section id="marquee" className="relative py-24 px-4 sm:px-8 border-t border-[#1E1E2C] bg-[#0A0A10]">
+      <section id="upcoming-live" className="relative py-24 px-4 sm:px-8 border-t border-[#1E1E2C] bg-[#0A0A10]">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
             <div className="space-y-2">
-              <span className="text-xs font-mono text-[#E8B74A] uppercase tracking-wider font-semibold">
-                [THE MARQUEE 100 RADAR]
+              <span className="text-xs font-mono text-[#E8B74A] uppercase tracking-wider font-semibold flex items-center gap-2">
+                <Clock className="w-3.5 h-3.5" />
+                <span>[LIVE UPCOMING RADAR • AS OF {todayFormatted.toUpperCase()}]</span>
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                ACTIVE 2026–2027 TENTPOLE TRACKING
+                UPCOMING THEATRICAL RELEASES
               </h2>
               <p className="text-xs sm:text-sm text-[#9090AA]">
-                CineMetrics continuously tracks over 100 announced theatrical releases worldwide.
+                Automatically filtered against today&apos;s date so only unreleased upcoming films appear here.
               </p>
             </div>
 
@@ -566,93 +704,112 @@ export const LandingPage: React.FC = () => {
               }}
               className="px-4 py-2 rounded-xl bg-[#151520] hover:bg-[#202030] border border-[#2A2A3A] hover:border-[#E8B74A]/60 text-white font-mono text-xs transition-all cursor-pointer flex items-center gap-2"
             >
-              <span>[EXPLORE FULL RADAR]</span>
+              <span>EXPLORE FULL RADAR</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              {
-                title: 'Spider-Man: Beyond the Spider-Verse',
-                date: 'Summer 2026',
-                forecast: 950_000_000,
-                readiness: 90,
-                badge: 'Stage 3 Refined',
-                badgeColor: 'text-amber-300 bg-amber-950/60 border-amber-500/40',
-              },
-              {
-                title: 'Avengers: Secret Wars',
-                date: 'May 2027',
-                forecast: 1_850_000_000,
-                readiness: 84,
-                badge: 'Stage 2 Teaser',
-                badgeColor: 'text-blue-300 bg-blue-950/60 border-blue-500/40',
-              },
-              {
-                title: 'Toy Story 5',
-                date: 'June 2026',
-                forecast: 920_000_000,
-                readiness: 82,
-                badge: 'Stage 2 Teaser',
-                badgeColor: 'text-blue-300 bg-blue-950/60 border-blue-500/40',
-              },
-              {
-                title: 'Pushpa 2: The Rule (Theatrical Actuals)',
-                date: 'Released',
-                forecast: 145_000_000,
-                readiness: 100,
-                badge: 'Stage 5 Synchronized',
-                badgeColor: 'text-emerald-300 bg-emerald-950/60 border-emerald-500/40',
-              },
-            ].map((m) => (
-              <div
-                key={m.title}
-                className="p-5 rounded-2xl bg-[#0E0E16] border border-[#2A2A3A] hover:border-[#6C63FF]/50 transition-all flex flex-col justify-between space-y-4 group"
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-[11px] font-mono">
-                    <span className="text-[#5A5A72]">{m.date}</span>
-                    <span className={`px-2 py-0.5 rounded-full border text-[10px] ${m.badgeColor}`}>
-                      {m.badge}
-                    </span>
+            {(upcomingPortfolio.length > 0
+              ? upcomingPortfolio.map((m) => ({
+                  id: m.id,
+                  title: m.primary_title,
+                  date: m.release_date,
+                  industry: m.industry,
+                  forecast: m.expected_gross_usd,
+                  days: m.days_to_release,
+                  readiness: m.readiness_score,
+                  posterPath: m.poster_path,
+                }))
+              : FALLBACK_HERO_PREVIEWS.map((m) => ({
+                  id: m.id,
+                  title: m.title,
+                  date: m.releaseDate,
+                  industry: m.industry,
+                  forecast: m.expectedUsd,
+                  days: m.daysToRelease,
+                  readiness: 78,
+                  posterPath: m.posterPath,
+                }))
+            ).map((m) => {
+              const cardPoster = getPosterUrl(m.posterPath);
+              return (
+                <div
+                  key={m.title}
+                  onClick={() => {
+                    if (isAuthenticated && m.id) navigate(`/movies/${m.id}`);
+                    else handleEnterTerminal();
+                  }}
+                  className="rounded-2xl bg-[#0E0E16] border border-[#2A2A3A] hover:border-[#6C63FF]/50 transition-all flex flex-col justify-between overflow-hidden group cursor-pointer"
+                >
+                  {/* Movie Poster Thumbnail Banner */}
+                  <div className="relative h-56 w-full bg-[#151520] overflow-hidden border-b border-[#1E1E2C]">
+                    {cardPoster ? (
+                      <img
+                        src={cardPoster}
+                        alt={m.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center bg-gradient-to-br from-[#161624] to-[#0B0B12]">
+                        <Film className="w-8 h-8 text-[#5A5A72] mb-2" />
+                        <span className="text-[11px] font-mono text-[#9090AA] line-clamp-1">{m.title}</span>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0E0E16] via-transparent to-black/30 pointer-events-none" />
+                    <div className="absolute top-3 left-3 right-3 flex items-center justify-between text-[11px] font-mono">
+                      <span className="px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-zinc-200">
+                        {m.date}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full border text-[10px] text-emerald-300 bg-emerald-950/80 backdrop-blur-md border-emerald-500/40">
+                        {m.days !== undefined && m.days !== null ? `In ${m.days}d` : m.industry}
+                      </span>
+                    </div>
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-[#E8B74A] transition-colors leading-snug">
-                    {m.title}
-                  </h4>
-                </div>
 
-                <div className="pt-3 border-t border-[#1E1E2C] flex items-baseline justify-between font-mono">
-                  <div>
-                    <span className="text-[10px] text-[#5A5A72] uppercase">Projected Gross</span>
-                    <p className="text-lg font-extrabold text-[#E8B74A]">{formatCurrency(m.forecast, currency)}</p>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-[10px] text-[#5A5A72] uppercase">Readiness</span>
-                    <p className="text-sm font-bold text-zinc-300">{m.readiness}/100</p>
+                  <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div className="space-y-1">
+                      <h4 className="text-base font-bold text-white group-hover:text-[#E8B74A] transition-colors leading-snug line-clamp-1">
+                        {m.title}
+                      </h4>
+                      <p className="text-[11px] font-mono text-[#5A5A72]">{m.industry}</p>
+                    </div>
+
+                    <div className="pt-3 border-t border-[#1E1E2C] flex items-baseline justify-between font-mono">
+                      <div>
+                        <span className="text-[10px] text-[#5A5A72] uppercase">Projected Gross</span>
+                        <p className="text-lg font-extrabold text-[#E8B74A]">{formatCurrency(m.forecast, currency)}</p>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[10px] text-[#5A5A72] uppercase">Confidence</span>
+                        <p className="text-sm font-bold text-zinc-300">{m.readiness}%</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. CALL TO ACTION & TERMINAL AUTHORIZATION GATEWAY */}
+      {/* 6. CALL TO ACTION */}
       {/* ========================================================================= */}
       <section className="relative py-28 px-4 sm:px-8 border-t border-[#1E1E2C] bg-[#07070B] text-center">
         <div className="max-w-3xl mx-auto space-y-6">
-          <div className="inline-block px-3 py-1 rounded-full bg-[#111118] border border-[#2A2A3A] text-xs font-mono text-[#E8B74A]">
-            PROTOCOL CLEARANCE // PRODUCTION LEVEL
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#111118] border border-[#2A2A3A] text-xs font-mono text-[#E8B74A]">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>READY FOR STUDIO &amp; ANALYST WORKFLOWS</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            INITIALIZE YOUR STUDIO TERMINAL
+            START FORECASTING UPCOMING RELEASES
           </h2>
 
           <p className="text-sm text-[#9090AA] max-w-xl mx-auto leading-relaxed">
-            Gain immediate access to full counterfactual simulation, TreeSHAP waterfall attributions, and Stage 4 pre-sales sensitivity models.
+            Sign in to explore live box-office forecasts, compare upcoming titles side by side, and test production or release scenarios in seconds.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
@@ -660,7 +817,7 @@ export const LandingPage: React.FC = () => {
               onClick={handleEnterTerminal}
               className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#E8B74A] to-[#D49E28] hover:from-[#F3C766] hover:to-[#E8B74A] text-black font-extrabold text-sm transition-all cursor-pointer shadow-xl shadow-[#E8B74A]/25 flex items-center gap-2 group"
             >
-              <span>{isAuthenticated ? 'CONTINUE TO DASHBOARD' : 'SIGN IN / ENTER TERMINAL'}</span>
+              <span>{isAuthenticated ? 'CONTINUE TO DASHBOARD' : 'SIGN IN / OPEN APP'}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
@@ -668,19 +825,21 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 7. SYSTEM FOOTER */}
+      {/* 7. FOOTER */}
       {/* ========================================================================= */}
       <footer className="border-t border-[#1E1E2C] py-8 px-4 sm:px-8 bg-[#050508] text-xs font-mono text-[#5A5A72]">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>
-            CINEMETRICS // 2.0 • Theatrical Quantitative Intelligence &amp; Risk Nexus
-          </p>
+          <p>CINEMETRICS • Pre-Release Box-Office Intelligence &amp; Risk Analytics</p>
           <div className="flex items-center gap-4 text-[#9090AA]">
-            <span>MODELS: 3-WAY STACK (CATBOOST + LIGHTGBM)</span>
+            <span className="flex items-center gap-1">
+              <TrendingUp className="w-3.5 h-3.5 text-[#E8B74A]" /> Hollywood &amp; Indian Cinema
+            </span>
             <span>•</span>
-            <span>VOVK CONFORMAL (80% / 95%)</span>
+            <span className="flex items-center gap-1">
+              <Flame className="w-3.5 h-3.5 text-amber-400" /> Live Upcoming Radar
+            </span>
             <span>•</span>
-            <span className="text-emerald-400">STAGE 4 ACTIVE</span>
+            <span className="text-emerald-400">Synced {todayFormatted}</span>
           </div>
         </div>
       </footer>

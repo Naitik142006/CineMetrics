@@ -21,18 +21,22 @@ from backend.app.schemas.upcoming import (
 router = APIRouter()
 
 
+def _current_local_date():
+    return datetime.now().date()
+
+
 def _build_upcoming_item(m: Movie, p: Optional[Prediction], b: Optional[DigitalBuzzObservation]) -> UpcomingMovieItem:
     try:
         genres = json.loads(m.genres) if m.genres else []
     except Exception:
         genres = [str(m.genres)] if m.genres else []
 
-    # Calculate exact days to release
+    # Calculate exact days to release relative to current system date
+    now_date = _current_local_date()
     days_to_release = None
     if m.release_date and str(m.release_date).strip() not in ("None", "TBD", ""):
         try:
             rdt = datetime.fromisoformat(str(m.release_date).split("T")[0]).date()
-            now_date = datetime.now(timezone.utc).date()
             days_to_release = (rdt - now_date).days
         except Exception:
             pass
@@ -75,8 +79,8 @@ def _build_upcoming_item(m: Movie, p: Optional[Prediction], b: Optional[DigitalB
         id=m.id,
         canonical_id=m.canonical_id,
         primary_title=m.primary_title,
-        release_date=m.release_date or "2025-01-01",
-        release_year=m.release_year or 2025,
+        release_date=m.release_date or now_date.isoformat(),
+        release_year=m.release_year or now_date.year,
         industry=m.industry or "Global",
         genres=genres if isinstance(genres, list) else [str(genres)],
         director=m.director or "Unknown",
@@ -115,11 +119,16 @@ def get_upcoming_movies(
     """
     Returns upcoming movies filtered by industry, stage, and minimum readiness score.
     """
+    today_iso = _current_local_date().isoformat()
     query = db.query(Movie, Prediction, DigitalBuzzObservation).outerjoin(
         Prediction, Prediction.movie_id == Movie.id
     ).outerjoin(
         DigitalBuzzObservation, DigitalBuzzObservation.movie_id == Movie.id
-    ).filter(Movie.is_released == False)
+    ).filter(
+        Movie.is_released == False,
+        Movie.release_date.isnot(None),
+        Movie.release_date > today_iso,
+    )
 
     if market_segment and market_segment.lower() != "all":
         query = query.filter(Movie.industry.ilike(f"%{market_segment}%"))
@@ -160,11 +169,16 @@ def get_upcoming_dashboard(db: Session = Depends(get_db)):
     """
     Aggregates curated analytical intelligence sections for upcoming theatrical releases.
     """
+    today_iso = _current_local_date().isoformat()
     records = db.query(Movie, Prediction, DigitalBuzzObservation).outerjoin(
         Prediction, Prediction.movie_id == Movie.id
     ).outerjoin(
         DigitalBuzzObservation, DigitalBuzzObservation.movie_id == Movie.id
-    ).filter(Movie.is_released == False).all()
+    ).filter(
+        Movie.is_released == False,
+        Movie.release_date.isnot(None),
+        Movie.release_date > today_iso,
+    ).all()
 
     all_items = [_build_upcoming_item(m, p, b) for m, p, b in records]
 
@@ -250,8 +264,10 @@ def get_upcoming_dashboard(db: Session = Depends(get_db)):
         ),
     }
 
+    total_historical = db.query(Movie).filter(Movie.is_released == True).count()
     return UpcomingDashboardResponse(
         total_upcoming_tracked=len(all_items),
+        total_historical_tracked=total_historical,
         last_updated=datetime.now(timezone.utc).isoformat(),
         sections=sections,
     )

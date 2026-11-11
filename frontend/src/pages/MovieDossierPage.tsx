@@ -18,6 +18,10 @@ import {
   Ticket,
   Zap,
   Gauge,
+  RefreshCw,
+  ChevronDown,
+  ChevronUp,
+  SlidersHorizontal,
 } from 'lucide-react';
 import { apiService } from '../services/api';
 import {
@@ -27,7 +31,7 @@ import {
   SimilarMovie,
 } from '../types';
 import { useCurrency } from '../context/CurrencyContext';
-import { formatCurrency, getRiskBadgeClass, getSuccessCategoryBadge, getPosterUrl } from '../utils/format';
+import { formatCurrency, getRiskBadgeClass, getSuccessCategoryBadge, getPosterUrl, getDisplayYear, getYoutubeTrailerUrl } from '../utils/format';
 import { PredictionIntervalBar } from '../components/PredictionIntervalBar';
 import { SHAPWaterfall } from '../components/SHAPWaterfall';
 
@@ -44,14 +48,40 @@ export const MovieDossierPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [posterError, setPosterError] = useState(false);
 
-  // Stage 4 Advance Booking Velocity State
+  // Stage 4 Advance Booking & Live Release-Week Velocity State
   const [advanceTickets, setAdvanceTickets] = useState<number>(350000);
   const [hoursToRelease, setHoursToRelease] = useState<number>(24);
   const [ticketPrice, setTicketPrice] = useState<number>(14.50);
-  const [earlyRtScore, setEarlyRtScore] = useState<number>(82);
+  const [earlyCriticScore, setEarlyCriticScore] = useState<number>(82);
   const [stage4Result, setStage4Result] = useState<any | null>(null);
   const [calculatingStage4, setCalculatingStage4] = useState<boolean>(false);
+  const [syncingStage4, setSyncingStage4] = useState<boolean>(false);
   const [stage4Saved, setStage4Saved] = useState<boolean>(false);
+  const [showManualStage4, setShowManualStage4] = useState<boolean>(false);
+
+  const handleSyncLiveStage4 = async () => {
+    if (!movie) return;
+    try {
+      setSyncingStage4(true);
+      const isActiveWindow =
+        prediction?.is_stage4_active ||
+        (prediction?.days_to_release !== undefined && prediction.days_to_release <= 7);
+      const res = await apiService.syncStage4Telemetry(movie.id, Boolean(isActiveWindow));
+      setStage4Result(res);
+      if (isActiveWindow) {
+        const [updatedPred, updatedHist] = await Promise.all([
+          apiService.getMoviePrediction(movie.id),
+          apiService.getPredictionHistory(movie.id),
+        ]);
+        setPrediction(updatedPred);
+        setHistory(updatedHist || []);
+      }
+    } catch (e) {
+      console.error('Automatic Stage 4 live sync failed:', e);
+    } finally {
+      setSyncingStage4(false);
+    }
+  };
 
   const handleCalculateStage4 = async (persist: boolean = false) => {
     if (!id || !movie) return;
@@ -62,7 +92,7 @@ export const MovieDossierPage: React.FC = () => {
         average_ticket_price_usd: Number(ticketPrice),
         hours_to_release: Number(hoursToRelease),
         screen_count: movie.industry === 'Hollywood' ? 4200 : 3200,
-        early_rotten_tomatoes_pct: Number(earlyRtScore),
+        early_critic_score_pct: Number(earlyCriticScore),
         persist_update: persist,
       });
       setStage4Result(res);
@@ -212,7 +242,7 @@ export const MovieDossierPage: React.FC = () => {
                 {movie.industry}
               </span>
               <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#E8B74A]/15 text-[#E8B74A] border border-[#E8B74A]/30">
-                {movie.release_year || '2026'} Release
+                {getDisplayYear(movie.release_year, movie.release_date)} Release
               </span>
               {movie.is_released ? (
                 <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-400">
@@ -289,17 +319,20 @@ export const MovieDossierPage: React.FC = () => {
               </p>
             </div>
 
-            {movie.youtube_trailer_id && (
-              <a
-                href={`https://www.youtube.com/watch?v=${movie.youtube_trailer_id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-red-600/20 hover:bg-red-600/30 border border-red-500/40 text-red-400 text-xs font-semibold transition-colors"
-              >
-                <Play className="w-4 h-4 fill-current" />
-                <span>Watch Trailer</span>
-              </a>
-            )}
+            {(() => {
+              const trailerUrl = getYoutubeTrailerUrl(movie.youtube_trailer_id);
+              return trailerUrl ? (
+                <a
+                  href={trailerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-red-600/20 hover:bg-red-600/30 border border-red-500/40 text-red-400 text-xs font-semibold transition-colors"
+                >
+                  <Play className="w-4 h-4 fill-current" />
+                  <span>Watch Trailer</span>
+                </a>
+              ) : null;
+            })()}
           </div>
         </div>
       </div>
@@ -481,245 +514,322 @@ export const MovieDossierPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {similarMovies.map((sim) => (
-              <div
-                key={sim.id}
-                className="bg-[#15151E] rounded-xl p-4 border border-[#2A2A3A] space-y-2 hover:border-[#6C63FF]/50 transition-colors"
-              >
-                <div className="flex items-center justify-between text-xs text-[#9090AA]">
-                  <span>{sim.release_year}</span>
-                  <span className="font-mono text-emerald-400">
-                    {(sim.similarity_score * 100).toFixed(0)}% match
-                  </span>
-                </div>
-
-                <Link
-                  to={`/movies/${sim.id}`}
-                  className="font-bold text-sm text-white hover:text-[#E8B74A] line-clamp-1 block"
+            {similarMovies.map((sim) => {
+              const simPosterUrl = getPosterUrl(sim.poster_path);
+              return (
+                <div
+                  key={sim.id}
+                  className="bg-[#15151E] rounded-xl p-4 border border-[#2A2A3A] space-y-3 hover:border-[#6C63FF]/50 transition-colors flex flex-col justify-between"
                 >
-                  {sim.primary_title}
-                </Link>
+                  <div className="flex items-start gap-3">
+                    <div className="w-12 h-18 rounded-lg overflow-hidden bg-[#0D0D14] border border-[#2A2A3A] flex items-center justify-center flex-shrink-0">
+                      {simPosterUrl ? (
+                        <img
+                          src={simPosterUrl}
+                          alt={sim.primary_title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <Film className="w-4 h-4 text-zinc-600" />
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <div className="flex items-center justify-between text-xs text-[#9090AA]">
+                        <span>{sim.release_year}</span>
+                        <span className="font-mono text-emerald-400">
+                          {(sim.similarity_score * 100).toFixed(0)}% match
+                        </span>
+                      </div>
 
-                <p className="text-xs text-[#9090AA] truncate">{sim.director || 'Unknown'}</p>
+                      <Link
+                        to={`/movies/${sim.id}`}
+                        className="font-bold text-sm text-white hover:text-[#E8B74A] line-clamp-2 block leading-snug"
+                      >
+                        {sim.primary_title}
+                      </Link>
 
-                <div className="pt-2 border-t border-[#2A2A3A]/60 flex justify-between items-baseline">
-                  <span className="text-[10px] text-[#9090AA] uppercase font-mono">Grossed</span>
-                  <span className="font-mono font-bold text-white text-xs">
-                    {formatCurrency(sim.gross_usd, currency)}
-                  </span>
+                      <p className="text-xs text-[#9090AA] truncate">{sim.director || 'Unknown'}</p>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-[#2A2A3A]/60 flex justify-between items-baseline">
+                    <span className="text-[10px] text-[#9090AA] uppercase font-mono">Grossed</span>
+                    <span className="font-mono font-bold text-white text-xs">
+                      {formatCurrency(sim.gross_usd, currency)}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
 
-      {/* Stage 4: Advance Booking Velocity & High-Precision Bayesian Recalibration (For Upcoming Titles) */}
-      {!movie.is_released && (
-        <div className="glass-card rounded-2xl p-6 border border-[#6C63FF]/40 bg-gradient-to-br from-[#1A1A26] via-[#15151E] to-[#0A0A0F] space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#2A2A3A]/80 pb-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-[#6C63FF]/20 border border-[#6C63FF]/40 flex items-center justify-center">
-                <Ticket className="w-5 h-5 text-[#E8B74A]" />
+      {/* Stage 4: Automatic Release-Week Velocity & Pre-Sales Recalibration (For Upcoming Titles) */}
+      {!movie.is_released && (() => {
+        const activeStage4 = stage4Result || prediction?.stage4_details;
+        const isStage4Window =
+          Boolean(prediction?.is_stage4_active) ||
+          (prediction?.days_to_release !== undefined && prediction.days_to_release <= 7);
+        const telemetry = activeStage4?.signal_telemetry;
+        const criticScore = activeStage4?.critical_wom_factor?.early_critic_score_pct ?? telemetry?.early_critic_score_pct;
+
+        return (
+          <div className="glass-card rounded-2xl p-6 border border-[#6C63FF]/40 bg-gradient-to-br from-[#1A1A26] via-[#15151E] to-[#0A0A0F] space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#2A2A3A]/80 pb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-[#6C63FF]/20 border border-[#6C63FF]/40 flex items-center justify-center">
+                  <Ticket className="w-5 h-5 text-[#E8B74A]" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white flex flex-wrap items-center gap-2">
+                    <span>Stage 4: Automatic Release-Week Velocity Engine</span>
+                    <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      {isStage4Window ? 'Auto-Active (T-7d)' : 'Auto-Arms at T-7d'}
+                    </span>
+                  </h3>
+                  <p className="text-xs text-[#9090AA]">
+                    Automatically recalibrates the forecast in release week using live trailer velocity, TMDB interest, positive critic reviews, and synced pre-sale feeds.
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <span>Stage 4: Advance Booking Velocity Engine</span>
-                  <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                    Accuracy Boost (R² &ge; 0.92)
-                  </span>
-                </h3>
-                <p className="text-xs text-[#9090AA]">
-                  Multiplex ticket sales velocity (T-7 to T-0 Days) collapsed with Bayesian Updating.
-                </p>
-              </div>
-            </div>
-            <div className="text-xs font-mono text-[#E8B74A]">
-              Standard Error: &plusmn;8.6% (vs &plusmn;22.4% in Stage 3)
-            </div>
-          </div>
 
-          {/* Temporal Lifecycle Status Indicator */}
-          <div className="p-3.5 rounded-xl border flex items-start sm:items-center justify-between gap-3 text-xs bg-[#111118]/80 border-[#2A2A3A]">
-            <div className="flex items-center gap-2.5">
-              <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${
-                prediction?.is_stage4_active || (prediction?.days_to_release !== undefined && prediction.days_to_release <= 7)
-                  ? 'bg-purple-400 animate-pulse'
-                  : 'bg-blue-400'
-              }`} />
-              <div>
-                <span className="font-bold text-white">
-                  {prediction?.is_stage4_active || (prediction?.days_to_release !== undefined && prediction.days_to_release <= 7)
-                    ? '⚡ Stage 4 Multiplex Pre-Sales Active (T-7 to T-0d Window)'
-                    : `Current Evaluation: ${prediction?.prediction_stage || 'Stage 1-3 Prior'}`}
-                </span>
-                <p className="text-[11px] text-[#9090AA] mt-0.5">
-                  {prediction?.is_stage4_active || (prediction?.days_to_release !== undefined && prediction.days_to_release <= 7)
-                    ? 'Multiplex advance booking pre-sales are open. Bayesian updating is actively contracting forecast uncertainty bands by ~75%.'
-                    : `This title is ${prediction?.days_to_release !== undefined ? `${prediction.days_to_release} days` : 'scheduled'} from release. Forecast currently uses the initial trained structural model. Stage 4 pre-sales unlock automatically at T-7 days.`}
-                </p>
-              </div>
-            </div>
-            <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-[#1A1A26] border border-[#2A2A3A] text-zinc-300 shrink-0">
-              {prediction?.days_to_release !== undefined ? `T-${prediction.days_to_release} Days` : 'Long-Range'}
-            </span>
-          </div>
-
-          {/* Quick Industry Presets */}
-          <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="text-[#9090AA] font-semibold text-[11px] uppercase tracking-wider">Quick Presets:</span>
-            <button
-              onClick={() => {
-                setAdvanceTickets(600000);
-                setTicketPrice(16.50);
-                setHoursToRelease(24);
-                setEarlyRtScore(88);
-              }}
-              className="px-2.5 py-1 rounded-lg bg-[#2A2A3A]/70 hover:bg-[#6C63FF]/30 border border-[#2A2A3A] text-zinc-300 hover:text-white transition-all cursor-pointer text-[11px]"
-            >
-              🌟 Mega-Blockbuster (600k Pre-Sales)
-            </button>
-            <button
-              onClick={() => {
-                setAdvanceTickets(300000);
-                setTicketPrice(14.50);
-                setHoursToRelease(24);
-                setEarlyRtScore(82);
-              }}
-              className="px-2.5 py-1 rounded-lg bg-[#2A2A3A]/70 hover:bg-[#6C63FF]/30 border border-[#2A2A3A] text-zinc-300 hover:text-white transition-all cursor-pointer text-[11px]"
-            >
-              🔥 Strong Tentpole (300k Pre-Sales)
-            </button>
-            <button
-              onClick={() => {
-                setAdvanceTickets(100000);
-                setTicketPrice(13.00);
-                setHoursToRelease(48);
-                setEarlyRtScore(74);
-              }}
-              className="px-2.5 py-1 rounded-lg bg-[#2A2A3A]/70 hover:bg-[#6C63FF]/30 border border-[#2A2A3A] text-zinc-300 hover:text-white transition-all cursor-pointer text-[11px]"
-            >
-              🎯 Mid-Scale Release (100k Pre-Sales)
-            </button>
-          </div>
-
-          {/* Interactive Parameters Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
-            <div className="bg-[#111118] p-3 rounded-xl border border-[#2A2A3A] space-y-1.5">
-              <label className="text-[#9090AA] block font-semibold">Advance Tickets Sold</label>
-              <input
-                type="number"
-                value={advanceTickets}
-                onChange={(e) => setAdvanceTickets(Math.max(100, Number(e.target.value)))}
-                step="25000"
-                className="w-full bg-[#1A1A26] border border-[#2A2A3A] rounded-lg px-2.5 py-1.5 text-white font-mono text-sm focus:outline-none focus:border-[#6C63FF]"
-              />
-              <span className="text-[10px] text-[#5A5A72] block">e.g. 350,000 multiplex admissions</span>
-            </div>
-
-            <div className="bg-[#111118] p-3 rounded-xl border border-[#2A2A3A] space-y-1.5">
-              <label className="text-[#9090AA] block font-semibold">Hours Before Release</label>
-              <select
-                value={hoursToRelease}
-                onChange={(e) => setHoursToRelease(Number(e.target.value))}
-                className="w-full bg-[#1A1A26] border border-[#2A2A3A] rounded-lg px-2.5 py-1.5 text-white font-mono text-sm focus:outline-none focus:border-[#6C63FF]"
+              <button
+                onClick={handleSyncLiveStage4}
+                disabled={syncingStage4}
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#6C63FF]/20 hover:bg-[#6C63FF]/35 border border-[#6C63FF]/40 text-xs font-bold text-white transition-all cursor-pointer disabled:opacity-50 shrink-0"
               >
-                <option value={72}>72 Hours (T-3 Days)</option>
-                <option value={48}>48 Hours (T-2 Days)</option>
-                <option value={24}>24 Hours (Release Eve)</option>
-                <option value={12}>12 Hours (Final Rush)</option>
-                <option value={6}>6 Hours (Pre-Show)</option>
-              </select>
-              <span className="text-[10px] text-[#5A5A72] block">Pre-sale tracking window</span>
+                <RefreshCw className={`w-3.5 h-3.5 ${syncingStage4 ? 'animate-spin' : ''}`} />
+                <span>{syncingStage4 ? 'Syncing Live Signals...' : 'Sync Live Signals Now'}</span>
+              </button>
             </div>
 
-            <div className="bg-[#111118] p-3 rounded-xl border border-[#2A2A3A] space-y-1.5">
-              <label className="text-[#9090AA] block font-semibold">Avg Ticket Price (USD)</label>
-              <input
-                type="number"
-                value={ticketPrice}
-                onChange={(e) => setTicketPrice(Math.max(1, Number(e.target.value)))}
-                step="0.5"
-                className="w-full bg-[#1A1A26] border border-[#2A2A3A] rounded-lg px-2.5 py-1.5 text-white font-mono text-sm focus:outline-none focus:border-[#6C63FF]"
-              />
-              <span className="text-[10px] text-[#5A5A72] block">ATP across standard & IMAX</span>
-            </div>
-
-            <div className="bg-[#111118] p-3 rounded-xl border border-[#2A2A3A] space-y-1.5">
-              <label className="text-[#9090AA] block font-semibold">Early Rotten Tomatoes %</label>
-              <input
-                type="number"
-                value={earlyRtScore}
-                onChange={(e) => setEarlyRtScore(Math.min(100, Math.max(0, Number(e.target.value))))}
-                step="5"
-                className="w-full bg-[#1A1A26] border border-[#2A2A3A] rounded-lg px-2.5 py-1.5 text-white font-mono text-sm focus:outline-none focus:border-[#6C63FF]"
-              />
-              <span className="text-[10px] text-[#5A5A72] block">Word-of-mouth modifier (0–100%)</span>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3 pt-1">
-            <button
-              onClick={() => handleCalculateStage4(false)}
-              disabled={calculatingStage4}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#6C63FF] hover:bg-[#584fe0] text-white font-bold text-xs transition-all cursor-pointer disabled:opacity-50"
-            >
-              <Zap className={`w-3.5 h-3.5 ${calculatingStage4 ? 'animate-spin' : ''}`} />
-              <span>{calculatingStage4 ? 'Recalibrating...' : 'Calculate Stage 4 Posterior'}</span>
-            </button>
-
-            <button
-              onClick={() => handleCalculateStage4(true)}
-              disabled={calculatingStage4}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/40 border border-emerald-500/50 text-emerald-400 font-bold text-xs transition-all cursor-pointer disabled:opacity-50"
-            >
-              <CheckCircle className="w-3.5 h-3.5" />
-              <span>{stage4Saved ? 'Saved to Audit History!' : 'Lock & Save as Active AI Forecast'}</span>
-            </button>
-          </div>
-
-          {/* Dynamic Stage 4 Recalibration Results */}
-          {stage4Result && (
-            <div className="bg-[#111118] p-4 sm:p-5 rounded-xl border border-[#2A2A3A] space-y-4 transition-all">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                <div className="p-3 rounded-lg bg-[#15151E] border border-[#2A2A3A]">
-                  <p className="text-[10px] uppercase text-[#9090AA] font-mono">Stage 4 Forecast</p>
-                  <p className="text-base sm:text-lg font-bold font-mono text-[#E8B74A] mt-1">
-                    {formatCurrency(stage4Result.bayesian_posterior.posterior_expected_gross_usd, currency)}
-                  </p>
-                </div>
-
-                <div className="p-3 rounded-lg bg-[#15151E] border border-[#2A2A3A]">
-                  <p className="text-[10px] uppercase text-[#9090AA] font-mono">Uncertainty Reduced</p>
-                  <p className="text-base sm:text-lg font-bold font-mono text-emerald-400 mt-1">
-                    -{stage4Result.bayesian_posterior.uncertainty_reduction_pct}%
-                  </p>
-                </div>
-
-                <div className="p-3 rounded-lg bg-[#15151E] border border-[#2A2A3A]">
-                  <p className="text-[10px] uppercase text-[#9090AA] font-mono">Day 1 Occupancy</p>
-                  <p className="text-base sm:text-lg font-bold font-mono text-blue-400 mt-1">
-                    {stage4Result.opening_day_occupancy_pct}%
-                  </p>
-                </div>
-
-                <div className="p-3 rounded-lg bg-[#15151E] border border-[#2A2A3A]">
-                  <p className="text-[10px] uppercase text-[#9090AA] font-mono">Model Accuracy R²</p>
-                  <p className="text-base sm:text-lg font-bold font-mono text-purple-400 mt-1">
-                    0.925 (92.5%)
+            {/* Temporal Lifecycle Status Indicator */}
+            <div className="p-3.5 rounded-xl border flex items-start sm:items-center justify-between gap-3 text-xs bg-[#111118]/80 border-[#2A2A3A]">
+              <div className="flex items-center gap-2.5">
+                <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+                  isStage4Window ? 'bg-purple-400 animate-pulse' : 'bg-blue-400'
+                }`} />
+                <div>
+                  <span className="font-bold text-white">
+                    {isStage4Window
+                      ? '⚡ Automatic Stage 4 Active (T-7 to T-0d Window)'
+                      : `Armed for Release Week — Currently ${prediction?.prediction_stage || 'Stage 1-3 Prior'}`}
+                  </span>
+                  <p className="text-[11px] text-[#9090AA] mt-0.5">
+                    {isStage4Window
+                      ? 'Live release-week signals and any verified pre-sale ticket feeds are actively narrowing forecast uncertainty via Bayesian updating.'
+                      : `This title is ${prediction?.days_to_release !== undefined ? `${prediction.days_to_release} days` : 'scheduled'} from release. Automated Stage 4 updates unlock at T-7 days (or click "Sync Live Signals Now" to preview live demand telemetry).`}
                   </p>
                 </div>
               </div>
-
-              <div className="p-3 rounded-lg bg-[#15151E]/70 border border-[#2A2A3A] text-xs text-zinc-300 leading-relaxed">
-                <p>
-                  <strong className="text-white">Bayesian Synthesis:</strong> {stage4Result.summary_narrative}
-                </p>
-              </div>
+              <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-[#1A1A26] border border-[#2A2A3A] text-zinc-300 shrink-0">
+                {prediction?.days_to_release !== undefined ? `T-${prediction.days_to_release} Days` : 'Long-Range'}
+              </span>
             </div>
-          )}
-        </div>
-      )}
+
+            {/* Live Automatic Stage 4 Telemetry & Results */}
+            {activeStage4 && (
+              <div className="bg-[#111118] p-4 sm:p-5 rounded-xl border border-[#2A2A3A] space-y-4 transition-all">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                  <span className="font-mono text-[#9090AA] uppercase tracking-wider">
+                    Signal Source:{' '}
+                    <strong className="text-emerald-400">
+                      {telemetry?.signal_source_label || 'Live Release-Week Signals'}
+                    </strong>
+                  </span>
+                  <div className="flex flex-wrap items-center gap-2 font-mono text-zinc-300">
+                    {telemetry?.youtube_views ? (
+                      <span className="px-2 py-0.5 rounded bg-[#1A1A26] border border-[#2A2A3A]">
+                        YT Views: {(telemetry.youtube_views / 1_000_000).toFixed(2)}M
+                      </span>
+                    ) : null}
+                    {telemetry?.tmdb_popularity != null ? (
+                      <span className="px-2 py-0.5 rounded bg-[#1A1A26] border border-[#2A2A3A]">
+                        TMDB Buzz: {telemetry.tmdb_popularity}
+                      </span>
+                    ) : null}
+                    <span className="px-2 py-0.5 rounded bg-[#1A1A26] border border-[#2A2A3A]">
+                      Tickets Indexed: {activeStage4.advance_tickets_sold?.toLocaleString()}
+                    </span>
+                    {criticScore != null ? (
+                      <span className="px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-300">
+                        Critic Reviews: {criticScore}% positive
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                  <div className="p-3 rounded-lg bg-[#15151E] border border-[#2A2A3A]">
+                    <p className="text-[10px] uppercase text-[#9090AA] font-mono">Stage 4 Forecast</p>
+                    <p className="text-base sm:text-lg font-bold font-mono text-[#E8B74A] mt-1">
+                      {formatCurrency(activeStage4.bayesian_posterior.posterior_expected_gross_usd, currency)}
+                    </p>
+                  </div>
+
+                  <div className="p-3 rounded-lg bg-[#15151E] border border-[#2A2A3A]">
+                    <p className="text-[10px] uppercase text-[#9090AA] font-mono">Uncertainty Reduced</p>
+                    <p className="text-base sm:text-lg font-bold font-mono text-emerald-400 mt-1">
+                      -{activeStage4.bayesian_posterior.uncertainty_reduction_pct}%
+                    </p>
+                  </div>
+
+                  <div className="p-3 rounded-lg bg-[#15151E] border border-[#2A2A3A]">
+                    <p className="text-[10px] uppercase text-[#9090AA] font-mono">Day 1 Occupancy</p>
+                    <p className="text-base sm:text-lg font-bold font-mono text-blue-400 mt-1">
+                      {activeStage4.opening_day_occupancy_pct}%
+                    </p>
+                  </div>
+
+                  <div className="p-3 rounded-lg bg-[#15151E] border border-[#2A2A3A]">
+                    <p className="text-[10px] uppercase text-[#9090AA] font-mono">Target Accuracy R²</p>
+                    <p className="text-base sm:text-lg font-bold font-mono text-purple-400 mt-1">
+                      0.925 (92.5%)
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-lg bg-[#15151E]/70 border border-[#2A2A3A] text-xs text-zinc-300 leading-relaxed">
+                  <p>
+                    <strong className="text-white">Bayesian Synthesis:</strong> {activeStage4.summary_narrative}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Collapsible Optional Manual What-If Ticket Override */}
+            <div className="border-t border-[#2A2A3A]/70 pt-3">
+              <button
+                type="button"
+                onClick={() => setShowManualStage4((prev) => !prev)}
+                className="flex items-center justify-between w-full text-xs font-semibold text-[#9090AA] hover:text-white transition-colors cursor-pointer"
+              >
+                <span className="flex items-center gap-2">
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-[#6C63FF]" />
+                  <span>Optional: What-If / Manual Ticket Override (if you have confirmed cinema pre-sale numbers)</span>
+                </span>
+                {showManualStage4 ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </button>
+
+              {showManualStage4 && (
+                <div className="mt-4 space-y-4">
+                  <div className="flex flex-wrap items-center gap-2 text-xs">
+                    <span className="text-[#9090AA] font-semibold text-[11px] uppercase tracking-wider">Quick Presets:</span>
+                    <button
+                      onClick={() => {
+                        setAdvanceTickets(600000);
+                        setTicketPrice(16.50);
+                        setHoursToRelease(24);
+                        setEarlyCriticScore(88);
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-[#2A2A3A]/70 hover:bg-[#6C63FF]/30 border border-[#2A2A3A] text-zinc-300 hover:text-white transition-all cursor-pointer text-[11px]"
+                    >
+                      🌟 Mega-Blockbuster (600k Pre-Sales)
+                    </button>
+                    <button
+                      onClick={() => {
+                        setAdvanceTickets(300000);
+                        setTicketPrice(14.50);
+                        setHoursToRelease(24);
+                        setEarlyCriticScore(82);
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-[#2A2A3A]/70 hover:bg-[#6C63FF]/30 border border-[#2A2A3A] text-zinc-300 hover:text-white transition-all cursor-pointer text-[11px]"
+                    >
+                      🔥 Strong Tentpole (300k Pre-Sales)
+                    </button>
+                    <button
+                      onClick={() => {
+                        setAdvanceTickets(100000);
+                        setTicketPrice(13.00);
+                        setHoursToRelease(48);
+                        setEarlyCriticScore(74);
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-[#2A2A3A]/70 hover:bg-[#6C63FF]/30 border border-[#2A2A3A] text-zinc-300 hover:text-white transition-all cursor-pointer text-[11px]"
+                    >
+                      🎯 Mid-Scale Release (100k Pre-Sales)
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                    <div className="bg-[#111118] p-3 rounded-xl border border-[#2A2A3A] space-y-1.5">
+                      <label className="text-[#9090AA] block font-semibold">Advance Tickets Sold</label>
+                      <input
+                        type="number"
+                        value={advanceTickets}
+                        onChange={(e) => setAdvanceTickets(Math.max(100, Number(e.target.value)))}
+                        step="25000"
+                        className="w-full bg-[#1A1A26] border border-[#2A2A3A] rounded-lg px-2.5 py-1.5 text-white font-mono text-sm focus:outline-none focus:border-[#6C63FF]"
+                      />
+                      <span className="text-[10px] text-[#5A5A72] block">Confirmed multiplex admissions</span>
+                    </div>
+
+                    <div className="bg-[#111118] p-3 rounded-xl border border-[#2A2A3A] space-y-1.5">
+                      <label className="text-[#9090AA] block font-semibold">Hours Before Release</label>
+                      <select
+                        value={hoursToRelease}
+                        onChange={(e) => setHoursToRelease(Number(e.target.value))}
+                        className="w-full bg-[#1A1A26] border border-[#2A2A3A] rounded-lg px-2.5 py-1.5 text-white font-mono text-sm focus:outline-none focus:border-[#6C63FF]"
+                      >
+                        <option value={72}>72 Hours (T-3 Days)</option>
+                        <option value={48}>48 Hours (T-2 Days)</option>
+                        <option value={24}>24 Hours (Release Eve)</option>
+                        <option value={12}>12 Hours (Final Rush)</option>
+                        <option value={6}>6 Hours (Pre-Show)</option>
+                      </select>
+                      <span className="text-[10px] text-[#5A5A72] block">Pre-sale tracking window</span>
+                    </div>
+
+                    <div className="bg-[#111118] p-3 rounded-xl border border-[#2A2A3A] space-y-1.5">
+                      <label className="text-[#9090AA] block font-semibold">Avg Ticket Price (USD)</label>
+                      <input
+                        type="number"
+                        value={ticketPrice}
+                        onChange={(e) => setTicketPrice(Math.max(1, Number(e.target.value)))}
+                        step="0.5"
+                        className="w-full bg-[#1A1A26] border border-[#2A2A3A] rounded-lg px-2.5 py-1.5 text-white font-mono text-sm focus:outline-none focus:border-[#6C63FF]"
+                      />
+                      <span className="text-[10px] text-[#5A5A72] block">Average price across screens</span>
+                    </div>
+
+                    <div className="bg-[#111118] p-3 rounded-xl border border-[#2A2A3A] space-y-1.5">
+                      <label className="text-[#9090AA] block font-semibold">Positive Critic Reviews (%)</label>
+                      <input
+                        type="number"
+                        value={earlyCriticScore}
+                        onChange={(e) => setEarlyCriticScore(Math.min(100, Math.max(0, Number(e.target.value))))}
+                        step="5"
+                        className="w-full bg-[#1A1A26] border border-[#2A2A3A] rounded-lg px-2.5 py-1.5 text-white font-mono text-sm focus:outline-none focus:border-[#6C63FF]"
+                      />
+                      <span className="text-[10px] text-[#5A5A72] block">% of critics who liked the movie</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3 pt-1">
+                    <button
+                      onClick={() => handleCalculateStage4(false)}
+                      disabled={calculatingStage4}
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#6C63FF] hover:bg-[#584fe0] text-white font-bold text-xs transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      <Zap className={`w-3.5 h-3.5 ${calculatingStage4 ? 'animate-spin' : ''}`} />
+                      <span>{calculatingStage4 ? 'Recalibrating...' : 'Preview Manual Override'}</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleCalculateStage4(true)}
+                      disabled={calculatingStage4}
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/40 border border-emerald-500/50 text-emerald-400 font-bold text-xs transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      <CheckCircle className="w-3.5 h-3.5" />
+                      <span>{stage4Saved ? 'Saved to Audit History!' : 'Lock & Save Override'}</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Forecast Revisions Timeline */}
       {history.length > 0 && (

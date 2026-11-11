@@ -43,7 +43,7 @@ const MainLayout: React.FC = () => {
         <footer className="border-t border-[#2A2A3A]/60 py-8 px-4 text-center text-xs text-[#5A5A72] bg-[#0A0A0F]/80">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <p>
-              © 2026 CineMetrics AI. Engineered for Cinema Intelligence, Empirical Research & Risk Attribution.
+              © {new Date().getFullYear()} CineMetrics AI. Engineered for Cinema Intelligence, Empirical Research &amp; Risk Attribution.
             </p>
             <div className="flex items-center gap-4 text-[#9090AA]">
               <span>Ensemble v1.1.0-Stacked</span>

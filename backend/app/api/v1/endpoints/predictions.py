@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_, desc
 
 from backend.app.db.session import get_db
-from backend.app.db.models import Movie, Prediction, PredictionHistoryRecord, DigitalBuzzObservation
+from backend.app.db.models import Movie, Prediction, PredictionHistoryRecord, DigitalBuzzObservation, AdvanceBookingObservation
 from backend.app.schemas.prediction import (
     ActivePredictionResponse,
     ConformalForecast,
@@ -25,7 +25,7 @@ from backend.app.schemas.explanation import (
 )
 from backend.app.ml.explainer_service import explainer_service
 from backend.app.services.prediction_service import prediction_service
-from backend.app.services.advance_booking_service import advance_booking_engine
+from backend.app.services.advance_booking_service import advance_booking_engine, sync_stage4_for_movie
 from pydantic import BaseModel, Field
 
 
@@ -34,7 +34,8 @@ class AdvanceBookingUpdateRequest(BaseModel):
     average_ticket_price_usd: float = Field(14.50, gt=0, description="Average Ticket Price in USD")
     hours_to_release: int = Field(24, ge=1, le=168, description="Hours remaining until opening day")
     screen_count: int = Field(3800, ge=100, description="Opening day allocated screens")
-    early_rotten_tomatoes_pct: Optional[float] = Field(None, ge=0, le=100, description="Rotten Tomatoes critic score if embargo lifted")
+    early_critic_score_pct: Optional[float] = Field(None, ge=0, le=100, description="Positive critic review percentage once reviews open")
+    early_rotten_tomatoes_pct: Optional[float] = Field(None, ge=0, le=100, description="Legacy alias for early_critic_score_pct")
     persist_update: bool = Field(False, description="Whether to update database prediction and log history record")
 
 router = APIRouter()
@@ -171,6 +172,17 @@ def get_movie_prediction(movie_id: str, db: Session = Depends(get_db)):
         status_badge = "Stage 1 Prior"
         readiness_score = min(max(readiness_score, 50), 65)
 
+    stage4_details = None
+    if is_stage4:
+        needs_auto_init = prediction.model_version != "catboost_bayesian_stage4_v1"
+        stage4_details = sync_stage4_for_movie(
+            db,
+            movie,
+            prediction=prediction,
+            fetch_live=False,
+            persist=needs_auto_init,
+        )
+
     success_probs = {}
     if prediction.success_probabilities:
         try:
@@ -228,6 +240,7 @@ def get_movie_prediction(movie_id: str, db: Session = Depends(get_db)):
         narrative_summary=prediction.narrative_summary,
         days_to_release=days_to_release,
         is_stage4_active=is_stage4,
+        stage4_details=stage4_details,
     )
 
 
@@ -373,6 +386,12 @@ def stage4_advance_booking_update(
         except Exception:
             pass
 
+    critic_score = (
+        payload.early_critic_score_pct
+        if payload.early_critic_score_pct is not None
+        else payload.early_rotten_tomatoes_pct
+    )
+
     # Execute Conjugate Bayesian Updating
     result = advance_booking_engine.calculate_stage4_bayesian_update(
         prior_expected_gross_usd=prior_gross,
@@ -382,7 +401,8 @@ def stage4_advance_booking_update(
         screen_count=payload.screen_count,
         primary_genre=primary_genre,
         industry=movie.industry or "Global",
-        early_rotten_tomatoes_pct=payload.early_rotten_tomatoes_pct,
+        early_critic_score_pct=critic_score,
+        signal_source="manual_override",
     )
 
     # Persist update to DB if requested
@@ -392,6 +412,19 @@ def stage4_advance_booking_update(
         pess_usd = result["bayesian_posterior"]["pessimistic_bound_80_usd"]
         opt_usd = result["bayesian_posterior"]["optimistic_bound_80_usd"]
         now = datetime.now(timezone.utc)
+
+        db.add(
+            AdvanceBookingObservation(
+                movie_id=movie.id,
+                signal_source="manual_override",
+                advance_tickets_sold=payload.advance_tickets_sold,
+                average_ticket_price_usd=payload.average_ticket_price_usd,
+                hours_to_release=payload.hours_to_release,
+                screen_count=payload.screen_count,
+                early_critic_score_pct=critic_score,
+                observed_at=now,
+            )
+        )
 
         prediction.prediction_stage = result["prediction_stage"]
         prediction.readiness_score = result["readiness_score"]
@@ -416,7 +449,7 @@ def stage4_advance_booking_update(
             delta_usd=result["bayesian_posterior"]["delta_vs_stage3_usd"],
             delta_pct=result["bayesian_posterior"]["delta_vs_stage3_pct"],
             change_attribution=(
-                f"Stage 4 Advance Booking Update: {payload.advance_tickets_sold:,} pre-sale tickets confirmed. "
+                f"Stage 4 Pre-Sale Override: {payload.advance_tickets_sold:,} advance tickets confirmed. "
                 f"Uncertainty narrowed by {result['bayesian_posterior']['uncertainty_reduction_pct']}%."
             ),
             evaluated_at=now,
@@ -425,3 +458,34 @@ def stage4_advance_booking_update(
         db.commit()
 
     return result
+
+
+@router.post("/movies/{movie_id}/sync-stage4", summary="Synchronize Live Stage 4 Telemetry")
+def sync_stage4_telemetry(
+    movie_id: str,
+    persist: bool = True,
+    db: Session = Depends(get_db),
+):
+    """
+    Automatically pulls fresh live signals (YouTube trailer views, TMDB release-week popularity,
+    OMDb early positive critic reviews, and any verified ticketing feed rows) and computes/persists
+    the Stage 4 Bayesian recalibration without manual ticket entry.
+    """
+    movie = db.query(Movie).filter(
+        or_(Movie.id == movie_id, Movie.canonical_id == movie_id)
+    ).first()
+
+    if not movie:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Movie with ID '{movie_id}' not found.",
+        )
+
+    prediction = db.query(Prediction).filter(Prediction.movie_id == movie.id).first()
+    return sync_stage4_for_movie(
+        db,
+        movie,
+        prediction=prediction,
+        fetch_live=True,
+        persist=persist,
+    )

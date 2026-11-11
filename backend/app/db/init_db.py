@@ -23,6 +23,7 @@ from backend.app.db.models import (
     Prediction,
     DigitalBuzzObservation,
     PredictionHistoryRecord,
+    AdvanceBookingObservation,
 )
 from backend.app.db.curated_tentpoles import CURATED_UPCOMING_TENTPOLES, CURATED_RECENT_RELEASED_BLOCKBUSTERS
 from backend.app.services.prediction_service import prediction_service
@@ -48,8 +49,31 @@ def safe_float(val: Any, default: float = 0.0) -> float:
         return default
 
 
+def reconcile_release_statuses(db: Session) -> int:
+    """Marks any movie whose release_date <= current local system date as released."""
+    today_iso = datetime.now().strftime("%Y-%m-%d")
+    stale_movies = (
+        db.query(Movie)
+        .filter(
+            Movie.is_released == False,
+            Movie.release_date.isnot(None),
+            Movie.release_date <= today_iso,
+        )
+        .all()
+    )
+    if not stale_movies:
+        return 0
+    for m in stale_movies:
+        m.is_released = True
+    db.commit()
+    logger.info(f"Reconciled {len(stale_movies)} past-dated movies to is_released=True (cutoff={today_iso}).")
+    return len(stale_movies)
+
+
 def seed_database(db: Session, force_reseed: bool = False):
     """Populates database tables from parquet sources and curated tentpoles."""
+    Base.metadata.create_all(bind=engine)
+    reconcile_release_statuses(db)
     movie_count = db.query(Movie).count()
     tentpole_sample = db.query(Movie).filter(Movie.canonical_id == "tentpole_avengers_doomsday_2026").first()
 
@@ -113,6 +137,7 @@ def seed_database(db: Session, force_reseed: bool = False):
 
         movie_entity = Movie(
             canonical_id=cid,
+            tmdb_id=t.get("tmdb_id"),
             primary_title=t["primary_title"],
             release_date=t["release_date"],
             release_year=t["release_year"],
@@ -129,7 +154,7 @@ def seed_database(db: Session, force_reseed: bool = False):
             budget_inr_crores=budget_inr,
             box_office_gross_usd=None,
             box_office_gross_inr_crores=None,
-            is_released=False,
+            is_released=str(t["release_date"]) <= datetime.now().strftime("%Y-%m-%d"),
             youtube_trailer_id=t.get("youtube_trailer_id"),
             poster_path=t.get("poster_path"),
             backdrop_path=t.get("backdrop_path"),
@@ -197,7 +222,7 @@ def seed_database(db: Session, force_reseed: bool = False):
             # Seed buzz
             buzz_entity = DigitalBuzzObservation(
                 movie_id=movie_entity.id,
-                youtube_video_id=t.get("youtube_trailer_id", "trailer_key"),
+                youtube_video_id=t.get("youtube_trailer_id") or "pending",
                 view_count=t.get("trailer_view_count", 25_000_000),
                 like_count=t.get("trailer_like_count", 1_500_000),
                 comment_count=int(t.get("trailer_like_count", 1_500_000) * 0.1),
@@ -227,6 +252,7 @@ def seed_database(db: Session, force_reseed: bool = False):
 
         movie_entity = Movie(
             canonical_id=cid,
+            tmdb_id=r.get("tmdb_id"),
             primary_title=r["primary_title"],
             release_date=r["release_date"],
             release_year=r["release_year"],
@@ -305,8 +331,11 @@ def seed_database(db: Session, force_reseed: bool = False):
                 tmdb_id=safe_int(row.get("tmdb_id"), None),
                 primary_title=str(row.get("primary_title", "Untitled")),
                 original_title=str(row.get("original_title", "")),
-                release_date=str(row.get("release_date", "2026-11-20")),
-                release_year=safe_int(row.get("release_year"), 2026),
+                release_date=str(row.get("release_date") or datetime.now().strftime("%Y-%m-%d")),
+                release_year=safe_int(
+                    str(row.get("release_date", ""))[:4] if len(str(row.get("release_date", ""))) >= 4 and str(row.get("release_date", ""))[:4].isdigit() else row.get("release_year"),
+                    datetime.now().year,
+                ),
                 runtime_minutes=safe_int(row.get("runtime_minutes_clean"), 120),
                 original_language=str(row.get("original_language", "en")),
                 industry=str(row.get("industry", "Global")),
@@ -319,7 +348,7 @@ def seed_database(db: Session, force_reseed: bool = False):
                 budget_inr_crores=budget_inr,
                 box_office_gross_usd=None,
                 box_office_gross_inr_crores=None,
-                is_released=False,
+                is_released=str(row.get("release_date", "2099-01-01")) <= datetime.now().strftime("%Y-%m-%d"),
                 youtube_trailer_id=str(row.get("youtube_trailer_id", "")) if pd.notna(row.get("youtube_trailer_id")) else None,
                 poster_path=poster_val,
             )

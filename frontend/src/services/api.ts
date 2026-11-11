@@ -129,11 +129,19 @@ export const apiService = {
   },
 
   // Stage 4 Advance Booking Bayesian Recalibration
+  async syncStage4Telemetry(movieId: string, persist = true) {
+    const res = await apiClient.post(`/movies/${movieId}/sync-stage4`, null, {
+      params: { persist },
+    });
+    return res.data;
+  },
+
   async updateAdvanceBooking(movieId: string, payload: {
     advance_tickets_sold: number;
     average_ticket_price_usd?: number;
     hours_to_release?: number;
     screen_count?: number;
+    early_critic_score_pct?: number;
     early_rotten_tomatoes_pct?: number;
     persist_update?: boolean;
   }) {

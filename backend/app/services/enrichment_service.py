@@ -63,27 +63,52 @@ class EnrichmentService:
         ]
         return any(re.search(p, title_lower) for p in patterns)
 
+    _NON_OFFICIAL_TRAILER_KEYWORDS = (
+        "fan edit",
+        "fan-edit",
+        "fan made",
+        "fan-made",
+        "fan trailer",
+        "concept trailer",
+        "homemade",
+        "parody",
+        "reaction",
+        "breakdown",
+    )
+
     def extract_trailer_key(self, videos_data: Optional[Dict[str, Any]]) -> Optional[str]:
         """Extracts the best official YouTube trailer video key."""
         if not videos_data:
             return None
+        import re
+        yt_id_re = re.compile(r"^[A-Za-z0-9_-]{11}$")
         results = videos_data.get("results", [])
-        # Prioritize official theatrical trailers
-        trailers = [
-            v for v in results
-            if v.get("site") == "YouTube" and v.get("type") in ("Trailer", "Teaser")
-        ]
+        trailers = []
+        for v in results:
+            if v.get("site") != "YouTube" or v.get("type") not in ("Trailer", "Teaser"):
+                continue
+            key = (v.get("key") or "").strip()
+            if not yt_id_re.fullmatch(key):
+                continue
+            name_lower = (v.get("name") or "").lower()
+            if any(kw in name_lower for kw in self._NON_OFFICIAL_TRAILER_KEYWORDS):
+                continue
+            trailers.append(v)
+
         if not trailers:
             return None
 
-        # Prefer official Trailer over Teaser
+        # Prefer official Trailer over official Teaser, then unofficial Trailer/Teaser
         for v in trailers:
             if v.get("type") == "Trailer" and v.get("official") is True:
-                return v.get("key")
+                return v.get("key").strip()
+        for v in trailers:
+            if v.get("type") == "Teaser" and v.get("official") is True:
+                return v.get("key").strip()
         for v in trailers:
             if v.get("type") == "Trailer":
-                return v.get("key")
-        return trailers[0].get("key")
+                return v.get("key").strip()
+        return trailers[0].get("key").strip()
 
     def enrich_movie(self, raw_candidate: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """

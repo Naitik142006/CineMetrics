@@ -64,3 +64,61 @@ def test_stage4_advance_booking_update(client):
     assert data["bayesian_posterior"]["uncertainty_reduction_pct"] > 50.0
     assert data["accuracy_benchmarks"]["expected_model_r2"] >= 0.90
 
+
+def test_stage4_live_telemetry_sync_and_feed_ingest(client):
+    from backend.app.db.session import SessionLocal
+    from backend.app.db.models import AdvanceBookingObservation
+
+    up_resp = client.get("/api/v1/upcoming?limit=1")
+    movie_id = up_resp.json()[0]["id"]
+
+    # On-demand live signal sync returns telemetry cleanly without manual ticket entry
+    sync_resp = client.post(f"/api/v1/movies/{movie_id}/sync-stage4?persist=false")
+    assert sync_resp.status_code == 200
+    sync_data = sync_resp.json()
+    assert "signal_telemetry" in sync_data
+    assert sync_data["advance_tickets_sold"] > 0
+    assert "bayesian_posterior" in sync_data
+
+    # Active T-7..T-0 movies expose automatic stage4_details directly on GET /prediction
+    st4_up = client.get("/api/v1/upcoming?stage_filter=stage4&limit=1")
+    assert st4_up.status_code == 200
+    if st4_up.json():
+        st4_id = st4_up.json()[0]["id"]
+        st4_pred = client.get(f"/api/v1/movies/{st4_id}/prediction")
+        assert st4_pred.status_code == 200
+        assert st4_pred.json()["is_stage4_active"] is True
+        assert st4_pred.json()["stage4_details"] is not None
+
+    # Batch verified ticketing ingestion endpoint
+    try:
+        ingest_resp = client.post(
+            "/api/v1/sync/advance-bookings",
+            json={
+                "records": [
+                    {
+                        "movie_id_or_title": movie_id,
+                        "advance_tickets_sold": 320000,
+                        "average_ticket_price_usd": 14.0,
+                        "hours_to_release": 24,
+                        "early_critic_score_pct": 84.0,
+                    }
+                ]
+            },
+        )
+        assert ingest_resp.status_code == 200
+        ingest_data = ingest_resp.json()
+        assert ingest_data["status"] == "OK"
+        assert ingest_data["recalibrated_count"] == 1
+    finally:
+        db = SessionLocal()
+        try:
+            db.query(AdvanceBookingObservation).filter(
+                AdvanceBookingObservation.movie_id == movie_id,
+                AdvanceBookingObservation.advance_tickets_sold == 320000,
+                AdvanceBookingObservation.signal_source == "verified_ticketing",
+            ).delete()
+            db.commit()
+        finally:
+            db.close()
+

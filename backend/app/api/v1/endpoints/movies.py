@@ -87,7 +87,12 @@ def search_movies(
     if status == "released":
         query = query.filter(Movie.is_released == True)
     elif status == "upcoming":
-        query = query.filter(Movie.is_released == False)
+        today_iso = datetime.now().strftime("%Y-%m-%d")
+        query = query.filter(
+            Movie.is_released == False,
+            Movie.release_date.isnot(None),
+            Movie.release_date > today_iso,
+        )
 
     total_count = query.count()
     results = query.order_by(
@@ -303,12 +308,15 @@ def get_similar_movies(movie_id: str, limit: int = Query(6, ge=1, le=20), db: Se
     for score, cand, c_genres in top_matches:
         gross = cand.box_office_gross_usd or 0.0
         inr_cr = round(gross * 83.50 / 10_000_000.0, 2)
+        rel_yr = cand.release_year
+        if not rel_yr and cand.release_date and str(cand.release_date)[:4].isdigit():
+            rel_yr = int(str(cand.release_date)[:4])
         output.append(
             SimilarMovie(
                 id=cand.id,
                 canonical_id=cand.canonical_id,
                 primary_title=cand.primary_title,
-                release_year=cand.release_year or 2020,
+                release_year=rel_yr or datetime.now().year,
                 industry=cand.industry or "Global",
                 genres=c_genres,
                 director=cand.director or "Unknown",

@@ -131,29 +131,56 @@ export const Navbar: React.FC = () => {
           {showDropdown && searchResults.length > 0 && (
             <div className="absolute left-0 right-0 top-full mt-2 bg-[#1A1A26] border border-[#2A2A3A] rounded-xl shadow-2xl overflow-hidden z-50">
               <div className="p-2 divide-y divide-[#2A2A3A]/40">
-                {searchResults.map((m) => (
-                  <button
-                    key={m.id}
-                    onClick={() => {
-                      setShowDropdown(false);
-                      setSearchQuery('');
-                      navigate(`/movies/${m.id}`);
-                    }}
-                    className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#111118] transition-colors flex items-center justify-between group"
-                  >
-                    <div>
-                      <p className="text-sm font-semibold text-white group-hover:text-[#E8B74A] transition-colors">
-                        {m.primary_title}
-                      </p>
-                      <p className="text-xs text-[#9090AA]">
-                        {m.release_year} • {m.industry} • {m.director || 'Unknown Director'}
-                      </p>
-                    </div>
-                    <span className="text-xs px-2 py-0.5 rounded bg-[#2A2A3A] text-[#9090AA]">
-                      {m.is_released ? 'Released' : 'Upcoming'}
-                    </span>
-                  </button>
-                ))}
+                {searchResults.map((m) => {
+                  const rawPoster = (m.poster_path || '').trim();
+                  const isValidPoster =
+                    rawPoster.length > 0 &&
+                    !['n/a', 'none', 'null', 'undefined'].includes(rawPoster.toLowerCase());
+                  const thumbUrl = isValidPoster
+                    ? rawPoster.startsWith('http://') || rawPoster.startsWith('https://')
+                      ? rawPoster
+                      : `https://image.tmdb.org/t/p/w500${rawPoster.startsWith('/') ? rawPoster : `/${rawPoster}`}`
+                    : null;
+                  const yearMatch = (m.release_date || '').trim().match(/^((?:19|20)\d{2})\b/);
+                  const displayYear = yearMatch ? yearMatch[1] : m.release_year || 'TBD';
+
+                  return (
+                    <button
+                      key={m.id}
+                      onClick={() => {
+                        setShowDropdown(false);
+                        setSearchQuery('');
+                        navigate(`/movies/${m.id}`);
+                      }}
+                      className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#111118] transition-colors flex items-center justify-between gap-3 group"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-8 h-12 rounded-md overflow-hidden bg-[#111118] border border-[#2A2A3A] flex items-center justify-center flex-shrink-0">
+                          {thumbUrl ? (
+                            <img
+                              src={thumbUrl}
+                              alt={m.primary_title}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <Film className="w-3.5 h-3.5 text-[#5A5A72]" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-white group-hover:text-[#E8B74A] transition-colors truncate">
+                            {m.primary_title}
+                          </p>
+                          <p className="text-xs text-[#9090AA] truncate">
+                            {displayYear} • {m.industry} • {m.director || 'Unknown Director'}
+                          </p>
+                        </div>
+                      </div>
+                      <span className="text-xs px-2 py-0.5 rounded bg-[#2A2A3A] text-[#9090AA] flex-shrink-0">
+                        {m.is_released ? 'Released' : 'Upcoming'}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -192,10 +219,10 @@ export const Navbar: React.FC = () => {
             <span className={currency === 'INR' ? 'text-[#E8B74A]' : 'text-[#9090AA]'}>INR</span>
           </button>
 
-          {/* 3D Showcase Link */}
+          {/* Landing Overview Link */}
           <Link
             to="/landing"
-            title="View 3D Animated Landing Showcase"
+            title="View Platform Overview"
             className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#1A1A26] border border-[#2A2A3A] hover:border-[#6C63FF]/60 text-xs font-mono text-[#9090AA] hover:text-white transition-all ml-1"
           >
             <Compass className="w-3.5 h-3.5 text-[#6C63FF]" />

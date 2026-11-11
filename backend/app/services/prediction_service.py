@@ -271,7 +271,7 @@ class PredictionLifecycleService:
     def assemble_feature_vector(self, movie: Dict[str, Any]) -> pd.DataFrame:
         """Constructs standardized feature row matching production CatBoost schema."""
         title = movie.get("primary_title") or movie.get("title", "Unknown")
-        rel_date_str = str(movie.get("release_date", "2026-06-01"))
+        rel_date_str = str(movie.get("release_date") or datetime.now().strftime("%Y-%m-%d"))
         
         # Calendar extraction
         month = 6
@@ -415,23 +415,30 @@ class PredictionLifecycleService:
         stage4_details = None
 
         if is_stage4 and days_left is not None and 0 < days_left <= 7:
-            # Entering Stage 4 window (T <= 7d): Theatrical advance bookings become active!
-            # Fuse prior ML estimate with multiplex pre-sale velocity using Bayesian updating
-            from backend.app.services.advance_booking_service import advance_booking_engine
-            ind = movie.get("industry", "Global")
-            budget_val = budget_usd
-            if ind == "Hollywood":
-                screen_count = 4000 if budget_val > 100_000_000 else (3200 if budget_val > 40_000_000 else 2200)
-                atp = 14.50
-            elif ind in ("Bollywood", "Tollywood", "Kollywood"):
-                screen_count = 3500 if budget_val > 25_000_000 else (2200 if budget_val > 10_000_000 else 1400)
-                atp = 3.80
-            else:
-                screen_count = 2500
-                atp = 12.00
+            from backend.app.services.advance_booking_service import (
+                advance_booking_engine,
+                derive_tickets_from_live_signals,
+                resolve_screen_and_atp,
+            )
 
+            ind = movie.get("industry", "Global")
+            screen_count, atp = resolve_screen_and_atp(ind, budget_usd)
             hours_left = max(6, min(168, days_left * 24))
-            target_tickets = max(10_000, int((expected_usd * 0.12) / atp))
+
+            explicit_tickets = movie.get("advance_tickets_sold")
+            if explicit_tickets and int(explicit_tickets) >= 100:
+                target_tickets = int(explicit_tickets)
+                signal_source = movie.get("stage4_signal_source", "verified_ticketing")
+            else:
+                yt_views = int(movie.get("trailer_view_count") or movie.get("view_count") or 0)
+                tmdb_pop = float(movie.get("tmdb_popularity") or 10.0)
+                target_tickets = derive_tickets_from_live_signals(
+                    youtube_views=yt_views,
+                    tmdb_popularity=tmdb_pop,
+                    hours_to_release=hours_left,
+                    screen_count=screen_count,
+                )
+                signal_source = "live_demand_proxy"
 
             stage4_res = advance_booking_engine.calculate_stage4_bayesian_update(
                 prior_expected_gross_usd=expected_usd,
@@ -441,6 +448,10 @@ class PredictionLifecycleService:
                 screen_count=screen_count,
                 primary_genre=movie.get("primary_genre", "Action"),
                 industry=ind,
+                early_critic_score_pct=movie.get("early_critic_score_pct"),
+                signal_source=signal_source,
+                tmdb_popularity=movie.get("tmdb_popularity"),
+                youtube_views=movie.get("trailer_view_count") or movie.get("view_count"),
             )
 
             expected_usd = stage4_res["bayesian_posterior"]["posterior_expected_gross_usd"]

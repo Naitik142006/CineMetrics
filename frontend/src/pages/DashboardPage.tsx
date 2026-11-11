@@ -76,15 +76,15 @@ export const DashboardPage: React.FC = () => {
         <div className="relative z-10 max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8B74A]/15 border border-[#E8B74A]/30 text-xs font-mono font-bold text-[#E8B74A]">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>2026–2027 Upcoming Theatrical Intelligence</span>
+            <span>Live Upcoming Theatrical Intelligence</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-            Predicting Box Office Hits & Blockbusters Before Release
+            Predicting Box Office Hits &amp; Blockbusters Before Release
           </h1>
 
           <p className="text-sm sm:text-base text-[#9090AA] leading-relaxed max-w-2xl">
-            CineMetrics uses machine learning to forecast worldwide box office earnings for upcoming 2026–2027 movies. Discover projected revenues, best-case vs worst-case outcomes, and what drives success for every film—from Hollywood tentpoles to Pan-Indian spectacles.
+            CineMetrics forecasts worldwide box office earnings for upcoming theatrical releases after today&apos;s date. Discover projected revenues, best-case vs worst-case outcomes, and what drives success for every film—from Hollywood tentpoles to Pan-Indian spectacles.
           </p>
 
           <div className="flex flex-wrap gap-3 pt-2">
@@ -92,7 +92,7 @@ export const DashboardPage: React.FC = () => {
               to="/upcoming"
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#E8B74A] to-[#C49A32] text-black font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_0_20px_rgba(232,183,74,0.3)]"
             >
-              <span>Explore 2026–2027 Radar</span>
+              <span>Explore Upcoming Radar</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
 
@@ -110,8 +110,12 @@ export const DashboardPage: React.FC = () => {
           <div className="flex items-center gap-3">
             <Database className="w-5 h-5 text-[#6C63FF]" />
             <div>
-              <p className="text-[11px] text-[#9090AA] uppercase font-mono">Training Benchmark</p>
-              <p className="text-lg font-bold text-white font-mono">10,800+ Past Films</p>
+              <p className="text-[11px] text-[#9090AA] uppercase font-mono">Historical Benchmark</p>
+              <p className="text-lg font-bold text-white font-mono">
+                {dashboard.total_historical_tracked
+                  ? `${dashboard.total_historical_tracked.toLocaleString()} Released Films`
+                  : 'Curated Global Catalog'}
+              </p>
             </div>
           </div>
 
@@ -119,7 +123,7 @@ export const DashboardPage: React.FC = () => {
             <Film className="w-5 h-5 text-[#E8B74A]" />
             <div>
               <p className="text-[11px] text-[#9090AA] uppercase font-mono">Upcoming Tracked</p>
-              <p className="text-lg font-bold text-[#E8B74A] font-mono">100+ 2026–2027 Titles</p>
+              <p className="text-lg font-bold text-[#E8B74A] font-mono">{dashboard.total_upcoming_tracked} Active Titles</p>
             </div>
           </div>
 
@@ -189,7 +193,7 @@ export const DashboardPage: React.FC = () => {
             <TrendingUp className="w-5 h-5 text-[#E8B74A]" />
             <div>
               <h2 className="text-xl font-bold text-white tracking-wide">
-                Projected 2026–2027 Box-Office Champions
+                Projected Upcoming Box-Office Champions
               </h2>
               <p className="text-xs text-[#9090AA]">
                 Upcoming marquee releases projected to command the highest worldwide theatrical revenues
@@ -284,7 +288,7 @@ export const DashboardPage: React.FC = () => {
               <Film className="w-5 h-5 text-emerald-400" />
               <div>
                 <h2 className="text-xl font-bold text-white tracking-wide">
-                  Hindi Cinema Spotlight (Bollywood 2026–2027)
+                  Hindi Cinema Spotlight (Bollywood Upcoming)
                 </h2>
                 <p className="text-xs text-[#9090AA]">
                   Upcoming marquee tentpoles and major franchise entries from Mumbai
